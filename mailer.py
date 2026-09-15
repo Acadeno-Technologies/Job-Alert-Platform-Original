@@ -267,7 +267,25 @@ if jobs:
     general_list = list(down_area_pool[:8])
 
     portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000/user")
-    search_filter_bar = ""
+    search_filter_bar = f"""
+    <div style="text-align:center;margin:20px 0;">
+        <a href="{portal_url}" target="_blank" style="
+            display:inline-block;
+            background:#f1f5f9;
+            border:1.5px solid #cbd5e1;
+            color:#334155;
+            padding:12px 24px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+            font-size:14px;
+            width:80%;
+            max-width:400px;
+        ">
+            🔍 Search All Jobs by Title, Role or Company
+        </a>
+    </div>
+    """
 
     def render_job_card(job):
         title = job.get("title", "Job Opening").strip()
