@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Job Portal - Acadeno Technologies</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
     body {
       background-color: #f4f6fb;
       color: #1e293b;
       min-height: 100vh;
     }
-    
+
     /* Header Navbar */
     .header {
       background: white;
@@ -21,17 +28,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
       position: sticky;
       top: 0;
       z-index: 100;
     }
+
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .brand h1 { font-size: 20px; color: #5f2cff; font-weight: 700; }
+
+    .brand h1 {
+      font-size: 20px;
+      color: #5f2cff;
+      font-weight: 700;
+    }
+
     .status-badge {
       background: #dcfce7;
       color: #15803d;
@@ -43,12 +57,14 @@
       align-items: center;
       gap: 6px;
     }
+
     .status-dot {
       width: 7px;
       height: 7px;
       background: #22c55e;
       border-radius: 50%;
     }
+
     .logout-btn {
       background: #fee2e2;
       color: #dc2626;
@@ -59,7 +75,10 @@
       font-weight: 600;
       transition: background 0.2s;
     }
-    .logout-btn:hover { background: #fca5a5; }
+
+    .logout-btn:hover {
+      background: #fca5a5;
+    }
 
     /* Main Container */
     .container {
@@ -75,9 +94,10 @@
       border-radius: 20px;
       padding: 32px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       text-align: center;
     }
+
     .hero h2 {
       font-size: 26px;
       font-weight: 800;
@@ -85,6 +105,7 @@
       margin-bottom: 6px;
       letter-spacing: -0.5px;
     }
+
     .hero p.hero-sub {
       color: #64748b;
       font-size: 15px;
@@ -114,6 +135,7 @@
       color: #1e293b;
       background: #ffffff;
     }
+
     .input-search-text:focus {
       border-color: #0073cb;
       box-shadow: 0 0 0 3px rgba(0, 115, 203, 0.12);
@@ -134,6 +156,7 @@
       appearance: none;
       cursor: pointer;
     }
+
     .select-job-type:focus {
       border-color: #0073cb;
     }
@@ -150,9 +173,11 @@
       transition: background 0.2s, transform 0.1s;
       white-space: nowrap;
     }
+
     .btn-search-blue:hover {
       background: #005fa7;
     }
+
     .btn-search-blue:active {
       transform: scale(0.98);
     }
@@ -164,6 +189,7 @@
       margin-top: 16px;
       padding: 0 4px;
     }
+
     .results-count {
       font-size: 13px;
       color: #64748b;
@@ -174,6 +200,7 @@
     .jobs-section {
       margin-top: 24px;
     }
+
     .jobs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -185,27 +212,30 @@
       border-radius: 16px;
       padding: 24px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
+
     .job-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
       border-color: #cbd5e1;
     }
 
     .job-card-header {
       margin-bottom: 16px;
     }
+
     .badges-wrapper {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
       margin-bottom: 12px;
     }
+
     .job-badge {
       font-size: 11px;
       font-weight: 700;
@@ -213,10 +243,26 @@
       border-radius: 12px;
       letter-spacing: 0.3px;
     }
-    .badge-ai { background: #fae8ff; color: #86198f; }
-    .badge-fresher { background: #e0e7ff; color: #3730a3; }
-    .badge-it { background: #dbeafe; color: #1e40af; }
-    .badge-nonit { background: #fef3c7; color: #92400e; }
+
+    .badge-ai {
+      background: #fae8ff;
+      color: #86198f;
+    }
+
+    .badge-fresher {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .badge-it {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-nonit {
+      background: #fef3c7;
+      color: #92400e;
+    }
 
     .job-title {
       font-size: 16px;
@@ -233,6 +279,7 @@
       font-size: 12px;
       color: #64748b;
     }
+
     .verified-icon {
       color: #10b981;
       font-size: 14px;
@@ -255,6 +302,7 @@
       font-weight: 700;
       transition: all 0.2s;
     }
+
     .job-apply-btn:hover {
       background: #005fa7;
       border-color: #005fa7;
@@ -270,8 +318,19 @@
       grid-column: 1 / -1;
       display: none;
     }
-    .empty-state h3 { font-size: 18px; color: #1e293b; margin-bottom: 8px; }
-    .empty-state p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+
+    .empty-state h3 {
+      font-size: 18px;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
     .reset-btn {
       background: #0073cb;
       color: white;
@@ -283,20 +342,51 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .reset-btn:hover { background: #005fa7; }
+
+    .reset-btn:hover {
+      background: #005fa7;
+    }
 
     /* Mobile Responsiveness */
     @media (max-width: 640px) {
-      .header { padding: 14px 16px; flex-wrap: wrap; gap: 10px; }
-      .container { margin: 16px auto; padding: 0 12px; }
-      .hero { padding: 20px 16px; }
-      .hero h2 { font-size: 20px; }
-      .search-form-grid { flex-direction: column; align-items: stretch; }
-      .input-search-text, .select-job-type, .btn-search-blue { width: 100%; min-width: auto; }
-      .jobs-grid { grid-template-columns: 1fr; }
+      .header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .container {
+        margin: 16px auto;
+        padding: 0 12px;
+      }
+
+      .hero {
+        padding: 20px 16px;
+      }
+
+      .hero h2 {
+        font-size: 20px;
+      }
+
+      .search-form-grid {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .input-search-text,
+      .select-job-type,
+      .btn-search-blue {
+        width: 100%;
+        min-width: auto;
+      }
+
+      .jobs-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- Top Header Navigation -->
@@ -317,7 +407,11 @@
       <p class="hero-sub">Search and explore verified career opportunities across Kerala IT Parks</p>
 
       <div class="search-form-grid">
-        <input type="text" id="jobSearch" class="input-search-text" placeholder="Search By Job Description / Role / Company Name" oninput="filterJobs()" autocomplete="off">
+        <input type="text" id="jobSearch" class="input-search-text" placeholder="Job title, keywords, or company"
+          oninput="filterJobs()" autocomplete="off">
+
+        <input type="text" id="locationSearch" class="input-search-text" placeholder="City or location"
+          oninput="filterJobs()" autocomplete="off">
 
         <select id="jobTypeFilter" class="select-job-type" onchange="filterJobs()">
           <option value="all">Job Posting & Walk-In Drives (All)</option>
@@ -328,7 +422,7 @@
           <option value="non_it">Non-IT & General</option>
         </select>
 
-        <button type="button" class="btn-search-blue" onclick="filterJobs()">Search</button>
+        <button type="button" class="btn-search-blue" onclick="filterJobs()">Find Jobs</button>
       </div>
 
       <div class="results-bar">
@@ -342,31 +436,34 @@
     <div class="jobs-section">
       <div class="jobs-grid" id="jobsGrid">
         {% if jobs %}
-          {% for job in jobs %}
-          <div class="job-card" data-title="{{ job.title | lower }}" data-categories="{{ job.categories | lower }}" data-badges="{% for b in job.badges %}{{ b.label | lower }} {% endfor %}">
-            <div class="job-card-header">
-              <div class="badges-wrapper">
-                {% for b in job.badges %}
-                <span class="job-badge {{ b.class }}">
-                  {{ b.label }}
-                </span>
-                {% endfor %}
-              </div>
-              <h3 class="job-title">{{ job.title }}</h3>
-              <div class="job-meta">
-                <span class="verified-icon">✓</span> Verified Opening
-              </div>
+        {% for job in jobs %}
+        <div class="job-card" data-title="{{ job.title | lower }}" data-categories="{{ job.categories | lower }}"
+          data-location="{{ job.location | lower }}"
+          data-badges="{% for b in job.badges %}{{ b.label | lower }} {% endfor %}">
+          <div class="job-card-header">
+            <div class="badges-wrapper">
+              {% for b in job.badges %}
+              <span class="job-badge {{ b.class }}">
+                {{ b.label }}
+              </span>
+              {% endfor %}
             </div>
-            <a href="{{ job.link }}" target="_blank" rel="noopener noreferrer" class="job-apply-btn">
-              Apply Now ↗
-            </a>
+            <h3 class="job-title">{{ job.title }}</h3>
+            <div class="job-meta">
+              <span class="verified-icon">✓</span> Verified Opening
+              {% if job.location %} &nbsp;•&nbsp; 📍 {{ job.location }}{% endif %}
+            </div>
           </div>
-          {% endfor %}
+          <a href="{{ job.link }}" target="_blank" rel="noopener noreferrer" class="job-apply-btn">
+            Apply Now ↗
+          </a>
+        </div>
+        {% endfor %}
         {% else %}
-          <div class="empty-state" style="display:block;">
-            <h3>No Jobs Available</h3>
-            <p>No job listings were found. Please check back later.</p>
-          </div>
+        <div class="empty-state" style="display:block;">
+          <h3>No Jobs Available</h3>
+          <p>No job listings were found. Please check back later.</p>
+        </div>
         {% endif %}
 
         <!-- Client-side Search Empty State -->
@@ -383,9 +480,11 @@
   <script>
     function filterJobs() {
       const searchInput = document.getElementById('jobSearch');
+      const locationInput = document.getElementById('locationSearch');
       const typeSelect = document.getElementById('jobTypeFilter');
 
       const query = searchInput.value.trim().toLowerCase();
+      const locationQuery = locationInput ? locationInput.value.trim().toLowerCase() : '';
       const typeValue = typeSelect ? typeSelect.value : 'all';
 
       const cards = document.querySelectorAll('.job-card');
@@ -396,18 +495,23 @@
       let visibleCount = 0;
       const totalCount = cards.length;
       const terms = query ? query.split(/\s+/).filter(t => t.length > 0) : [];
+      const locationTerms = locationQuery ? locationQuery.split(/\s+/).filter(t => t.length > 0) : [];
 
       cards.forEach(card => {
         const title = card.getAttribute('data-title') || '';
         const categories = card.getAttribute('data-categories') || '';
         const badges = card.getAttribute('data-badges') || '';
+        const location = card.getAttribute('data-location') || '';
 
         const fullText = `${title} ${categories} ${badges}`.toLowerCase();
 
         // 1. Text Search matching all typed words
         const matchesSearch = terms.length === 0 || terms.every(term => fullText.includes(term));
 
-        // 2. Category Dropdown matching
+        // 2. Location Search matching all typed words
+        const matchesLocation = locationTerms.length === 0 || locationTerms.every(term => location.includes(term));
+
+        // 3. Category Dropdown matching
         let matchesType = true;
         if (typeValue === 'hr') {
           matchesType = categories.includes('hr') || fullText.includes('hr') || fullText.includes('recruiter') || fullText.includes('talent');
@@ -421,7 +525,7 @@
           matchesType = categories.includes('non_it');
         }
 
-        if (matchesSearch && matchesType) {
+        if (matchesSearch && matchesLocation && matchesType) {
           card.style.display = 'flex';
           visibleCount++;
         } else {
@@ -433,7 +537,10 @@
         if (visibleCount === 0 && totalCount > 0) {
           noMatchState.style.display = 'block';
           if (noMatchSubtext) {
-            noMatchSubtext.innerText = query ? `No job listings matched "${query}".` : 'No job listings matched your selected filter.';
+            const parts = [];
+            if (query) parts.push(`"${query}"`);
+            if (locationQuery) parts.push(`near "${locationQuery}"`);
+            noMatchSubtext.innerText = parts.length ? `No job listings matched ${parts.join(' ')}.` : 'No job listings matched your selected filter.';
           }
         } else {
           noMatchState.style.display = 'none';
@@ -441,8 +548,11 @@
       }
 
       if (resultsCount) {
-        if (query) {
-          resultsCount.innerText = `Showing ${visibleCount} of ${totalCount} jobs matching "${query}"`;
+        if (query || locationQuery) {
+          const parts = [];
+          if (query) parts.push(`"${query}"`);
+          if (locationQuery) parts.push(`near "${locationQuery}"`);
+          resultsCount.innerText = `Showing ${visibleCount} of ${totalCount} jobs matching ${parts.join(' ')}`;
         } else {
           resultsCount.innerText = `Showing ${visibleCount} of ${totalCount} jobs`;
         }
@@ -451,8 +561,10 @@
 
     function clearSearch() {
       const searchInput = document.getElementById('jobSearch');
+      const locationInput = document.getElementById('locationSearch');
       const typeSelect = document.getElementById('jobTypeFilter');
       if (searchInput) searchInput.value = '';
+      if (locationInput) locationInput.value = '';
       if (typeSelect) typeSelect.value = 'all';
       filterJobs();
       if (searchInput) searchInput.focus();
@@ -472,4 +584,5 @@
     });
   </script>
 </body>
+
 </html>

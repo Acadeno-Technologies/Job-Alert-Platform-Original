@@ -481,9 +481,11 @@ def user():
                 link = "https://infopark.in/company-jobs"
 
         tags_str, badges = classify_job_tags(title)
+        location = job.get("location", "").strip()
         processed_jobs.append({
             "title": title,
             "link": link,
+            "location": location,
             "categories": tags_str,
             "badges": badges
         })

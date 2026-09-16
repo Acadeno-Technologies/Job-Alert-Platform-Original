@@ -77,6 +77,7 @@ def fetch_jobs_for_keyword(keyword):
         title = (item.get("title") or "").strip()
         link = (item.get("redirect_url") or "").strip()
         company = (item.get("company", {}) or {}).get("display_name", "").strip()
+        location = (item.get("location", {}) or {}).get("display_name", "").strip()
 
         if not title or not link:
             continue
@@ -84,7 +85,7 @@ def fetch_jobs_for_keyword(keyword):
         # Keep the company name in the title so students can see who's hiring
         display_title = f"{title} - {company}" if company else title
 
-        jobs.append({"title": display_title, "link": link})
+        jobs.append({"title": display_title, "link": link, "location": location})
 
     return jobs
 
