@@ -147,9 +147,18 @@ def is_link_working(url, timeout=6):
         resp = requests.head(url, timeout=timeout, allow_redirects=True, headers={"User-Agent": "Mozilla/5.0"})
         if resp.status_code in (405, 403):
             resp = requests.get(url, timeout=timeout, allow_redirects=True, headers={"User-Agent": "Mozilla/5.0"})
+        # Many real company career sites (LinkedIn, Naukri, corporate ATS pages, etc.)
+        # block automated/bot requests and return 401/403/429/999 even though the
+        # link works fine for a real person in a browser. Treat those as "can't verify"
+        # rather than "broken", so real jobs don't get dropped from the email.
+        if resp.status_code in (401, 403, 429, 999):
+            return True
         return resp.status_code < 400
     except Exception:
-        return False
+        # A timeout/connection error during the CI check doesn't prove the link is
+        # dead (it may just be a slow site or a network hiccup) - assume it's fine
+        # rather than silently dropping a real job.
+        return True
 
 
 def filter_working_jobs(job_list):
@@ -267,25 +276,7 @@ if jobs:
     general_list = list(down_area_pool[:8])
 
     portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000/user")
-    search_filter_bar = f"""
-    <div style="text-align:center;margin:20px 0;">
-        <a href="{portal_url}" target="_blank" style="
-            display:inline-block;
-            background:#f1f5f9;
-            border:1.5px solid #cbd5e1;
-            color:#334155;
-            padding:12px 24px;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:600;
-            font-size:14px;
-            width:80%;
-            max-width:400px;
-        ">
-            🔍 Search All Jobs by Title, Role or Company
-        </a>
-    </div>
-    """
+    search_filter_bar = ""
 
     def render_job_card(job):
         title = job.get("title", "Job Opening").strip()
