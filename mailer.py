@@ -116,17 +116,29 @@ if not EMAIL_USER or not EMAIL_PASS:
     print("[WARNING] EMAIL_USER or EMAIL_PASS missing in .env file.")
     print("To send real emails, create a .env file with your Gmail credentials.")
 
-quote = "Success is not final, failure is not fatal: it is the courage to continue that counts."
-quote_file = "scraper/career_quotes_unique.xlsx"
-if os.path.exists(quote_file):
-    try:
-        quotes_df = pd.read_excel(quote_file)
-        if "Quote" in quotes_df.columns:
-            quote_list = quotes_df["Quote"].dropna().tolist()
-            if quote_list:
-                quote = random.choice(quote_list)
-    except Exception as e:
-        print("Note: Could not load quotes file, using default quote:", e)
+MOTIVATIONAL_QUOTES = [
+    "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "Your limitation—it's only your imagination.",
+    "Push yourself, because no one else is going to do it for you.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn't just find you. You have to go out and get it.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Don't stop when you're tired. Stop when you're done.",
+    "Wake up with determination. Go to bed with satisfaction.",
+    "Do something today that your future self will thank you for.",
+    "Little things make big days.",
+    "It's going to be hard, but hard does not mean impossible.",
+    "Don't wait for opportunity. Create it.",
+    "Sometimes we're tested not to show our weaknesses, but to discover our strengths.",
+    "The key to success is to focus on goals, not obstacles.",
+    "Dream bigger. Do bigger.",
+    "Believe you can and you're halfway there.",
+    "Opportunities don't happen, you create them.",
+    "The expert in anything was once a beginner.",
+]
+quote = random.choice(MOTIVATIONAL_QUOTES)
 
 jobs = []
 jobs_file = "scraper/jobs.json"
@@ -275,7 +287,7 @@ if jobs:
     random.shuffle(down_area_pool)
     general_list = list(down_area_pool[:8])
 
-    portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000/user")
+    portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000").rstrip("/")
     search_filter_bar = ""
 
     def render_job_card(job):
@@ -378,6 +390,12 @@ Today's Verified IT Opportunities
 <p style="color:#64748b;font-size:13px;margin-top:0;">
 Date : <b>{today}</b>
 </p>
+
+<div style="text-align:center;margin:18px 0 24px 0;">
+<a href="{portal_url}/user" target="_blank" style="background:#5f2cff;color:white;padding:12px 28px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:700;font-size:14px;">
+🔍 Search All Jobs on Our Portal
+</a>
+</div>
 
 {search_filter_bar}
 
