@@ -3,6 +3,7 @@ load_dotenv()
 
 import json
 import os
+import re
 import smtplib
 import random
 import sqlite3
@@ -203,34 +204,44 @@ jobs = filter_working_jobs(jobs)
 today = datetime.now().strftime("%d %B %Y")
 
 def classify_job(job):
+    # Classify using the job title ONLY - never the company name. Otherwise a
+    # company like "Prevalent AI" or "DBiz.ai" makes every one of their job
+    # postings wrongly get tagged as AI & Data Science.
     title = job.get("title", "").lower()
 
-    hr_kw = ["hr ", "hr/", "hr-", "human resource", "recruiter", "talent acquisition", "hrbp", "payroll"]
-    if any(kw in title for kw in hr_kw) or title.startswith("hr"):
+    def has_word(keyword):
+        return re.search(r'\b' + re.escape(keyword) + r'\b', title) is not None
+
+    hr_kw = ["hr", "human resource", "human resources", "recruiter", "recruitment", "talent acquisition", "hrbp", "payroll"]
+    if any(has_word(kw) for kw in hr_kw):
         return 6
 
-    ai_kw = ["ai", "ml", "machine learning", "data science", "data engineer", "data analyst", "power bi", "deep learning", "nlp", "sensing & ai"]
-    if any(kw in title for kw in ai_kw):
+    ai_kw = ["ai", "ml", "machine learning", "data science", "data engineer", "data analyst", "power bi", "deep learning", "nlp", "artificial intelligence"]
+    if any(has_word(kw) for kw in ai_kw):
         return 5
 
+    uiux_kw = ["ui", "ux", "ui/ux", "ui ux", "product designer", "graphic designer", "visual designer", "interaction designer"]
+    if any(has_word(kw) for kw in uiux_kw):
+        return 7
+
     non_it_exclusions = [
-        "psychology", "research", "biology", "medical", "counselor", "teaching", "trainer", 
-        "bpo", "voice", "data entry", "operator", "business development", "sales", "hr ", 
-        "recruiter", "accountant", "telecaller", "content writer", "marketing", "supply chain",
-        "video editing", "designer", "graphic", "finance", "legal", "nurse"
+        "psychology", "research", "biology", "medical", "counselor", "teaching", "trainer",
+        "bpo", "voice", "data entry", "operator", "business development", "sales",
+        "accountant", "telecaller", "content writer", "marketing", "supply chain",
+        "video editing", "finance", "legal", "nurse"
     ]
 
-    is_excluded_from_it = any(ex in title for ex in non_it_exclusions)
+    is_excluded_from_it = any(has_word(ex) for ex in non_it_exclusions)
 
-    fresher_kw = ["fresher", "intern", "trainee", "junior", "jr.", "jr ", "entry", "walkin", "walk-in", "0-1", "0 to 1", "0-2", "0 to 2", "graduate", "beginner"]
+    fresher_kw = ["fresher", "intern", "trainee", "junior", "jr.", "jr", "entry", "walkin", "walk-in", "0-1", "0 to 1", "0-2", "0 to 2", "graduate", "beginner"]
     it_kw = [
         "developer", "engineer", "software", "python", "react", "angular", "frontend", "backend",
-        "fullstack", "full stack", "qa", "quality analyst", "web", "node", "ui/ux", "plsql", "code", "tech", "cyber", "cloud",
+        "fullstack", "full stack", "qa", "quality analyst", "web", "node", "plsql", "code", "cyber", "cloud",
         "java", "c++", "php", "testing", "tester", "android", "ios", "devops", "database", ".net", "dot net", "system engineer", "it support", "technical support"
     ]
 
-    is_fresher = any(kw in title for kw in fresher_kw)
-    is_it = any(kw in title for kw in it_kw) and not is_excluded_from_it
+    is_fresher = any(has_word(kw) for kw in fresher_kw)
+    is_it = any(has_word(kw) for kw in it_kw) and not is_excluded_from_it
 
     if is_fresher and is_it:
         return 1
@@ -292,6 +303,8 @@ if jobs:
 
     def render_job_card(job):
         title = job.get("title", "Job Opening").strip()
+        company = job.get("company", "").strip()
+        display_title = f"{title} - {company}" if company else title
         link = get_clean_working_url(job)
         cat = classify_job(job)
 
@@ -300,6 +313,8 @@ if jobs:
             badge_html = '<span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">HR & Talent Management</span>'
         elif cat == 5:
             badge_html = '<span style="background:#fae8ff;color:#86198f;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">AI & Data Science</span>'
+        elif cat == 7:
+            badge_html = '<span style="background:#fce7f3;color:#9d174d;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">UI/UX & Design</span>'
         elif cat == 1:
             badge_html = '<span style="background:#e0e7ff;color:#4338ca;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">IT Fresher / Entry Level</span>'
         elif cat == 2:
@@ -320,7 +335,7 @@ if jobs:
             box-sizing:border-box;
         ">
             {badge_html}
-            <h3 style="color:#5f2cff;margin-top:4px;margin-bottom:12px;font-size:16px;line-height:1.4;">{title}</h3>
+            <h3 style="color:#5f2cff;margin-top:4px;margin-bottom:12px;font-size:16px;line-height:1.4;">{display_title}</h3>
             <a href="{link}" target="_blank" style="background:#5f2cff;color:white;padding:9px 18px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:700;font-size:13px;">Apply Now</a>
         </div>
         """

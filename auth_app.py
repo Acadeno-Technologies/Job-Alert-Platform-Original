@@ -401,38 +401,49 @@ def delete_student(student_id):
 # ================== JOB CLASSIFIER HELPER ==================
 
 def classify_job_tags(title):
+    import re
     t = title.lower()
     tags = []
     badges = []
 
-    # 1. AI & Data Science
-    ai_kw = ["ai", "ml", "machine learning", "data science", "data engineer", "data analyst", "power bi", "deep learning", "nlp", "sensing & ai", "artificial intelligence"]
-    if any(kw in t for kw in ai_kw):
+    def has_word(keyword):
+        """Match a whole word/phrase, not a bare substring (avoids 'ai' matching 'training')."""
+        return re.search(r'\b' + re.escape(keyword) + r'\b', t) is not None
+
+    # 1. AI & Data Science (word-boundary matched, so "ai"/"ml" don't match inside other words)
+    ai_kw = ["ai", "ml", "machine learning", "data science", "data engineer", "data analyst", "power bi", "deep learning", "nlp", "artificial intelligence"]
+    if any(has_word(kw) for kw in ai_kw):
         tags.append("ai_data")
         badges.append({"label": "🤖 AI & Data", "class": "badge-ai"})
 
     # 2. Fresher & Intern
-    fresher_kw = ["fresher", "intern", "trainee", "junior", "jr.", "jr ", "entry", "walkin", "walk-in", "0-1", "0 to 1", "0-2", "0 to 2", "graduate", "beginner"]
-    if any(kw in t for kw in fresher_kw):
+    fresher_kw = ["fresher", "intern", "trainee", "junior", "jr.", "jr", "entry", "walkin", "walk-in", "0-1", "0 to 1", "0-2", "0 to 2", "graduate", "beginner"]
+    if any(has_word(kw) for kw in fresher_kw):
         tags.append("fresher")
         badges.append({"label": "🎓 Fresher & Intern", "class": "badge-fresher"})
 
     # 3. HR & People Operations
-    hr_kw = ["hr ", "hr/", "hr-", "human resource", "recruiter", "talent acquisition", "hrbp", "payroll"]
-    if any(kw in t for kw in hr_kw) or t.startswith("hr"):
+    hr_kw = ["hr", "human resource", "human resources", "recruiter", "recruitment", "talent acquisition", "hrbp", "payroll"]
+    if any(has_word(kw) for kw in hr_kw):
         tags.append("hr")
         badges.append({"label": "👔 HR & Talent", "class": "badge-nonit"})
 
-    # 4. Non-IT Exclusions
-    non_it_kw = ["psychology", "research", "biology", "medical", "counselor", "teaching", "trainer", "bpo", "voice", "data entry", "operator", "business development", "sales", "hr ", "recruiter", "accountant", "telecaller", "content writer", "marketing", "supply chain", "video editing", "designer", "graphic", "finance", "legal", "nurse", "pre-sales"]
-    is_non_it = any(kw in t for kw in non_it_kw)
-    if is_non_it and "hr" not in tags:
+    # 4. UI/UX & Design (its own category, not lumped into Non-IT)
+    uiux_kw = ["ui", "ux", "ui/ux", "ui ux", "product designer", "graphic designer", "visual designer", "interaction designer", "user experience", "user interface"]
+    if any(has_word(kw) for kw in uiux_kw):
+        tags.append("ui_ux")
+        badges.append({"label": "🎨 UI/UX & Design", "class": "badge-nonit"})
+
+    # 5. Non-IT Exclusions
+    non_it_kw = ["psychology", "research", "biology", "medical", "counselor", "teaching", "trainer", "bpo", "voice", "data entry", "operator", "business development", "sales", "accountant", "telecaller", "content writer", "marketing", "supply chain", "video editing", "finance", "legal", "nurse", "pre-sales"]
+    is_non_it = any(has_word(kw) for kw in non_it_kw)
+    if is_non_it and not tags:
         tags.append("non_it")
         badges.append({"label": "🌐 Non-IT & General", "class": "badge-nonit"})
 
-    # 4. IT & Software Development
-    it_kw = ["developer", "engineer", "software", "python", "react", "angular", "frontend", "backend", "fullstack", "full stack", "qa", "quality analyst", "web", "node", "ui/ux", "plsql", "code", "tech", "cyber", "cloud", "java", "c++", "php", "testing", "tester", "android", "ios", "devops", "database", ".net", "dot net", "system engineer", "it support", "technical support"]
-    if (any(kw in t for kw in it_kw) or not tags) and not is_non_it:
+    # 6. IT & Software Development
+    it_kw = ["developer", "engineer", "software", "python", "react", "angular", "frontend", "backend", "fullstack", "full stack", "qa", "quality analyst", "web", "node", "plsql", "code", "cyber", "cloud", "java", "c++", "php", "testing", "tester", "android", "ios", "devops", "database", ".net", "dot net", "system engineer", "it support", "technical support"]
+    if (any(has_word(kw) for kw in it_kw) or not tags) and "non_it" not in tags:
         tags.append("it_software")
         badges.append({"label": "💻 IT & Software", "class": "badge-it"})
 
@@ -463,6 +474,7 @@ def user():
     processed_jobs = []
     for job in raw_jobs:
         title = job.get("title", "").strip()
+        company = job.get("company", "").strip()
         link = job.get("link", "#").strip()
 
         clean_title = title.split("\n")[0].strip()
@@ -480,10 +492,14 @@ def user():
             else:
                 link = "https://infopark.in/company-jobs"
 
+        # IMPORTANT: classify using the job title ONLY - never the company name.
+        # Otherwise a company like "Prevalent AI" or "DBiz.ai" makes every one
+        # of their job postings wrongly get tagged as AI & Data Science.
         tags_str, badges = classify_job_tags(title)
         location = job.get("location", "").strip()
+        display_title = f"{title} - {company}" if company else title
         processed_jobs.append({
-            "title": title,
+            "title": display_title,
             "link": link,
             "location": location,
             "categories": tags_str,
