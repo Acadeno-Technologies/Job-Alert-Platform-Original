@@ -506,7 +506,33 @@ def user():
             "badges": badges
         })
 
-    return render_template("user_home.html", jobs=processed_jobs)
+    # Group jobs into ordered sections for the portal page (each job appears
+    # in exactly ONE section, picked by priority so nothing is duplicated).
+    SECTION_ORDER = [
+        ("ai_data", "🤖 AI, ML & Data Science"),
+        ("it_software", "💻 Software & IT Roles"),
+        ("fresher", "🎓 Fresher & Entry Level"),
+        ("hr", "👔 HR & Talent Management"),
+        ("ui_ux", "🎨 UI/UX & Design"),
+        ("non_it", "🌐 Non-IT & General"),
+    ]
+    grouped = {key: [] for key, _ in SECTION_ORDER}
+    for job in processed_jobs:
+        cats = job["categories"].split()
+        for key, _ in SECTION_ORDER:
+            if key in cats:
+                grouped[key].append(job)
+                break
+        else:
+            grouped["non_it"].append(job)
+
+    job_sections = [
+        {"key": key, "label": label, "jobs": grouped[key]}
+        for key, label in SECTION_ORDER
+        if grouped[key]
+    ]
+
+    return render_template("user_home.html", jobs=processed_jobs, job_sections=job_sections)
 
 # ================== FORGOT PASSWORD ==================
 

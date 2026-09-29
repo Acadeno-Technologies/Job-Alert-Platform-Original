@@ -277,9 +277,12 @@ def get_clean_working_url(job):
 
 cards = ""
 
+MAX_JOBS_PER_EMAIL_SECTION = 5
+
 if jobs:
     hr_jobs = [j for j in jobs if classify_job(j) == 6]
     ai_data_jobs = [j for j in jobs if classify_job(j) == 5]
+    ui_ux_jobs = [j for j in jobs if classify_job(j) == 7]
     fresher_it_jobs = [j for j in jobs if classify_job(j) == 1]
     general_it_jobs = [j for j in jobs if classify_job(j) == 2]
     fresher_other_jobs = [j for j in jobs if classify_job(j) == 3]
@@ -287,16 +290,15 @@ if jobs:
 
     random.shuffle(hr_jobs)
     random.shuffle(ai_data_jobs)
+    random.shuffle(ui_ux_jobs)
     random.shuffle(fresher_it_jobs)
     random.shuffle(general_it_jobs)
     random.shuffle(fresher_other_jobs)
     random.shuffle(other_jobs)
 
-    top_it_list = list(hr_jobs + ai_data_jobs + fresher_it_jobs + general_it_jobs)[:14]
-
-    down_area_pool = [j for j in jobs if j not in top_it_list]
-    random.shuffle(down_area_pool)
-    general_list = list(down_area_pool[:8])
+    # Every job is accounted for in exactly one bucket - nothing falls through
+    # to a random leftover pile anymore.
+    general_list = list(fresher_other_jobs + other_jobs)[:MAX_JOBS_PER_EMAIL_SECTION]
 
     portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000").rstrip("/")
     search_filter_bar = ""
@@ -342,28 +344,41 @@ if jobs:
 
     if ai_data_jobs:
         cards += '<h3 style="color:#86198f;margin-top:25px;margin-bottom:15px;border-left:4px solid #c084fc;padding-left:10px;font-size:16px;">AI, ML & Data Science Openings</h3>'
-        for j in ai_data_jobs:
+        for j in ai_data_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
             cards += render_job_card(j)
 
     if general_it_jobs:
         cards += '<h3 style="color:#1e40af;margin-top:30px;margin-bottom:15px;border-left:4px solid #3b82f6;padding-left:10px;font-size:16px;">Software & IT Roles</h3>'
-        for j in general_it_jobs:
+        for j in general_it_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
             cards += render_job_card(j)
 
     if fresher_it_jobs:
         cards += '<h3 style="color:#3730a3;margin-top:30px;margin-bottom:15px;border-left:4px solid #6366f1;padding-left:10px;font-size:16px;">IT Fresher & Entry Level Openings</h3>'
-        for j in fresher_it_jobs:
+        for j in fresher_it_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
             cards += render_job_card(j)
 
     if hr_jobs:
         cards += '<h3 style="color:#b45309;margin-top:30px;margin-bottom:15px;border-left:4px solid #f59e0b;padding-left:10px;font-size:16px;">HR & Talent Management Openings</h3>'
-        for j in hr_jobs:
+        for j in hr_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
+            cards += render_job_card(j)
+
+    if ui_ux_jobs:
+        cards += '<h3 style="color:#9d174d;margin-top:30px;margin-bottom:15px;border-left:4px solid #ec4899;padding-left:10px;font-size:16px;">UI/UX & Design Openings</h3>'
+        for j in ui_ux_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
             cards += render_job_card(j)
 
     if general_list:
         cards += '<h3 style="color:#92400e;margin-top:30px;margin-bottom:15px;border-left:4px solid #f59e0b;padding-left:10px;font-size:16px;">Non-IT & General Positions</h3>'
         for j in general_list:
             cards += render_job_card(j)
+
+    cards += f"""
+    <div style="text-align:center;margin:30px 0 10px 0;">
+    <a href="{portal_url}/user" target="_blank" style="background:#5f2cff;color:white;padding:12px 28px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:700;font-size:14px;">
+    See All Jobs on Our Portal
+    </a>
+    </div>
+    """
 else:
     search_filter_bar = ""
     cards = "<p style='color:#666;'>No active job postings found today. Please check back soon!</p>"
