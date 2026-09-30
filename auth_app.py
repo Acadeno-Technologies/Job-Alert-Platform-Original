@@ -455,11 +455,21 @@ def classify_job_tags(title):
 
 # ================== USER HOME ==================
 
-@app.route("/user")
-def user():
-    jobs_file = "scraper/jobs.json"
-    if not os.path.exists(jobs_file):
-        jobs_file = "jobs.json"
+SECTION_ORDER = [
+    ("ai_data", "🤖 AI, ML & Data Science"),
+    ("it_software", "💻 Software & IT Roles"),
+    ("fresher", "🎓 Fresher & Entry Level"),
+    ("hr", "👔 HR & Talent Management"),
+    ("ui_ux", "🎨 UI/UX & Design"),
+    ("non_it", "🌐 Non-IT & General"),
+]
+
+
+def load_and_group_jobs(jobs_file, section_prefix, use_generic_fallback_links=True):
+    """Reads a jobs JSON file, classifies each job, and groups them into the
+    same ordered sections used across the whole app (India and Gulf jobs both
+    go through this so they look and behave identically)."""
+    import urllib.parse
 
     raw_jobs = []
     if os.path.exists(jobs_file):
@@ -467,9 +477,7 @@ def user():
             with open(jobs_file, "r", encoding="utf-8") as f:
                 raw_jobs = json.load(f)
         except Exception as e:
-            print("⚠️ Error reading jobs file in user route:", e)
-
-    import urllib.parse
+            print(f"⚠️ Error reading {jobs_file}:", e)
 
     processed_jobs = []
     for job in raw_jobs:
@@ -480,9 +488,7 @@ def user():
         clean_title = title.split("\n")[0].strip()
         encoded_title = urllib.parse.quote_plus(clean_title)
 
-        # Use the real scraped job link directly if it looks valid.
-        # Only fall back to a generic page when no real link was scraped at all.
-        if not link or link == "#" or not link.startswith("http"):
+        if use_generic_fallback_links and (not link or link == "#" or not link.startswith("http")):
             if "technopark" in title.lower():
                 link = f"https://www.technopark.in/job-search?q={encoded_title}"
             elif "cyberpark" in title.lower():
@@ -506,16 +512,6 @@ def user():
             "badges": badges
         })
 
-    # Group jobs into ordered sections for the portal page (each job appears
-    # in exactly ONE section, picked by priority so nothing is duplicated).
-    SECTION_ORDER = [
-        ("ai_data", "🤖 AI, ML & Data Science"),
-        ("it_software", "💻 Software & IT Roles"),
-        ("fresher", "🎓 Fresher & Entry Level"),
-        ("hr", "👔 HR & Talent Management"),
-        ("ui_ux", "🎨 UI/UX & Design"),
-        ("non_it", "🌐 Non-IT & General"),
-    ]
     grouped = {key: [] for key, _ in SECTION_ORDER}
     for job in processed_jobs:
         cats = job["categories"].split()
@@ -527,12 +523,32 @@ def user():
             grouped["non_it"].append(job)
 
     job_sections = [
-        {"key": key, "label": label, "jobs": grouped[key]}
+        # section_key is prefixed (e.g. "india_ai_data" vs "gulf_ai_data") so
+        # the two tabs never clash with each other in the page's HTML/JS.
+        {"key": f"{section_prefix}_{key}", "label": label, "jobs": grouped[key]}
         for key, label in SECTION_ORDER
         if grouped[key]
     ]
 
-    return render_template("user_home.html", jobs=processed_jobs, job_sections=job_sections)
+    return processed_jobs, job_sections
+
+
+@app.route("/user")
+def user():
+    india_jobs_file = "scraper/jobs.json"
+    if not os.path.exists(india_jobs_file):
+        india_jobs_file = "jobs.json"
+
+    india_jobs, india_sections = load_and_group_jobs(india_jobs_file, "india", use_generic_fallback_links=True)
+    gulf_jobs, gulf_sections = load_and_group_jobs("gulf_jobs.json", "gulf", use_generic_fallback_links=False)
+
+    return render_template(
+        "user_home.html",
+        jobs=india_jobs,
+        job_sections=india_sections,
+        gulf_jobs=gulf_jobs,
+        gulf_sections=gulf_sections,
+    )
 
 # ================== FORGOT PASSWORD ==================
 
