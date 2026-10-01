@@ -39,7 +39,7 @@ SENIOR_LEVEL_EXCLUDE = [
     "architect", "vp ", "vice president", "chief",
     "staff engineer", "avp", "gm ", "general manager", "head of",
 ]
-MAX_EXPERIENCE_YEARS = 3
+MAX_EXPERIENCE_YEARS = 1
 
 
 def mentions_too_much_experience(title):

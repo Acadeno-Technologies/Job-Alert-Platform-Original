@@ -100,7 +100,7 @@ SENIOR_LEVEL_EXCLUDE = [
 
 # Max years of experience allowed. A title mentioning a higher number
 # (e.g. "- 6 years", "5+ years", "4-8 years") is dropped.
-MAX_EXPERIENCE_YEARS = 3
+MAX_EXPERIENCE_YEARS = 1
 
 
 def mentions_too_much_experience(title):
