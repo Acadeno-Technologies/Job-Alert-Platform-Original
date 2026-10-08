@@ -8,6 +8,10 @@ on:
     - cron: '30 11 * * *'
   workflow_dispatch:
 
+# Needed so the workflow can save the refreshed job files back to the repo
+permissions:
+  contents: write
+
 jobs:
   send-job-emails:
     runs-on: ubuntu-latest
@@ -25,6 +29,29 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Refresh India jobs (Adzuna)
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+        run: |
+          python -u job_fetcher.py
+
+      - name: Refresh UAE / Gulf jobs
+        run: |
+          python -u gulf_job_fetcher.py
+
+      - name: Save refreshed job files back to the repo
+        run: |
+          git config user.name "job-alert-bot"
+          git config user.email "job-alert-bot@users.noreply.github.com"
+          git add jobs.json gulf_jobs.json
+          if git diff --cached --quiet; then
+            echo "No job changes to save."
+          else
+            git commit -m "Auto-refresh jobs.json and gulf_jobs.json"
+            git push
+          fi
 
       - name: Send Automated Job Alert Emails
         env:

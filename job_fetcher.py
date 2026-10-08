@@ -30,63 +30,60 @@ LOCATION = "Kerala"
 
 # One search is run per keyword below - covers all the fields you asked for.
 # Add or remove keywords any time to change what kind of jobs get pulled in.
+# Narrowed to only the specific fields requested - nothing outside this list
+# gets searched for anymore.
 SEARCH_KEYWORDS = [
-    # Core tech roles - fresher/entry-level phrasing pulls in more junior-friendly postings
+    # Python / Full stack / Backend
     "python developer",
     "fresher python developer",
     "python full stack developer",
     "full stack developer",
     "fresher full stack developer",
-    "backend developer",
-    "fresher backend developer",
+
+    # React
     "react js developer",
     "fresher react developer",
-    "software engineer",
+
+    # Flutter / mobile app development
+    "flutter developer",
+    "fresher flutter developer",
+    "junior flutter developer",
+    "flutter developer 1 year",
+
+    # Software development (general)
     "software developer",
+    "software engineer",
     "entry level software developer",
+
+    # AI
     "AI engineer",
     "machine learning engineer",
-    "data analyst",
-    "devops engineer",
-    "web developer",
-    "java developer",
-    "fresher java developer",
+    "artificial intelligence developer",
 
     # UI/UX
     "UI UX designer",
-    "UX researcher",
-    "product designer",
-    "graphic designer",
+    "UX designer",
+    "UI designer",
 
-    # HR
-    "HR executive",
-    "human resources",
-    "HR generalist",
-    "talent acquisition",
-    "recruiter",
-    "HR intern",
-
-    # Internship / Fresher
-    "internship",
-    "fresher software",
-    "graduate trainee",
-    "trainee engineer",
-
-    # Marketing
+    # Digital marketing
     "digital marketing",
-    "marketing executive",
-    "content writer",
+    "digital marketing executive",
+
+    # HR analytics
+    "HR analytics",
+    "HR analyst",
+    "people analytics",
 ]
 
 # How many results to fetch per keyword. Categories that tend to have fewer
-# postings (HR, UI/UX, internships) get a higher number so they don't get
-# drowned out by the much larger number of IT/software postings.
+# postings (UI/UX, HR analytics, digital marketing) get a higher number so
+# they don't get drowned out by the much larger number of IT/software postings.
 KEYWORDS_WITH_HIGHER_LIMIT = {
-    "UI UX designer", "UX researcher", "product designer", "graphic designer",
-    "HR executive", "human resources", "HR generalist", "talent acquisition",
-    "recruiter", "HR intern",
-    "internship", "fresher software", "graduate trainee", "trainee engineer",
-    "digital marketing", "marketing executive", "content writer",
+    "flutter developer", "fresher flutter developer",
+    "junior flutter developer", "flutter developer 1 year",
+    "UI UX designer", "UX designer", "UI designer",
+    "digital marketing", "digital marketing executive",
+    "HR analytics", "HR analyst", "people analytics",
 }
 
 # Job titles containing any of these words are dropped, in every category,
@@ -100,7 +97,7 @@ SENIOR_LEVEL_EXCLUDE = [
 
 # Max years of experience allowed. A title mentioning a higher number
 # (e.g. "- 6 years", "5+ years", "4-8 years") is dropped.
-MAX_EXPERIENCE_YEARS = 1
+MAX_EXPERIENCE_YEARS = 3
 
 
 def mentions_too_much_experience(title):
@@ -158,7 +155,18 @@ def fetch_jobs_for_keyword(keyword):
         title = (item.get("title") or "").strip()
         link = (item.get("redirect_url") or "").strip()
         company = (item.get("company", {}) or {}).get("display_name", "").strip()
-        location = (item.get("location", {}) or {}).get("display_name", "").strip()
+
+        # Adzuna's "display_name" is often a broader area (e.g. "Ernakulam,
+        # Kerala") rather than the actual city (e.g. "Kochi"), even when the
+        # city is shown on Adzuna's own site. Adzuna also provides an "area"
+        # list (country -> state -> district -> city hierarchy), which
+        # sometimes includes the specific city even when display_name
+        # doesn't. Combining both gives the location search the best chance
+        # of matching what a student actually types.
+        loc_obj = item.get("location", {}) or {}
+        display_name = (loc_obj.get("display_name") or "").strip()
+        area_list = loc_obj.get("area") or []
+        location = " ".join([display_name] + [a for a in area_list if a]).strip()
 
         if not title or not link:
             continue
@@ -189,6 +197,12 @@ def main():
                 all_jobs.append(job)
                 added += 1
         print(f"  -> {added} new jobs added")
+
+    # Safety: if every search failed (Adzuna down, bad keys, no internet),
+    # keep the existing jobs.json instead of wiping it with an empty list.
+    if not all_jobs:
+        print("\n⚠️ No jobs were fetched - keeping the existing jobs.json unchanged.")
+        return
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(all_jobs, f, indent=2, ensure_ascii=False)
