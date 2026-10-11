@@ -196,15 +196,90 @@
       font-weight: 600;
     }
 
+    /* Region Tabs */
+    .region-tabs {
+      display: flex;
+      gap: 10px;
+      margin: 24px 0 8px 0;
+    }
+
+    .region-tab {
+      background: white;
+      border: 1.5px solid #e2e8f0;
+      color: #64748b;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .region-tab.active {
+      background: #5f2cff;
+      border-color: #5f2cff;
+      color: white;
+    }
+
+    .region-tab-count {
+      font-weight: 600;
+      opacity: 0.8;
+    }
+
     /* Jobs Grid */
     .jobs-section {
       margin-top: 24px;
+    }
+
+    .job-section-block {
+      margin-bottom: 36px;
+    }
+
+    .section-heading {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    .section-count {
+      font-weight: 600;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .show-more-btn {
+      display: block;
+      margin: 18px auto 0 auto;
+      background: white;
+      border: 1.5px solid #0073cb;
+      color: #0073cb;
+      padding: 10px 26px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .show-more-btn:hover {
+      background: #0073cb;
+      color: white;
     }
 
     .jobs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
+    }
+
+    .extra-card {
+      display: none;
+    }
+
+    .jobs-grid.expanded .extra-card {
+      display: flex;
     }
 
     .job-card {
@@ -419,6 +494,7 @@
           <option value="full_time">Full Time & IT Roles</option>
           <option value="internship">Internship & Fresher</option>
           <option value="ai_data">AI & Data Science</option>
+          <option value="ui_ux">UI/UX & Design</option>
           <option value="non_it">Non-IT & General</option>
         </select>
 
@@ -432,13 +508,26 @@
       </div>
     </div>
 
-    <!-- Job Cards Display Area -->
-    <div class="jobs-section">
-      <div class="jobs-grid" id="jobsGrid">
-        {% if jobs %}
-        {% for job in jobs %}
-        <div class="job-card" data-title="{{ job.title | lower }}" data-categories="{{ job.categories | lower }}"
-          data-location="{{ job.location | lower }}"
+    <!-- Region Tabs -->
+    <div class="region-tabs">
+      <button type="button" class="region-tab active" id="indiaTabBtn" onclick="switchRegionTab('india')">
+        🇮🇳 India Jobs <span class="region-tab-count">({{ jobs|length }})</span>
+      </button>
+      <button type="button" class="region-tab" id="gulfTabBtn" onclick="switchRegionTab('gulf')">
+        🌍 Abroad Jobs (UAE / Gulf) <span class="region-tab-count">({{ gulf_jobs|length }})</span>
+      </button>
+    </div>
+
+    {% macro render_sections(sections) %}
+    {% if sections %}
+    {% for section in sections %}
+    <div class="job-section-block" data-section-key="{{ section.key }}">
+      <h2 class="section-heading">{{ section.label }} <span class="section-count">({{ section.jobs|length }})</span>
+      </h2>
+      <div class="jobs-grid" data-section-grid="{{ section.key }}">
+        {% for job in section.jobs %}
+        <div class="job-card{% if loop.index > 5 %} extra-card{% endif %}" data-title="{{ job.title | lower }}"
+          data-categories="{{ job.categories | lower }}" data-location="{{ job.location | lower }}"
           data-badges="{% for b in job.badges %}{{ b.label | lower }} {% endfor %}">
           <div class="job-card-header">
             <div class="badges-wrapper">
@@ -459,25 +548,78 @@
           </a>
         </div>
         {% endfor %}
-        {% else %}
-        <div class="empty-state" style="display:block;">
-          <h3>No Jobs Available</h3>
-          <p>No job listings were found. Please check back later.</p>
-        </div>
-        {% endif %}
-
-        <!-- Client-side Search Empty State -->
-        <div class="empty-state" id="noMatchState">
-          <h3>No matching job openings found</h3>
-          <p id="noMatchSubtext">Try searching for a different job title or keyword.</p>
-          <button class="reset-btn" onclick="clearSearch()">Clear Search & View All Jobs</button>
-        </div>
       </div>
+      {% if section.jobs|length > 5 %}
+      <button type="button" class="show-more-btn" data-section-btn="{{ section.key }}"
+        onclick="toggleShowMore('{{ section.key }}')">
+        Show More ({{ section.jobs|length - 5 }} more) ▾
+      </button>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state" style="display:block;">
+      <h3>No Jobs Available</h3>
+      <p>No job listings were found here yet. Please check back later.</p>
+    </div>
+    {% endif %}
+    {% endmacro %}
+
+    <!-- Job Cards Display Area, grouped into sections, split by region tab -->
+    <div class="tab-content" id="indiaTabContent" data-tab="india">
+      <div class="jobs-section" id="jobsSectionsWrap">
+        {{ render_sections(job_sections) }}
+      </div>
+    </div>
+
+    <div class="tab-content" id="gulfTabContent" data-tab="gulf" style="display:none;">
+      <div class="jobs-section">
+        {{ render_sections(gulf_sections) }}
+      </div>
+    </div>
+
+    <!-- Client-side Search Empty State (shared across both tabs) -->
+    <div class="empty-state" id="noMatchState">
+      <h3>No matching job openings found</h3>
+      <p id="noMatchSubtext">Try searching for a different job title or keyword.</p>
+      <button class="reset-btn" onclick="clearSearch()">Clear Search & View All Jobs</button>
     </div>
   </div>
 
   <!-- Real-time Live Search JS -->
   <script>
+    const REGION_TOTALS = { india: {{ jobs| length }}, gulf: { { gulf_jobs | length } } };
+
+    function getActiveRegion() {
+      const gulfTab = document.getElementById('gulfTabContent');
+      return (gulfTab && gulfTab.style.display !== 'none') ? 'gulf' : 'india';
+    }
+
+    function getActiveContainer() {
+      const region = getActiveRegion();
+      return document.getElementById(region === 'gulf' ? 'gulfTabContent' : 'indiaTabContent');
+    }
+
+    function switchRegionTab(region) {
+      const indiaTab = document.getElementById('indiaTabContent');
+      const gulfTab = document.getElementById('gulfTabContent');
+      const indiaBtn = document.getElementById('indiaTabBtn');
+      const gulfBtn = document.getElementById('gulfTabBtn');
+
+      if (region === 'gulf') {
+        indiaTab.style.display = 'none';
+        gulfTab.style.display = '';
+        indiaBtn.classList.remove('active');
+        gulfBtn.classList.add('active');
+      } else {
+        indiaTab.style.display = '';
+        gulfTab.style.display = 'none';
+        gulfBtn.classList.remove('active');
+        indiaBtn.classList.add('active');
+      }
+      filterJobs();
+    }
+
     function filterJobs() {
       const searchInput = document.getElementById('jobSearch');
       const locationInput = document.getElementById('locationSearch');
@@ -486,11 +628,31 @@
       const query = searchInput.value.trim().toLowerCase();
       const locationQuery = locationInput ? locationInput.value.trim().toLowerCase() : '';
       const typeValue = typeSelect ? typeSelect.value : 'all';
+      const isFiltering = !!(query || locationQuery || (typeValue && typeValue !== 'all'));
 
-      const cards = document.querySelectorAll('.job-card');
+      const region = getActiveRegion();
+      const container = getActiveContainer();
+      const cards = container.querySelectorAll('.job-card');
       const noMatchState = document.getElementById('noMatchState');
       const noMatchSubtext = document.getElementById('noMatchSubtext');
       const resultsCount = document.getElementById('resultsCount');
+
+      // Not actively searching: let the default "show 5, then Show More"
+      // section behavior take over (CSS classes), instead of forcing every
+      // card's display via inline style.
+      if (!isFiltering) {
+        cards.forEach(card => { card.style.display = ''; });
+        container.querySelectorAll('.job-section-block').forEach(block => { block.style.display = ''; });
+        container.querySelectorAll('.show-more-btn').forEach(btn => { btn.style.display = ''; });
+        if (noMatchState) noMatchState.style.display = 'none';
+        if (resultsCount) resultsCount.innerText = `Showing all ${REGION_TOTALS[region]} jobs`;
+        return;
+      }
+
+      // Actively searching/filtering: show every matching card across every
+      // section (ignore the 5-card collapse), and hide the Show More buttons
+      // since we're already showing the full matching set.
+      container.querySelectorAll('.show-more-btn').forEach(btn => { btn.style.display = 'none'; });
 
       let visibleCount = 0;
       const totalCount = cards.length;
@@ -508,8 +670,11 @@
         // 1. Text Search matching all typed words
         const matchesSearch = terms.length === 0 || terms.every(term => fullText.includes(term));
 
-        // 2. Location Search matching all typed words
-        const matchesLocation = locationTerms.length === 0 || locationTerms.every(term => location.includes(term));
+        // 2. Location Search matching all typed words. Checks the structured
+        // location field AND the job title/company text, since many listings
+        // don't have a precise city in the location field (e.g. just "Kerala"
+        // or blank) even though the city is mentioned in the title/company.
+        const matchesLocation = locationTerms.length === 0 || locationTerms.every(term => location.includes(term) || fullText.includes(term));
 
         // 3. Category Dropdown matching
         let matchesType = true;
@@ -521,6 +686,8 @@
           matchesType = categories.includes('fresher');
         } else if (typeValue === 'ai_data') {
           matchesType = categories.includes('ai_data');
+        } else if (typeValue === 'ui_ux') {
+          matchesType = categories.includes('ui_ux');
         } else if (typeValue === 'non_it') {
           matchesType = categories.includes('non_it');
         }
@@ -531,6 +698,13 @@
         } else {
           card.style.display = 'none';
         }
+      });
+
+      // Hide a section entirely if none of its cards matched
+      container.querySelectorAll('.job-section-block').forEach(block => {
+        const visibleInSection = block.querySelectorAll('.job-card').length &&
+          Array.from(block.querySelectorAll('.job-card')).some(c => c.style.display !== 'none');
+        block.style.display = visibleInSection ? '' : 'none';
       });
 
       if (noMatchState) {
@@ -557,6 +731,21 @@
           resultsCount.innerText = `Showing ${visibleCount} of ${totalCount} jobs`;
         }
       }
+    }
+
+    function toggleShowMore(sectionKey) {
+      const grid = document.querySelector(`[data-section-grid="${sectionKey}"]`);
+      const btn = document.querySelector(`[data-section-btn="${sectionKey}"]`);
+      if (!grid || !btn) return;
+
+      // Remember the original "Show More (N more)" label the first time, so
+      // we can restore it exactly when collapsing back.
+      if (!btn.dataset.moreLabel) {
+        btn.dataset.moreLabel = btn.innerText;
+      }
+
+      const isExpanded = grid.classList.toggle('expanded');
+      btn.innerText = isExpanded ? 'Show Less ▴' : btn.dataset.moreLabel;
     }
 
     function clearSearch() {
