@@ -771,6 +771,11 @@
         }
       }
     });
+  
+    // If there are no India jobs yet but there are Abroad jobs, open on the Abroad tab.
+    if (REGION_TOTALS.india === 0 && REGION_TOTALS.gulf > 0) {
+      switchRegionTab('gulf');
+    }
   </script>
 </body>
 

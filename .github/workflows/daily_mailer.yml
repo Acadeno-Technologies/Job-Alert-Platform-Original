@@ -30,12 +30,9 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Refresh India jobs (Adzuna)
-        env:
-          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
-          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+      - name: Build India jobs from my_jobs.csv
         run: |
-          python -u job_fetcher.py
+          python -u build_jobs.py
 
       - name: Refresh UAE / Gulf jobs
         run: |
