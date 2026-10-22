@@ -310,6 +310,92 @@
       {% endif %}
     </div>
 
+    <!-- Direct Job Applications Received Card -->
+    <div class="card" id="applicationsCard">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+        <h2>📥 Direct Job Applications Received ({{ applications|length }})</h2>
+        <a href="/careers" target="_blank" style="background:#ede9fe;color:#5f2cff;padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:700;text-decoration:none;">
+          View Careers Portal →
+        </a>
+      </div>
+
+      {% if applications %}
+      <div style="margin-bottom:14px;">
+        <input type="text" id="appSearch" placeholder="Search applications by candidate name, email, job, or company..." onkeyup="filterAppTable()" style="max-width:400px;">
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Applicant</th>
+              <th>Target Role & Company</th>
+              <th>Experience</th>
+              <th>Applied Date</th>
+              <th>Resume</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+            <tr class="app-row">
+              <td>#{{ app.id }}</td>
+              <td>
+                <b class="app-name" style="color:#0f172a;">{{ app.name }}</b><br>
+                <span class="app-email" style="color:#64748b;font-size:12px;">📧 {{ app.email }}</span><br>
+                <span style="color:#64748b;font-size:12px;">📞 {{ app.phone }}</span>
+                {% if app.portfolio %}
+                <br><a href="{{ app.portfolio }}" target="_blank" style="color:#5f2cff;font-size:11.5px;text-decoration:none;">Portfolio/GitHub ↗</a>
+                {% endif %}
+              </td>
+              <td>
+                <b class="app-title" style="color:#1e1b4b;">{{ app.job_title }}</b><br>
+                <span class="app-company" style="display:inline-block;background:#ede9fe;color:#5f2cff;font-weight:700;font-size:11px;padding:2px 8px;border-radius:6px;margin-top:2px;">🏢 {{ app.company }}</span>
+                {% if app.qualification %}
+                <div style="color:#64748b;font-size:11.5px;margin-top:2px;">{{ app.qualification }}</div>
+                {% endif %}
+              </td>
+              <td>
+                <span style="font-weight:600;">{{ app.experience_level }}</span><br>
+                <span style="color:#64748b;font-size:12px;">Grad: {{ app.passout_year or 'N/A' }}</span>
+              </td>
+              <td style="color:#64748b;font-size:12px;white-space:nowrap;">
+                {{ app.created_at }}
+              </td>
+              <td>
+                {% if app.resume_name %}
+                <a href="/admin/resume/{{ app.resume_name }}" target="_blank" style="background:#5f2cff;color:white;padding:6px 12px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:700;display:inline-block;white-space:nowrap;">
+                  View Resume 📄
+                </a>
+                {% else %}
+                <span style="color:#94a3b8;font-size:12px;">No file</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <script>
+        function filterAppTable() {
+          const q = document.getElementById('appSearch').value.toLowerCase().trim();
+          const rows = document.querySelectorAll('.app-row');
+          rows.forEach(row => {
+            const name = row.querySelector('.app-name')?.innerText.toLowerCase() || '';
+            const email = row.querySelector('.app-email')?.innerText.toLowerCase() || '';
+            const title = row.querySelector('.app-title')?.innerText.toLowerCase() || '';
+            const company = row.querySelector('.app-company')?.innerText.toLowerCase() || '';
+            row.style.display = (name.includes(q) || email.includes(q) || title.includes(q) || company.includes(q)) ? '' : 'none';
+          });
+        }
+      </script>
+      {% else %}
+      <div class="empty-state">
+        <p style="font-size:14px;color:#475569;margin-bottom:6px;">📬 No applications received yet.</p>
+        <p style="font-size:12.5px;color:#94a3b8;">When students and candidates submit applications on the Careers or Jobs pages, they will appear here in real time with their resumes.</p>
+      </div>
+      {% endif %}
+    </div>
+
   </div>
 
 </body>

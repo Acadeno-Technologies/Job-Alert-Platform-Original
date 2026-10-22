@@ -34,9 +34,19 @@ def parse_secrets_list(val):
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def load_students():
+    # If command line flag --students, --live, or --all is provided, always send to all registered students
+    force_live = any(arg in sys.argv for arg in ("--students", "--live", "--all"))
+    test_email = "" if force_live else (os.getenv("TEST_EMAIL") or "").strip()
+
+    if test_email:
+        test_emails = parse_secrets_list(test_email)
+        test_names = [f"Test Student {i+1}" if len(test_emails) > 1 else "Test Student" for i in range(len(test_emails))]
+        print(f"TEST MODE: sending only to {', '.join(test_emails)}")
+        return test_names, test_emails
+
     students_json_path = os.path.join(BASE_DIR, "students.json")
     if os.path.exists(students_json_path):
-        print("Using students.json database")
+        print("Using students.json database (LIVE MODE - SENDING TO ALL STUDENTS)")
         try:
             with open(students_json_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -142,19 +152,45 @@ MOTIVATIONAL_QUOTES = [
 quote = random.choice(MOTIVATIONAL_QUOTES)
 
 jobs = []
-jobs_file = "scraper/jobs.json"
-if not os.path.exists(jobs_file):
-    jobs_file = "jobs.json"
+jobs_file = "jobs.json"
+if not os.path.exists(jobs_file) and os.path.exists("jobs_direct_links.json"):
+    jobs_file = "jobs_direct_links.json"
+elif not os.path.exists(jobs_file) and os.path.exists("scraper/jobs.json"):
+    jobs_file = "scraper/jobs.json"
 
 if os.path.exists(jobs_file):
     try:
         with open(jobs_file, "r", encoding="utf-8") as f:
-            jobs = json.load(f)
+            data = json.load(f)
+            if isinstance(data, dict) and "jobs" in data:
+                jobs = data["jobs"]
+            elif isinstance(data, list):
+                jobs = data
+            else:
+                jobs = []
     except Exception as e:
-        print("Note: Error loading jobs.json:", e)
+        print(f"Note: Error loading {jobs_file}:", e)
+
+# UAE / Gulf jobs go into the "Abroad" section
+import careers
+gulf_file = "gulf.json" if os.path.exists("gulf.json") else ("gulf_jobs.json" if os.path.exists("gulf_jobs.json") else None)
+if gulf_file:
+    try:
+        with open(gulf_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            g_jobs = data.get("jobs", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+            _seen_links = {j.get("link") for j in jobs}
+            jobs += [j for j in g_jobs if j.get("link") not in _seen_links]
+    except Exception as e:
+        print(f"Note: Error loading {gulf_file}:", e)
 
 def is_link_working(url, timeout=6):
-    if not url or not url.startswith("http"):
+    if not url:
+        return False
+    # Acadeno career links are verified internal routes
+    if "/careers/apply/" in url or url.startswith("/careers"):
+        return True
+    if not url.startswith("http"):
         return False
     try:
         resp = requests.head(url, timeout=timeout, allow_redirects=True, headers={"User-Agent": "Mozilla/5.0"})
@@ -204,13 +240,17 @@ jobs = filter_working_jobs(jobs)
 today = datetime.now().strftime("%d %B %Y")
 
 def classify_job(job):
-    # Classify using the job title ONLY - never the company name. Otherwise a
-    # company like "Prevalent AI" or "DBiz.ai" makes every one of their job
-    # postings wrongly get tagged as AI & Data Science.
+    # Classify using title and category/role_category fields
     title = job.get("title", "").lower()
+    cat_field = (job.get("category") or job.get("role_category") or "").lower()
+    text = f"{title} {cat_field}"
 
     def has_word(keyword):
-        return re.search(r'\b' + re.escape(keyword) + r'\b', title) is not None
+        return re.search(r'\b' + re.escape(keyword) + r'\b', text) is not None
+
+    marketing_kw = ["digital marketing", "marketing", "seo", "google ads", "meta ads", "social media", "content", "video editing", "graphic designer", "lead generation", "media"]
+    if any(has_word(kw) for kw in marketing_kw):
+        return 8
 
     hr_kw = ["hr", "human resource", "human resources", "recruiter", "recruitment", "talent acquisition", "hrbp", "payroll"]
     if any(has_word(kw) for kw in hr_kw):
@@ -220,15 +260,15 @@ def classify_job(job):
     if any(has_word(kw) for kw in ai_kw):
         return 5
 
-    uiux_kw = ["ui", "ux", "ui/ux", "ui ux", "product designer", "graphic designer", "visual designer", "interaction designer"]
+    uiux_kw = ["ui", "ux", "ui/ux", "ui ux", "product designer", "interaction designer"]
     if any(has_word(kw) for kw in uiux_kw):
         return 7
 
     non_it_exclusions = [
         "psychology", "research", "biology", "medical", "counselor", "teaching", "trainer",
         "bpo", "voice", "data entry", "operator", "business development", "sales",
-        "accountant", "telecaller", "content writer", "marketing", "supply chain",
-        "video editing", "finance", "legal", "nurse"
+        "accountant", "telecaller", "supply chain",
+        "finance", "legal", "nurse"
     ]
 
     is_excluded_from_it = any(has_word(ex) for ex in non_it_exclusions)
@@ -277,31 +317,13 @@ def get_clean_working_url(job):
 
 cards = ""
 
-MAX_JOBS_PER_EMAIL_SECTION = 5
+MAX_JOBS_PER_EMAIL_SECTION = 10
+
+# Defined here (not inside "if jobs:") so the email still builds when there are 0 jobs.
+portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000").rstrip("/")
 
 if jobs:
-    hr_jobs = [j for j in jobs if classify_job(j) == 6]
-    ai_data_jobs = [j for j in jobs if classify_job(j) == 5]
-    ui_ux_jobs = [j for j in jobs if classify_job(j) == 7]
-    fresher_it_jobs = [j for j in jobs if classify_job(j) == 1]
-    general_it_jobs = [j for j in jobs if classify_job(j) == 2]
-    fresher_other_jobs = [j for j in jobs if classify_job(j) == 3]
-    other_jobs = [j for j in jobs if classify_job(j) == 4]
-
-    random.shuffle(hr_jobs)
-    random.shuffle(ai_data_jobs)
-    random.shuffle(ui_ux_jobs)
-    random.shuffle(fresher_it_jobs)
-    random.shuffle(general_it_jobs)
-    random.shuffle(fresher_other_jobs)
-    random.shuffle(other_jobs)
-
-    # Every job is accounted for in exactly one bucket - nothing falls through
-    # to a random leftover pile anymore.
-    general_list = list(fresher_other_jobs + other_jobs)[:MAX_JOBS_PER_EMAIL_SECTION]
-
     portal_url = os.getenv("PORTAL_URL", "http://127.0.0.1:5000").rstrip("/")
-    search_filter_bar = ""
 
     def render_job_card(job):
         title = job.get("title", "Job Opening").strip()
@@ -309,6 +331,8 @@ if jobs:
         display_title = f"{title} - {company}" if company else title
         link = get_clean_working_url(job)
         cat = classify_job(job)
+        location = job.get("location", "").strip()
+        location_html = (f'<p style="margin:0 0 12px 0;font-size:13px;color:#64748b;">📍 {location}</p>' if location else "")
 
         badge_html = ""
         if cat == 6:
@@ -317,6 +341,8 @@ if jobs:
             badge_html = '<span style="background:#fae8ff;color:#86198f;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">AI & Data Science</span>'
         elif cat == 7:
             badge_html = '<span style="background:#fce7f3;color:#9d174d;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">UI/UX & Design</span>'
+        elif cat == 8:
+            badge_html = '<span style="background:#fef9c3;color:#854d0e;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">Digital Marketing & Content</span>'
         elif cat == 1:
             badge_html = '<span style="background:#e0e7ff;color:#4338ca;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:8px;">IT Fresher / Entry Level</span>'
         elif cat == 2:
@@ -337,51 +363,55 @@ if jobs:
             box-sizing:border-box;
         ">
             {badge_html}
-            <h3 style="color:#5f2cff;margin-top:4px;margin-bottom:12px;font-size:16px;line-height:1.4;">{display_title}</h3>
+            <h3 style="color:#5f2cff;margin-top:4px;margin-bottom:8px;font-size:16px;line-height:1.4;">{display_title}</h3>
+            {location_html}
             <a href="{link}" target="_blank" style="background:#5f2cff;color:white;padding:9px 18px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:700;font-size:13px;">Apply Now</a>
         </div>
         """
 
-    if ai_data_jobs:
-        cards += '<h3 style="color:#86198f;margin-top:25px;margin-bottom:15px;border-left:4px solid #c084fc;padding-left:10px;font-size:16px;">AI, ML & Data Science Openings</h3>'
-        for j in ai_data_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
-            cards += render_job_card(j)
+    def build_sections(job_list):
+        """Groups one region's jobs into category sections (AI, IT, Fresher, Digital Marketing, HR, UI/UX, General)."""
+        ai_data_jobs = [j for j in job_list if classify_job(j) == 5]
+        general_it_jobs = [j for j in job_list if classify_job(j) == 2]
+        fresher_it_jobs = [j for j in job_list if classify_job(j) == 1]
+        marketing_jobs = [j for j in job_list if classify_job(j) == 8]
+        ui_ux_jobs = [j for j in job_list if classify_job(j) == 7]
+        hr_jobs = [j for j in job_list if classify_job(j) == 6]
+        general_list = [j for j in job_list if classify_job(j) in (3, 4)]
 
-    if general_it_jobs:
-        cards += '<h3 style="color:#1e40af;margin-top:30px;margin-bottom:15px;border-left:4px solid #3b82f6;padding-left:10px;font-size:16px;">Software & IT Roles</h3>'
-        for j in general_it_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
-            cards += render_job_card(j)
+        def block(title, color, border, group):
+            if not group:
+                return ""
+            html = f'<h3 style="color:{color};margin-top:22px;margin-bottom:12px;border-left:4px solid {border};padding-left:10px;font-size:15px;">{title}</h3>'
+            for j in group[:MAX_JOBS_PER_EMAIL_SECTION]:
+                html += render_job_card(j)
+            return html
 
-    if fresher_it_jobs:
-        cards += '<h3 style="color:#3730a3;margin-top:30px;margin-bottom:15px;border-left:4px solid #6366f1;padding-left:10px;font-size:16px;">IT Fresher & Entry Level Openings</h3>'
-        for j in fresher_it_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
-            cards += render_job_card(j)
+        return (block("AI, ML & Data Science Openings", "#86198f", "#c084fc", ai_data_jobs)
+                + block("Software & IT Roles", "#1e40af", "#3b82f6", general_it_jobs)
+                + block("IT Fresher & Entry Level Openings", "#3730a3", "#6366f1", fresher_it_jobs)
+                + block("Digital Marketing & Content Openings", "#ca8a04", "#eab308", marketing_jobs)
+                + block("UI/UX & Design Openings", "#9d174d", "#ec4899", ui_ux_jobs)
+                + block("HR & Talent Management Openings", "#b45309", "#f59e0b", hr_jobs)
+                + block("General Openings", "#92400e", "#f59e0b", general_list))
 
-    if hr_jobs:
-        cards += '<h3 style="color:#b45309;margin-top:30px;margin-bottom:15px;border-left:4px solid #f59e0b;padding-left:10px;font-size:16px;">HR & Talent Management Openings</h3>'
-        for j in hr_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
-            cards += render_job_card(j)
+    def region_banner(title, bg, color):
+        return (f'<div style="margin-top:30px;padding:12px 16px;background:{bg};color:{color};'
+                f'border-radius:10px;font-size:17px;font-weight:800;">{title}</div>')
 
-    if ui_ux_jobs:
-        cards += '<h3 style="color:#9d174d;margin-top:30px;margin-bottom:15px;border-left:4px solid #ec4899;padding-left:10px;font-size:16px;">UI/UX & Design Openings</h3>'
-        for j in ui_ux_jobs[:MAX_JOBS_PER_EMAIL_SECTION]:
-            cards += render_job_card(j)
+    india_list = [j for j in jobs if not careers.is_gulf_location(j.get("location", ""))]
+    gulf_list = [j for j in jobs if careers.is_gulf_location(j.get("location", ""))]
 
-    if general_list:
-        cards += '<h3 style="color:#92400e;margin-top:30px;margin-bottom:15px;border-left:4px solid #f59e0b;padding-left:10px;font-size:16px;">Non-IT & General Positions</h3>'
-        for j in general_list:
-            cards += render_job_card(j)
+    if india_list:
+        cards += region_banner("🇮🇳 India Openings", "#ede9fe", "#5f2cff")
+        cards += build_sections(india_list)
+    if gulf_list:
+        cards += region_banner("🌍 Abroad Openings (UAE / Gulf)", "#dcfce7", "#15803d")
+        cards += build_sections(gulf_list)
 
-    cards += f"""
-    <div style="text-align:center;margin:30px 0 10px 0;">
-    <a href="{portal_url}/user" target="_blank" style="background:#5f2cff;color:white;padding:12px 28px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:700;font-size:14px;">
-    See All Jobs on Our Portal
-    </a>
-    </div>
-    """
 else:
-    search_filter_bar = ""
-    cards = "<p style='color:#666;'>No active job postings found today. Please check back soon!</p>"
+    cards = ("<p style='color:#666;'>No active job postings found today. Please check back soon!</p>"
+             f"<p style='color:#666;'>You can still <a href='{portal_url}/careers' style='color:#5f2cff;font-weight:700;'>send your resume to Acadeno Careers</a>.</p>")
 
 html_template = f"""
 <!DOCTYPE html>
@@ -421,15 +451,9 @@ Today's Verified IT Opportunities
 Date : <b>{today}</b>
 </p>
 
-<div style="text-align:center;margin:18px 0 24px 0;">
-<a href="{portal_url}/user" target="_blank" style="background:#5f2cff;color:white;padding:12px 28px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:700;font-size:14px;">
-🔍 Search All Jobs on Our Portal
-</a>
-</div>
-
-{search_filter_bar}
 
 {cards}
+
 
 <p style="margin-top:28px;font-size:14px;color:#334155;">
 Best Wishes,<br>
@@ -442,6 +466,14 @@ Best Wishes,<br>
 
 </html>
 """
+
+try:
+    preview_path = os.path.join(BASE_DIR, "email_preview.html")
+    preview_user = USER_NAME[0] if USER_NAME else "Student"
+    with open(preview_path, "w", encoding="utf-8") as _pf:
+        _pf.write(html_template.replace("{USER_NAME}", preview_user))
+except Exception:
+    pass
 
 def send_all_emails():
     if not EMAIL_USER or not EMAIL_PASS:
@@ -499,7 +531,8 @@ def send_all_emails():
 
         msg = MIMEMultipart("alternative")
 
-        subject = f"Today's Verified IT Openings - {today}".replace("\r", "").replace("\n", "").strip()
+        dispatch_time = datetime.now().strftime("%I:%M %p")
+        subject = f"Today's Verified IT Openings - {today} ({dispatch_time})".replace("\r", "").replace("\n", "").strip()
         from_addr = f"Acadeno Careers <{EMAIL_USER}>".replace("\r", "").replace("\n", "").strip()
         reply_to = str(EMAIL_USER).replace("\r", "").replace("\n", "").strip()
 

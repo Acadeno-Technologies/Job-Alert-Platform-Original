@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers & Openings - Acadeno Technologies</title>
+  <meta name="description"
+    content="Explore verified career opportunities at Acadeno Technologies for Freshers, 0-2 Years experience, and Interns across AI, ML, React, Java, Flutter, Frontend, UI/UX, Full Stack, and Digital Marketing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #5f2cff;
+      --primary-hover: #4a1fd6;
+      --primary-glow: rgba(95, 44, 255, 0.22);
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --bg-light: #f8fafc;
+      --bg-card: #ffffff;
+      --border-card: #e2e8f0;
+      --border-card-hover: #c4b5fd;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-sub: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(95, 44, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 25%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-card);
+      padding: 16px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #5f2cff 0%, #7c3aed 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.4px;
+    }
+
+    .brand-pill {
+      background: #ede9fe;
+      border: 1px solid #ddd6fe;
+      color: #5f2cff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-link-btn {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-link-btn:hover {
+      color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .nav-portal-btn {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .nav-portal-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(95, 44, 255, 0.35);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+
+    /* Hero Section - Clean Light Banner */
+    .hero-section {
+      background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 60%, #eff6ff 100%);
+      border: 1px solid #e2e8f0;
+      border-radius: 26px;
+      padding: 50px 36px;
+      text-align: center;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 30px rgba(95, 44, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ede9fe;
+      border: 1px solid #ddd6fe;
+      color: #5f2cff;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-badge-top .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.3);
+      }
+    }
+
+    .hero-title {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.8px;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: #475569;
+      max-width: 780px;
+      margin: 0 auto 30px;
+      line-height: 1.65;
+    }
+
+    .hero-stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 9px 18px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .stat-chip b {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* Controls & Filter Panel */
+    .controls-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .search-input-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-input-wrap .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 48px 14px 50px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 14.5px;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(95, 44, 255, 0.12);
+      background: #ffffff;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #e2e8f0;
+      border: none;
+      color: #475569;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+
+    .clear-search-btn:hover {
+      background: #cbd5e1;
+      color: #0f172a;
+    }
+
+    /* Filter Groups */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .filter-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-right: 6px;
+      min-width: 90px;
+    }
+
+    .filter-pill {
+      background: #f1f5f9;
+      border: 1.5px solid #e2e8f0;
+      color: #475569;
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .filter-pill:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+
+    .filter-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    /* Results Header Bar */
+    .results-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      padding: 0 4px;
+    }
+
+    .results-count {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .results-count span {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .reset-all-link {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .reset-all-link:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    /* Jobs Grid */
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 22px;
+      margin-bottom: 44px;
+    }
+
+    /* Job Card - Clean White */
+    .job-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .job-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #5f2cff, #8b5cf6, #06b6d4);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .job-card:hover {
+      border-color: var(--border-card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(95, 44, 255, 0.08);
+    }
+
+    .job-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Company Header in Card */
+    .company-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .company-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f5f3ff;
+      border: 1.5px solid #ddd6fe;
+      color: #5f2cff;
+      font-weight: 800;
+      font-size: 13.5px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      letter-spacing: -0.2px;
+      box-shadow: 0 1px 3px rgba(95, 44, 255, 0.08);
+    }
+
+    /* Card Badges */
+    .card-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tag-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tag-domain {
+      background: #ede9fe;
+      border: 1px solid #ddd6fe;
+      color: #5f2cff;
+    }
+
+    .tag-fresher {
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+    }
+
+    .tag-upto2 {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      color: #b45309;
+    }
+
+    .tag-intern {
+      background: #fae8ff;
+      border: 1px solid #f5d0fe;
+      color: #86198f;
+    }
+
+    .tag-region {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+
+    /* Card Title & Meta */
+    .job-title {
+      font-size: 17.5px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .job-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .job-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .job-meta-item .meta-icon {
+      font-size: 13.5px;
+      color: var(--primary);
+    }
+
+    /* Bullet Points */
+    .job-points-list {
+      list-style: none;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .job-points-list li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .job-points-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #10b981;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    /* Perks Ribbon */
+    .perks-ribbon {
+      background: #f5f3ff;
+      border: 1px dashed #c4b5fd;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #5f2cff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    /* Card Actions */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .apply-btn {
+      flex: 1;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px var(--primary-glow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .apply-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(95, 44, 255, 0.35);
+    }
+
+    .details-btn {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #334155;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .details-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f5f3ff;
+      transform: translateY(-1px);
+    }
+
+    .copy-btn {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f5f3ff;
+    }
+
+    /* Empty States */
+    .empty-state {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 18px;
+      padding: 50px 24px;
+      text-align: center;
+      grid-column: 1 / -1;
+      display: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    }
+
+    .empty-state .empty-icon {
+      font-size: 40px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .empty-state h3 {
+      font-size: 19px;
+      color: #0f172a;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .empty-state p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .empty-reset-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .empty-reset-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Why Join Us Section */
+    .why-join-section {
+      margin-top: 40px;
+      padding: 40px 32px;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .why-title {
+      font-size: 25px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .why-subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 680px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      text-align: left;
+    }
+
+    .why-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .why-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      border-color: #c4b5fd;
+    }
+
+    .why-icon {
+      font-size: 26px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .why-card h4 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .why-card p {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.55;
+    }
+
+    /* General Application Card */
+    .general-card {
+      margin-top: 32px;
+      background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 100%);
+      border: 2px dashed #c4b5fd;
+      border-radius: 18px;
+      padding: 34px;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(95, 44, 255, 0.04);
+    }
+
+    .general-card h3 {
+      font-size: 21px;
+      font-weight: 800;
+      color: #1e1b4b;
+      margin-bottom: 8px;
+    }
+
+    .general-card p {
+      color: #475569;
+      font-size: 14px;
+      max-width: 600px;
+      margin: 0 auto 18px;
+      line-height: 1.6;
+    }
+
+    .general-apply-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0073cb;
+      color: white;
+      text-decoration: none;
+      padding: 11px 26px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .general-apply-btn:hover {
+      background: #005fa7;
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      padding: 36px 0 20px;
+      border-top: 1px solid var(--border-card);
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 14px 18px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .hero-section {
+        padding: 32px 18px;
+      }
+
+      .hero-title {
+        font-size: 26px;
+      }
+
+      .hero-subtitle {
+        font-size: 14px;
+      }
+
+      .jobs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-label {
+        min-width: 100%;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <a href="/careers" class="brand-wrap">
+      <div class="brand-icon">A</div>
+      <div class="brand-text">
+        <h1>Acadeno Technologies</h1>
+      </div>
+      <span class="brand-pill">Careers</span>
+    </a>
+
+    <div class="nav-actions">
+      <a href="/careers?filter=freshers" class="nav-link-btn">Freshers</a>
+      <a href="/careers?filter=upto_2_years" class="nav-link-btn">0-2 Years</a>
+      <a href="/careers?filter=internships" class="nav-link-btn">Internships</a>
+      <a href="/" class="nav-portal-btn">Student Portal →</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Hero Banner Section -->
+    <section class="hero-section">
+      <div class="hero-badge-top">
+        <span class="pulse-dot"></span> Active Direct Openings · Apply Today
+      </div>
+      <h2 class="hero-title">Start & Grow Your Tech Career at Acadeno</h2>
+      <p class="hero-subtitle">
+        Direct openings across <b>AI, Machine Learning, React, Java, Frontend, UI/UX, Full Stack, Flutter</b> and
+        <b>Digital Marketing</b>. Dedicated roles for <b>Freshers (0-1 yr)</b>, professionals with <b>0 to 2 years
+          experience</b>, and <b>Interns</b>.
+      </p>
+
+      <div class="hero-stats-row">
+        <div class="stat-chip">
+          <span>🚀</span> <b>{{ openings|length }}+</b> Verified Positions
+        </div>
+        <div class="stat-chip">
+          <span>🎓</span> <b>Freshers & Interns</b> Welcomed
+        </div>
+        <div class="stat-chip">
+          <span>📍</span> <b>India (Kerala & Remote) & UAE</b>
+        </div>
+        <div class="stat-chip">
+          <span>⚡</span> <b>Fast 48-Hour</b> HR Review
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls & Filter Panel -->
+    <div class="controls-panel">
+      <!-- Search Box -->
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="careerSearch" class="search-input"
+          placeholder="Search by role, technology (e.g. Flutter, React, AI, Java), experience, or city..."
+          autocomplete="off">
+        <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+      </div>
+
+      <!-- Domain Category Filters -->
+      <div class="filter-row">
+        <span class="filter-label">Domain</span>
+        <button type="button" class="filter-pill category-pill active" data-cat="all">🌟 All Tech Domains</button>
+        <button type="button" class="filter-pill category-pill" data-cat="ai_ml">🤖 AI & ML</button>
+        <button type="button" class="filter-pill category-pill" data-cat="react">⚛️ React JS</button>
+        <button type="button" class="filter-pill category-pill" data-cat="java">☕ Java</button>
+        <button type="button" class="filter-pill category-pill" data-cat="frontend">💻 Frontend</button>
+        <button type="button" class="filter-pill category-pill" data-cat="fullstack">🌐 Full Stack</button>
+        <button type="button" class="filter-pill category-pill" data-cat="flutter">📱 Flutter</button>
+        <button type="button" class="filter-pill category-pill" data-cat="ui_ux">🎨 UI/UX</button>
+        <button type="button" class="filter-pill category-pill" data-cat="digital_marketing">📈 Digital
+          Marketing</button>
+        <button type="button" class="filter-pill category-pill" data-cat="python">🐍 Python</button>
+        <button type="button" class="filter-pill category-pill" data-cat="qa_testing">🧪 QA & Testing</button>
+        <button type="button" class="filter-pill category-pill" data-cat="data_analytics">📊 Data Analytics</button>
+      </div>
+
+      <!-- Experience Level Filters -->
+      <div class="filter-row" style="margin-top: 8px;">
+        <span class="filter-label">Experience</span>
+        <button type="button" class="filter-pill exp-pill active" data-exp="all">All Levels</button>
+        <button type="button" class="filter-pill exp-pill" data-exp="freshers">🎓 Freshers (0-1 yr)</button>
+        <button type="button" class="filter-pill exp-pill" data-exp="upto_2_years">⚡ 0 - 2 Years</button>
+        <button type="button" class="filter-pill exp-pill" data-exp="internships">🚀 Internships</button>
+      </div>
+
+      <!-- Region Filters -->
+      <div class="filter-row" style="margin-top: 8px;">
+        <span class="filter-label">Region</span>
+        <button type="button" class="filter-pill region-pill active" data-region="all">🌍 All Openings (48)</button>
+        <button type="button" class="filter-pill region-pill" data-region="india">🇮🇳 India Jobs (32)</button>
+        <button type="button" class="filter-pill region-pill" data-region="uae">🇦🇪 UAE / Gulf Jobs (16)</button>
+      </div>
+    </div>
+
+    <!-- Results Header -->
+    <div class="results-bar">
+      <div class="results-count" id="resultsCount">
+        Showing all <span>{{ openings|length }}</span> openings
+      </div>
+      <a href="javascript:void(0)" class="reset-all-link" id="resetFiltersLink" style="display:none;">Reset all
+        filters</a>
+    </div>
+
+    <!-- Openings Grid -->
+    <div class="jobs-grid" id="jobsGrid">
+      {% for o in openings %}
+      <div class="job-card" data-title="{{ o.title | lower }}" data-company="{{ o.company | lower }}"
+        data-cat="{{ o.category }}" data-region="{{ o.region }}" data-fresher="{{ 1 if o.is_fresher else 0 }}"
+        data-upto2="{{ 1 if o.is_upto_2_years else 0 }}" data-intern="{{ 1 if o.is_internship else 0 }}"
+        data-location="{{ o.location | lower }}" data-desc="{{ o.description | lower }}">
+        <div>
+          <!-- Company & Region Header -->
+          <div class="company-header-row">
+            <span class="company-tag">
+              <span>🏢</span> {{ o.company }}
+            </span>
+            <span class="tag-badge tag-region">
+              {{ '🇮🇳 India' if o.region == 'india' else '🇦🇪 UAE' }}
+            </span>
+          </div>
+
+          <!-- Card Badges -->
+          <div class="card-badges">
+            <span class="tag-badge tag-domain">{{ o.category_icon }} {{ o.category_label }}</span>
+            {% if o.is_internship %}
+            <span class="tag-badge tag-intern">🚀 Internship</span>
+            {% elif o.is_fresher %}
+            <span class="tag-badge tag-fresher">🎓 Fresher Friendly</span>
+            {% endif %}
+            {% if o.is_upto_2_years and not o.is_internship %}
+            <span class="tag-badge tag-upto2">⚡ 0-2 Years</span>
+            {% endif %}
+          </div>
+
+          <!-- Title -->
+          <h3 class="job-title">{{ o.title }}</h3>
+
+          <!-- Meta -->
+          <div class="job-meta-row">
+            <div class="job-meta-item">
+              <span class="meta-icon">🏢</span>
+              <span><b>Company:</b> {{ o.company }}</span>
+            </div>
+            <div class="job-meta-item">
+              <span class="meta-icon">📍</span>
+              <span><b>Location:</b> {{ o.location }}</span>
+            </div>
+            <div class="job-meta-item">
+              <span class="meta-icon">💼</span>
+              <span><b>Experience:</b> {{ o.experience }}</span>
+            </div>
+            <div class="job-meta-item">
+              <span class="meta-icon">🏷️</span>
+              <span><b>Role Type:</b> {{ o.type }}</span>
+            </div>
+          </div>
+
+          <!-- Points -->
+          {% if o.points %}
+          <ul class="job-points-list">
+            {% for p in o.points %}
+            <li>{{ p }}</li>
+            {% endfor %}
+          </ul>
+          {% elif o.description %}
+          <p style="color:#334155;font-size:13px;line-height:1.6;margin-bottom:16px;">{{ o.description }}</p>
+          {% endif %}
+
+          <div class="perks-ribbon">
+            <span>✨</span>
+            {% if o.is_internship %}
+            Verified internship · guided mentorship, live projects & certificate
+            {% elif '0-2' in o.experience %}
+            Junior engineering role · live enterprise codebase & architect mentorship
+            {% else %}
+            Entry-level opening · comprehensive training & direct career growth
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card-actions">
+          {% set target_apply_url = o.company_url if (o.company_url and o.company_url.startswith('http')) else ('/careers/apply/' + o.slug) %}
+          <a href="{{ target_apply_url }}" target="_blank" rel="noopener noreferrer" class="apply-btn" title="Apply directly on {{ o.company }} for {{ o.title }}">
+            Apply on {{ o.company }} ↗
+          </a>
+          <button type="button" class="copy-btn" data-url="{{ target_apply_url }}" title="Copy direct application link">
+            Copy Link
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- No Matches State -->
+      <div class="empty-state" id="noMatchState">
+        <span class="empty-icon">🔎</span>
+        <h3>No matching openings found</h3>
+        <p>Try modifying your search keywords or switching filters to see all available roles.</p>
+        <button type="button" class="empty-reset-btn" onclick="resetFilters()">View All Openings</button>
+      </div>
+    </div>
+
+    <!-- Why Acadeno Section -->
+    <section class="why-join-section">
+      <h3 class="why-title">Why Build Your Career at Acadeno?</h3>
+      <p class="why-subtitle">
+        We cultivate an engineering-driven culture where Freshers, Junior Developers, and Interns receive direct
+        guidance from tech leads and work on live modern applications.
+      </p>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <span class="why-icon">🧑‍🏫</span>
+          <h4>1-on-1 Mentorship</h4>
+          <p>Direct code reviews, pair programming, and architectural feedback from senior software architects.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">⚡</span>
+          <h4>Production Tech Stack</h4>
+          <p>Work with cutting-edge tools: PyTorch, Generative AI, Next.js, Spring Boot, Flutter 3, and modern cloud
+            pipelines.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">📈</span>
+          <h4>Fast-Track FTE Growth</h4>
+          <p>High-performing interns and freshers are prioritized for full-time conversion and career acceleration.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🌍</span>
+          <h4>Global Client Exposure</h4>
+          <p>Collaborate on real client projects across India and the UAE / Gulf tech ecosystems.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- General Application Box -->
+    <div class="general-card">
+      <h3>Don't See Your Exact Role?</h3>
+      <p>
+        We are constantly expanding our engineering and marketing teams. Submit your resume once, and our HR leads will
+        reach out as new matching opportunities open.
+      </p>
+      <a href="/careers/apply/general" class="general-apply-btn">
+        <span>📄</span> Submit General Resume
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      © Acadeno Technologies · Cochin, Kerala & Dubai, UAE · <a href="/">Student Portal</a> · <a
+        href="/careers/apply/general">General Application</a>
+    </footer>
+  </div>
+
+  <!-- Interactive Search & Filtering Logic -->
+  <script>
+    (function () {
+      const searchInput = document.getElementById('careerSearch');
+      const clearBtn = document.getElementById('clearSearchBtn');
+      const categoryPills = document.querySelectorAll('.category-pill');
+      const expPills = document.querySelectorAll('.exp-pill');
+      const regionPills = document.querySelectorAll('.region-pill');
+      const cards = document.querySelectorAll('.job-card');
+      const noMatchState = document.getElementById('noMatchState');
+      const resultsCount = document.getElementById('resultsCount');
+      const resetLink = document.getElementById('resetFiltersLink');
+
+      let state = {
+        search: '',
+        category: '{{ active_category or "all" }}',
+        exp: '{{ active_filter or "all" }}',
+        region: '{{ active_region or "all" }}'
+      };
+
+      function updateActivePills() {
+        categoryPills.forEach(p => p.classList.toggle('active', p.dataset.cat === state.category));
+        expPills.forEach(p => p.classList.toggle('active', p.dataset.exp === state.exp));
+        regionPills.forEach(p => p.classList.toggle('active', p.dataset.region === state.region));
+      }
+
+      function filterCards() {
+        const query = state.search.toLowerCase().trim();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          // Category match
+          const cardCat = card.dataset.cat || '';
+          const matchCat = (state.category === 'all') || (cardCat === state.category);
+
+          // Experience match
+          const isFresher = card.dataset.fresher === '1';
+          const isUpto2 = card.dataset.upto2 === '1';
+          const isIntern = card.dataset.intern === '1';
+
+          let matchExp = false;
+          if (state.exp === 'all') matchExp = true;
+          else if (state.exp === 'freshers') matchExp = isFresher;
+          else if (state.exp === 'upto_2_years') matchExp = isUpto2;
+          else if (state.exp === 'internships') matchExp = isIntern;
+
+          // Region match
+          const cardRegion = card.dataset.region || '';
+          const matchRegion = (state.region === 'all') || (cardRegion === state.region);
+
+          // Search query match
+          let matchSearch = true;
+          if (query) {
+            const title = card.dataset.title || '';
+            const company = card.dataset.company || '';
+            const desc = card.dataset.desc || '';
+            const loc = card.dataset.location || '';
+            matchSearch = title.includes(query) || company.includes(query) || desc.includes(query) || loc.includes(query) || cardCat.includes(query);
+          }
+
+          const isVisible = matchCat && matchExp && matchRegion && matchSearch;
+          card.style.display = isVisible ? 'flex' : 'none';
+          if (isVisible) visibleCount++;
+        });
+
+        // Update counts and empty state
+        resultsCount.innerHTML = `Showing <span>${visibleCount}</span> of ${cards.length} openings`;
+        noMatchState.style.display = (visibleCount === 0 && cards.length > 0) ? 'block' : 'none';
+
+        const isFiltered = query || state.category !== 'all' || state.exp !== 'all' || state.region !== 'all';
+        resetLink.style.display = isFiltered ? 'inline-block' : 'none';
+        clearBtn.style.display = query ? 'flex' : 'none';
+      }
+
+      window.resetFilters = function () {
+        state.search = '';
+        state.category = 'all';
+        state.exp = 'all';
+        state.region = 'all';
+        searchInput.value = '';
+        updateActivePills();
+        filterCards();
+      };
+
+      if (resetLink) {
+        resetLink.addEventListener('click', resetFilters);
+      }
+
+      // Search input handler
+      searchInput.addEventListener('input', function (e) {
+        state.search = e.target.value;
+        filterCards();
+      });
+
+      clearBtn.addEventListener('click', function () {
+        state.search = '';
+        searchInput.value = '';
+        filterCards();
+        searchInput.focus();
+      });
+
+      // Filter pill click handlers
+      categoryPills.forEach(pill => {
+        pill.addEventListener('click', function () {
+          state.category = this.dataset.cat;
+          updateActivePills();
+          filterCards();
+        });
+      });
+
+      expPills.forEach(pill => {
+        pill.addEventListener('click', function () {
+          state.exp = this.dataset.exp;
+          updateActivePills();
+          filterCards();
+        });
+      });
+
+      regionPills.forEach(pill => {
+        pill.addEventListener('click', function () {
+          state.region = this.dataset.region;
+          updateActivePills();
+          filterCards();
+        });
+      });
+
+      // Copy link buttons
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const url = new URL(this.dataset.url || ('/careers/apply/' + (this.dataset.slug || '')), window.location.origin).href;
+          const originalText = this.textContent;
+
+          function onSuccess() {
+            btn.textContent = 'Copied ✓';
+            btn.style.color = '#10b981';
+            btn.style.borderColor = '#10b981';
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.style.color = '';
+              btn.style.borderColor = '';
+            }, 2000);
+          }
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(onSuccess, function () {
+              window.prompt('Copy this opening link:', url);
+            });
+          } else {
+            window.prompt('Copy this opening link:', url);
+          }
+        });
+      });
+
+      // Initial filter apply
+      updateActivePills();
+      filterCards();
+    })();
+  </script>
+</body>
+
+</html>

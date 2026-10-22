@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply for {{ opening.title }} - Acadeno Technologies</title>
+  <meta name="description"
+    content="Apply for {{ opening.title }} at Acadeno Technologies. Direct opportunities for freshers, 0-2 years developers, and interns.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #5f2cff;
+      --primary-hover: #4a1fd6;
+      --primary-glow: rgba(95, 44, 255, 0.22);
+      --accent-emerald: #10b981;
+      --bg-light: #f8fafc;
+      --bg-card: #ffffff;
+      --border-card: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-sub: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(95, 44, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 25%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-card);
+      padding: 16px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #5f2cff 0%, #7c3aed 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 19px;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #475569;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s;
+    }
+
+    .back-link:hover {
+      background: #e2e8f0;
+      color: var(--primary);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1120px;
+      margin: 32px auto;
+      padding: 0 20px 60px;
+    }
+
+    /* Layout Split */
+    .apply-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    /* Left Card: Role Details */
+    .role-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      position: sticky;
+      top: 90px;
+    }
+
+    .badges-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tag-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 8px;
+    }
+
+    .tag-domain {
+      background: #ede9fe;
+      border: 1px solid #ddd6fe;
+      color: #5f2cff;
+    }
+
+    .tag-fresher {
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+    }
+
+    .tag-type {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+    }
+
+    .role-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      letter-spacing: -0.4px;
+    }
+
+    .role-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13.5px;
+      color: #64748b;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .role-meta div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 10px;
+    }
+
+    .points-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .points-list li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .points-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #10b981;
+      font-weight: 800;
+    }
+
+    /* Process Steps */
+    .process-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #334155;
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      background: #ede9fe;
+      color: #5f2cff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    /* Right Card: Form */
+    .form-card {
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 34px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .form-header {
+      margin-bottom: 22px;
+    }
+
+    .form-header h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .form-header p {
+      color: #64748b;
+      font-size: 13.5px;
+    }
+
+    /* Form Fields */
+    .form-field {
+      margin-bottom: 18px;
+    }
+
+    .form-field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    label .req {
+      color: #ef4444;
+    }
+
+    label .opt {
+      font-weight: 500;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=tel],
+    input[type=number],
+    input[type=url],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(95, 44, 255, 0.12);
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    /* File Upload Box */
+    .file-upload-box {
+      border: 2px dashed #c4b5fd;
+      background: #f5f3ff;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .file-upload-box:hover {
+      border-color: var(--primary);
+      background: #ede9fe;
+    }
+
+    .file-upload-icon {
+      font-size: 30px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .file-upload-text {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #5f2cff;
+      margin-bottom: 4px;
+    }
+
+    .file-upload-hint {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .file-input-real {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-selected-name {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #15803d;
+      font-weight: 700;
+      display: none;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(95, 44, 255, 0.35);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
+    }
+
+    /* Errors Alert */
+    .error-alert {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      margin-bottom: 20px;
+    }
+
+    .error-alert ul {
+      margin: 6px 0 0 20px;
+      font-size: 13px;
+    }
+
+    /* Honeypot */
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    /* Success Screen */
+    .success-container {
+      background: #ffffff;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 22px;
+      padding: 56px 32px;
+      text-align: center;
+      max-width: 640px;
+      margin: 20px auto;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.08);
+    }
+
+    .success-icon-wrap {
+      width: 72px;
+      height: 72px;
+      background: #dcfce7;
+      border: 2px solid #10b981;
+      color: #15803d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 20px;
+    }
+
+    .success-title {
+      font-size: 25px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .success-text {
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.65;
+      margin-bottom: 26px;
+    }
+
+    .success-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .success-btn {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .success-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .success-btn-secondary {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      text-decoration: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .success-btn-secondary:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .navbar {
+        padding: 14px 18px;
+      }
+
+      .apply-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .role-card {
+        position: static;
+      }
+
+      .form-field-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .container {
+        padding: 20px 14px 40px;
+      }
+
+      .form-card {
+        padding: 24px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="/careers" class="brand-wrap">
+      <div class="brand-icon">A</div>
+      <div class="brand-text">
+        <h1>Acadeno Technologies</h1>
+      </div>
+    </a>
+    <a href="/careers" class="back-link">
+      <span>←</span> All Openings
+    </a>
+  </header>
+
+  <div class="container">
+    {% if submitted %}
+    <!-- Success Screen -->
+    <div class="success-container">
+      <div class="success-icon-wrap">✓</div>
+      <h2 class="success-title">Application Submitted!</h2>
+      <p class="success-text">
+        Thank you for applying for <b>{{ opening.title }}</b> at Acadeno Technologies.<br>
+        Our technical recruiters have received your application and resume. We review all submissions within <b>48
+          business hours</b> and will contact you directly via Email and Phone.
+      </p>
+
+      <div class="success-actions">
+        <a href="/careers" class="success-btn">← Explore More Openings</a>
+        <a href="/" class="success-btn-secondary">Student Portal Login</a>
+      </div>
+    </div>
+
+    {% elif opening.closed %}
+    <!-- Closed / not found -->
+    <div class="success-container">
+      <div class="success-icon-wrap" style="background:#fee2e2;color:#dc2626;">!</div>
+      <h2 class="success-title">This opening is no longer accepting applications</h2>
+      <p class="success-text">
+        {% if opening.company %}<b>{{ opening.title }}</b> at {{ opening.company }} has been closed or filled.{% else
+        %}This job link is not valid any more.{% endif %}<br>
+        Please check our other open positions.
+      </p>
+      <div class="success-actions">
+        <a href="/careers" class="success-btn">← View Open Positions</a>
+        <a href="/careers/apply/general" class="success-btn-secondary">General Application</a>
+      </div>
+    </div>
+
+    {% else %}
+    <!-- Application Split Screen -->
+    <div class="apply-layout">
+      <!-- Left: Role Overview -->
+      <div class="role-card">
+        <!-- Company Callout Banner -->
+        <div
+          style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">
+              Hiring Organization</div>
+            <div style="font-size:16px;font-weight:800;color:#0f172a;">🏢 {{ opening.company }}</div>
+          </div>
+          {% if opening.company_url and opening.company_url.startswith('http') %}
+          <a href="{{ opening.company_url }}" target="_blank" rel="noopener noreferrer"
+            style="background:#5f2cff;color:white;text-decoration:none;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(95,44,255,0.25);">
+            Company Portal ↗
+          </a>
+          {% endif %}
+        </div>
+
+        <div class="badges-row">
+          <span class="tag-badge tag-domain">{{ opening.category_icon or '💼' }} {{ opening.category_label or
+            'Technology' }}</span>
+          {% if opening.is_internship %}
+          <span class="tag-badge tag-fresher">🚀 Internship</span>
+          {% elif opening.is_fresher %}
+          <span class="tag-badge tag-fresher">🎓 Fresher Friendly</span>
+          {% endif %}
+          <span class="tag-badge tag-type">{{ opening.type }}</span>
+        </div>
+
+        <h2 class="role-title">{{ opening.title }}</h2>
+
+        <div class="role-meta">
+          <div>
+            <span>🏢</span> <b>Company:</b> {{ opening.company }}
+          </div>
+          <div>
+            <span>📍</span> <b>Location:</b> {{ opening.location }}
+          </div>
+          <div>
+            <span>💼</span> <b>Experience:</b> {{ opening.experience }}
+          </div>
+          <div>
+            <span>⚡</span> <b>Status:</b> Actively Reviewing Candidates
+          </div>
+        </div>
+
+        <div class="section-subtitle">Role Highlights & Tech Focus</div>
+        {% if opening.points %}
+        <ul class="points-list">
+          {% for p in opening.points %}
+          <li>{{ p }}</li>
+          {% endfor %}
+        </ul>
+        {% elif opening.description %}
+        <p style="color:#334155;font-size:13px;line-height:1.6;margin-bottom:18px;">{{ opening.description }}</p>
+        {% endif %}
+
+        <div class="section-subtitle">What Acadeno Provides</div>
+        <ul class="points-list">
+          <li>1-on-1 mentorship with experienced senior tech leads</li>
+          <li>Real production application & codebase exposure</li>
+          <li>Certificate of completion & high-track PPO / full-time conversion</li>
+        </ul>
+
+        <div class="section-subtitle">Hiring Process Timeline</div>
+        <div class="process-timeline">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <span>Resume & profile screening (48 hours)</span>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <span>Technical discussion / project walkthrough</span>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <span>HR discussion & onboarding offer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Application Form -->
+      <div class="form-card">
+        <div class="form-header">
+          <div
+            style="display:inline-flex;align-items:center;gap:6px;background:#ede9fe;color:#5f2cff;font-weight:700;font-size:12px;padding:4px 12px;border-radius:20px;margin-bottom:10px;">
+            <span>⚡</span> Direct Job Application
+          </div>
+          <h3>Submit Application for {{ opening.title }}</h3>
+          <p>Complete the form below to apply. Your application and resume will be submitted directly for <b>{{
+              opening.company }}</b>.</p>
+        </div>
+
+        {% if errors %}
+        <div class="error-alert">
+          <b>Please check the following errors:</b>
+          <ul>
+            {% for err in errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/careers/apply/{{ opening.slug }}" enctype="multipart/form-data"
+          id="careerApplyForm">
+          <!-- Full Name -->
+          <div class="form-field">
+            <label for="name">Full Name <span class="req">*</span></label>
+            <input type="text" id="name" name="name" value="{{ form.name }}" required maxlength="100"
+              autocomplete="name" placeholder="e.g. John Doe">
+          </div>
+
+          <!-- Email & Phone -->
+          <div class="form-field-row">
+            <div class="form-field">
+              <label for="email">Email Address <span class="req">*</span></label>
+              <input type="email" id="email" name="email" value="{{ form.email }}" required maxlength="150"
+                autocomplete="email" placeholder="john@example.com">
+            </div>
+            <div class="form-field">
+              <label for="phone">Phone / WhatsApp <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" value="{{ form.phone }}" required maxlength="20"
+                autocomplete="tel" placeholder="+91 9876543210">
+            </div>
+          </div>
+
+          <!-- Experience Level & Year of Passing -->
+          <div class="form-field-row">
+            <div class="form-field">
+              <label for="experience_level">Current Experience Level <span class="req">*</span></label>
+              <select id="experience_level" name="experience_level" required>
+                <option value="Fresher (0-1 year)" {% if form.experience_level=='Fresher (0-1 year)' or
+                  opening.is_fresher %}selected{% endif %}>Fresher (0-1 year)</option>
+                <option value="0 - 2 Years Experience" {% if form.experience_level=='0 - 2 Years Experience' or
+                  (opening.is_upto_2_years and not opening.is_fresher) %}selected{% endif %}>0 - 2 Years Experience
+                </option>
+                <option value="Student - Seeking Internship" {% if form.experience_level=='Student - Seeking Internship'
+                  or opening.is_internship %}selected{% endif %}>Student - Seeking Internship</option>
+                <option value="Experienced Professional" {% if form.experience_level=='Experienced Professional'
+                  %}selected{% endif %}>Experienced (2+ years)</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="passout_year">Year of Passing <span class="opt">(Graduation)</span></label>
+              <input type="number" id="passout_year" name="passout_year" value="{{ form.passout_year }}" min="1990"
+                max="2100" placeholder="e.g. 2026">
+            </div>
+          </div>
+
+          <!-- Qualification & Portfolio -->
+          <div class="form-field-row">
+            <div class="form-field">
+              <label for="qualification">Highest Qualification <span class="opt">(optional)</span></label>
+              <input type="text" id="qualification" name="qualification" value="{{ form.qualification }}"
+                maxlength="120" placeholder="e.g. B.Tech CSE, BCA, MCA">
+            </div>
+            <div class="form-field">
+              <label for="portfolio">GitHub / Portfolio / LinkedIn <span class="opt">(optional)</span></label>
+              <input type="url" id="portfolio" name="portfolio" value="{{ form.portfolio }}" maxlength="200"
+                placeholder="https://github.com/yourhandle">
+            </div>
+          </div>
+
+          <!-- Resume Upload -->
+          <div class="form-field">
+            <label for="resume">Attach Resume / CV <span class="req">*</span></label>
+            <div class="file-upload-box" id="dropZone">
+              <span class="file-upload-icon">📄</span>
+              <div class="file-upload-text">Click to choose or drag & drop your resume</div>
+              <div class="file-upload-hint">Supported formats: PDF, DOC, DOCX · Max 5 MB</div>
+              <input type="file" id="resume" name="resume" class="file-input-real" accept=".pdf,.doc,.docx" required>
+              <div class="file-selected-name" id="fileNamePreview">✓ File selected: <span></span></div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="form-field">
+            <label for="message">Cover Note or Message <span class="opt">(optional)</span></label>
+            <textarea id="message" name="message" maxlength="1000"
+              placeholder="Briefly describe your interest in this role, primary technical skills, or availability to join...">{{ form.message }}</textarea>
+          </div>
+
+          <!-- Spam Trap -->
+          <div class="hp-field" aria-hidden="true">
+            <label>Leave this empty</label>
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span>Submit Application Now</span> <span>→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById('careerApplyForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const resumeInput = document.getElementById('resume');
+      const fileNamePreview = document.getElementById('fileNamePreview');
+
+      if (resumeInput && fileNamePreview) {
+        resumeInput.addEventListener('change', function () {
+          if (this.files && this.files.length > 0) {
+            const name = this.files[0].name;
+            fileNamePreview.querySelector('span').textContent = name;
+            fileNamePreview.style.display = 'block';
+          } else {
+            fileNamePreview.style.display = 'none';
+          }
+        });
+      }
+
+      if (form && submitBtn) {
+        form.addEventListener('submit', function () {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Submitting Application...</span>';
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

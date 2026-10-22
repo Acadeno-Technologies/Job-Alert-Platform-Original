@@ -26,22 +26,20 @@ else:
     first_email = emails[0]
     preview_html = mailer.html_template.replace("{USER_NAME}", first_name)
     
+    preview_file = os.path.join(mailer.BASE_DIR, "email_preview.html")
+    with open(preview_file, "w", encoding="utf-8") as f:
+        f.write(preview_html)
+
     print(f"  - Subject: Today's Verified IT Openings - {mailer.today}")
     print(f"  - Recipient: {first_email}")
     print(f"  - Greeting Line: Dear {first_name},")
     print(f"  - Total Jobs Selected: {min(20, len(mailer.jobs))}")
-    print("\n  Section 1: 🎯 Top IT, Software & Tech Openings (High Priority):")
-    if hasattr(mailer, 'top_it_list'):
-        for i, j in enumerate(mailer.top_it_list[:6], 1):
-            badge = "🎓 IT Fresher" if mailer.classify_job(j) == 1 else "💻 Software & IT Role"
-            print(f"    {i}. [{badge}] {j.get('title', '').strip()}")
-
-    print("\n  Section 2: 🌐 Explore All Other Openings (Down Area):")
-    if hasattr(mailer, 'general_list'):
-        for i, j in enumerate(mailer.general_list[:5], 1):
-            print(f"    {i}. [📌 Open Position] {j.get('title', '').strip()}")
+    print(f"\n🌟 HTML Email Preview exported successfully to:\n  file:///{preview_file.replace(os.sep, '/')}")
+    print("  (You can open this file in any browser to see the exact email students will receive!)")
 
 print("\n------------------------------------------------------------")
-print("To execute a REAL email test to all registered students, run:")
-print("  python mailer.py")
+print("HOW TO TEST SENDING A REAL EMAIL:")
+print("1. Set TEST_EMAIL=your_email@gmail.com in your .env file.")
+print("2. Run: python mailer.py")
+print("   -> The email will go ONLY to your inbox for safe testing!")
 print("------------------------------------------------------------")

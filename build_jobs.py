@@ -1,96 +1,133 @@
 """
-Builds jobs.json (the India jobs list used by the portal and the emails)
-from my_jobs.csv - the jobs you add yourself.
-
-HOW TO ADD JOBS
-  1. Open my_jobs.csv (in Excel, or on GitHub.com with the pencil icon).
-  2. Add one row per job. Columns:
-       title      - job title, e.g. Python Developer
-       company    - company name
-       link       - the company's own apply / careers page (must start with http)
-       location   - e.g. Kochi, Kerala
-       last_date  - OPTIONAL last date to apply (YYYY-MM-DD). After this date
-                    the job is removed automatically.
-  3. Save and push. The workflow runs this script and updates jobs.json.
-
-To test on your laptop:   python build_jobs.py
+Builds jobs.json (India jobs) and gulf_jobs.json (UAE / Abroad jobs).
 """
 import csv
 import json
 import os
-from datetime import date, datetime
+import sys
+from datetime import date
+
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
+import careers
+from careers import parse_date
 
 CSV_FILE = "my_jobs.csv"
-OUTPUT_FILE = "jobs.json"
-
-DATE_FORMATS = ["%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%d.%m.%Y", "%d %b %Y", "%d %B %Y"]
-
-
-def parse_date(text):
-    text = (text or "").strip()
-    if not text:
-        return None
-    for fmt in DATE_FORMATS:
-        try:
-            return datetime.strptime(text, fmt).date()
-        except ValueError:
-            continue
-    return "invalid"
+OUTPUT_FILE_INDIA = "jobs.json"
+OUTPUT_FILE_GULF = "gulf_jobs.json"
 
 
-def main():
+def careers_jobs(portal_url):
+    """Categorizes openings into India and Gulf lists with real company names & direct career URLs."""
+    india_jobs = []
+    gulf_jobs = []
+
+    for o in careers.load_openings():
+        title = o["title"]
+        senior_words = ("lead", "senior", "sr", "architect", "manager", "head", "director", "principal")
+        if o["is_fresher"] and not any(w in title.lower() for w in ("fresher", "intern", "trainee") + senior_words):
+            title = f"{title} (Fresher)"
+
+        company = o.get("company") or careers.COMPANY_NAME
+        company_url = o.get("company_url") or ""
+
+        # Apply link = direct hiring company career / job posted page
+        link = company_url if (company_url and company_url.startswith("http")) else f"{portal_url}/careers/apply/{o['slug']}"
+
+        job_entry = {
+            "title": title,
+            "company": company,
+            "company_url": company_url,
+            "link": link,
+            "apply_slug": o["slug"],
+            "location": o["location"],
+        }
+
+        if o["region"] == "uae":
+            gulf_jobs.append(job_entry)
+        else:
+            india_jobs.append(job_entry)
+
+    return india_jobs, gulf_jobs
+
+
+def external_jobs(portal_url):
+    """Jobs from other companies listed in my_jobs.csv (optional)."""
+    jobs, skipped, expired = [], 0, 0
     if not os.path.exists(CSV_FILE):
-        print(f"ℹ️ {CSV_FILE} not found - leaving {OUTPUT_FILE} unchanged.")
-        return
+        return jobs, skipped, expired
 
     today = date.today()
-    jobs = []
-    seen_links = set()
-    skipped = 0
-    expired = 0
-
-    # utf-8-sig so a file saved from Excel (which adds a hidden marker) still works
     with open(CSV_FILE, "r", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         for line_no, row in enumerate(reader, start=2):
             row = {(k or "").strip().lower(): (v or "").strip() for k, v in row.items()}
             title = row.get("title", "")
-            company = row.get("company", "")
+            company = row.get("company", "") or careers.COMPANY_NAME
             link = row.get("link", "")
-            location = row.get("location", "")
+            location = row.get("location", "") or "Kerala, India"
 
-            # Skip completely blank lines quietly
-            if not any([title, company, link, location]):
+            if not any([title, link, location]):
                 continue
 
-            if not title or not link.lower().startswith("http"):
-                print(f"  ⚠️ Row {line_no} skipped: needs a title and a link starting with http")
+            if not title:
                 skipped += 1
                 continue
 
             last_date = parse_date(row.get("last_date", ""))
-            if last_date == "invalid":
-                print(f"  ⚠️ Row {line_no}: could not read last_date '{row.get('last_date')}' - keeping the job")
-            elif last_date is not None and last_date < today:
+            if last_date is not None and last_date != "invalid" and last_date < today:
                 expired += 1
                 continue
 
-            if link in seen_links:
+                        # No link given -> we can't guess which opening it is, so skip it.
+            if not link or not link.lower().startswith("http"):
+                skipped += 1
                 continue
-            seen_links.add(link)
 
-            jobs.append({
-                "title": title,
-                "company": company,
-                "link": link,
-                "location": location,
-            })
+            jobs.append({"title": title, "company": company, "link": link, "location": location})
+    return jobs, skipped, expired
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(jobs, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ {len(jobs)} jobs saved to {OUTPUT_FILE} "
-          f"({expired} expired removed, {skipped} rows skipped)")
+def main():
+    portal_url = os.getenv("PORTAL_URL", "").strip().rstrip("/")
+    if not portal_url:
+        portal_url = "http://127.0.0.1:5000"
+
+    india_jobs, gulf_jobs = careers_jobs(portal_url)
+    other_india, skipped, expired = external_jobs(portal_url)
+
+    # Save India jobs
+    final_india = []
+    seen_india = set()
+    for job in india_jobs + other_india:
+        key = (job["title"], job["company"])
+        if key in seen_india:
+            continue
+        seen_india.add(key)
+        final_india.append(job)
+
+    with open(OUTPUT_FILE_INDIA, "w", encoding="utf-8") as f:
+        json.dump(final_india, f, indent=2, ensure_ascii=False)
+
+    # Save Gulf / Abroad jobs
+    final_gulf = []
+    seen_gulf = set()
+    for job in gulf_jobs:
+        key = (job["title"], job["company"])
+        if key in seen_gulf:
+            continue
+        seen_gulf.add(key)
+        final_gulf.append(job)
+
+    with open(OUTPUT_FILE_GULF, "w", encoding="utf-8") as f:
+        json.dump(final_gulf, f, indent=2, ensure_ascii=False)
+
+    print(f"OK: Saved {len(final_india)} India jobs to {OUTPUT_FILE_INDIA}")
+    print(f"OK: Saved {len(final_gulf)} UAE/Gulf jobs to {OUTPUT_FILE_GULF}")
 
 
 if __name__ == "__main__":

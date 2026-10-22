@@ -30,7 +30,9 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Build India jobs from my_jobs.csv
+      - name: Build India jobs from careers.csv + my_jobs.csv
+        env:
+          PORTAL_URL: ${{ secrets.PORTAL_URL }}
         run: |
           python -u build_jobs.py
 

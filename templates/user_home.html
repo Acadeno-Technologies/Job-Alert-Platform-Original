@@ -76,6 +76,21 @@
       transition: background 0.2s;
     }
 
+    .careers-btn {
+      background: #ede9fe;
+      color: #5f2cff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .careers-btn:hover {
+      background: #ddd6fe;
+    }
+
     .logout-btn:hover {
       background: #fca5a5;
     }
@@ -472,7 +487,10 @@
         <span class="status-dot"></span> Student Portal
       </span>
     </div>
-    <a href="/logout" class="logout-btn">Logout</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="/careers" class="careers-btn">🚀 Acadeno Careers</a>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
   </div>
 
   <div class="container">
@@ -527,6 +545,7 @@
       <div class="jobs-grid" data-section-grid="{{ section.key }}">
         {% for job in section.jobs %}
         <div class="job-card{% if loop.index > 5 %} extra-card{% endif %}" data-title="{{ job.title | lower }}"
+          data-company="{{ (job.company or '') | lower }}"
           data-categories="{{ job.categories | lower }}" data-location="{{ job.location | lower }}"
           data-badges="{% for b in job.badges %}{{ b.label | lower }} {% endfor %}">
           <div class="job-card-header">
@@ -537,14 +556,23 @@
               </span>
               {% endfor %}
             </div>
+            {% if job.company %}
+            <div style="display:inline-flex;align-items:center;gap:6px;background:#f5f3ff;border:1px solid #ddd6fe;color:#5f2cff;font-weight:800;font-size:12.5px;padding:3px 10px;border-radius:6px;margin-bottom:8px;">
+              🏢 {{ job.company }}
+            </div>
+            {% endif %}
             <h3 class="job-title">{{ job.title }}</h3>
             <div class="job-meta">
               <span class="verified-icon">✓</span> Verified Opening
               {% if job.location %} &nbsp;•&nbsp; 📍 {{ job.location }}{% endif %}
             </div>
           </div>
-          <a href="{{ job.link }}" target="_blank" rel="noopener noreferrer" class="job-apply-btn">
-            Apply Now ↗
+          <a href="{{ job.link }}"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="job-apply-btn"
+             title="View and apply for {{ job.title }} at {{ job.company or 'the hiring company' }}">
+            Apply Now →
           </a>
         </div>
         {% endfor %}
@@ -567,6 +595,23 @@
 
     <!-- Job Cards Display Area, grouped into sections, split by region tab -->
     <div class="tab-content" id="indiaTabContent" data-tab="india">
+      <!-- Direct Acadeno Careers Banner -->
+      <div style="background: linear-gradient(135deg, #1e1b4b 0%, #311068 100%); color: white; border-radius: 16px; padding: 22px 28px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 4px 20px rgba(95, 44, 255, 0.15); border: 1px solid rgba(199, 210, 254, 0.2);">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="background: #10b981; color: white; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 12px;">DIRECT HIRING</span>
+            <span style="font-size: 12.5px; color: #c7d2fe; font-weight: 600;">Acadeno Careers Hub</span>
+          </div>
+          <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 4px;">Freshers (0-1 yr), 0-2 Years & Internships Available</h3>
+          <p style="font-size: 13.5px; color: #cbd5e1; max-width: 650px;">
+            Openings in AI, ML, React, Java, Frontend, UI/UX, Full Stack, Flutter & Digital Marketing. Click Apply on any job below to submit directly on Acadeno Careers!
+          </p>
+        </div>
+        <a href="/careers" style="background: white; color: #5f2cff; padding: 11px 22px; border-radius: 10px; font-weight: 700; font-size: 13.5px; text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); white-space: nowrap;">
+          View All Careers Hub →
+        </a>
+      </div>
+
       <div class="jobs-section" id="jobsSectionsWrap">
         {{ render_sections(job_sections) }}
       </div>
@@ -588,7 +633,7 @@
 
   <!-- Real-time Live Search JS -->
   <script>
-    const REGION_TOTALS = { india: {{ jobs| length }}, gulf: { { gulf_jobs | length } } };
+    const REGION_TOTALS = { india: {{ jobs|length }}, gulf: {{ gulf_jobs|length }} };
 
     function getActiveRegion() {
       const gulfTab = document.getElementById('gulfTabContent');
@@ -661,11 +706,12 @@
 
       cards.forEach(card => {
         const title = card.getAttribute('data-title') || '';
+        const company = card.getAttribute('data-company') || '';
         const categories = card.getAttribute('data-categories') || '';
         const badges = card.getAttribute('data-badges') || '';
         const location = card.getAttribute('data-location') || '';
 
-        const fullText = `${title} ${categories} ${badges}`.toLowerCase();
+        const fullText = `${title} ${company} ${categories} ${badges}`.toLowerCase();
 
         // 1. Text Search matching all typed words
         const matchesSearch = terms.length === 0 || terms.every(term => fullText.includes(term));

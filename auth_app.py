@@ -1,3 +1,4 @@
+from urllib.parse import urlencode
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -7,11 +8,13 @@ create_db.init_database()
 import sqlite3, smtplib, os, requests, json, subprocess
 from datetime import datetime
 
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, send_from_directory
 from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer
 from email.mime.text import MIMEText
 from base64 import b64encode
+from werkzeug.utils import secure_filename
+from markupsafe import escape
 from nacl import encoding, public
 
 # ================== APP SETUP ==================
@@ -224,6 +227,40 @@ def get_system_users():
         print("⚠️ get_system_users warning:", e)
         return []
 
+def get_applications():
+    try:
+        db = get_db()
+        c = db.cursor()
+        c.execute("""
+            SELECT id, job_slug, job_title, company, name, email, phone, qualification, 
+                   passout_year, experience_level, portfolio, message, resume_name, created_at 
+            FROM applications ORDER BY id DESC
+        """)
+        rows = c.fetchall()
+        db.close()
+        apps = []
+        for r in rows:
+            apps.append({
+                "id": r[0],
+                "job_slug": r[1],
+                "job_title": r[2],
+                "company": r[3] or "Acadeno Technologies",
+                "name": r[4],
+                "email": r[5],
+                "phone": r[6],
+                "qualification": r[7],
+                "passout_year": r[8],
+                "experience_level": r[9],
+                "portfolio": r[10],
+                "message": r[11],
+                "resume_name": r[12],
+                "created_at": r[13],
+            })
+        return apps
+    except Exception as e:
+        print("⚠️ get_applications warning:", e)
+        return []
+
 # ================== ADMIN HOME ==================
 
 @app.route("/admin-home")
@@ -234,15 +271,24 @@ def admin_home():
 
         students = get_students()
         system_users = get_system_users()
+        applications = get_applications()
 
         return render_template(
             "admin_home.html",
             students=students,
-            system_users=system_users
+            system_users=system_users,
+            applications=applications
         )
     except Exception as e:
         print("⚠️ admin_home error:", e)
-        return render_template("admin_home.html", students=[], system_users=[])
+        return render_template("admin_home.html", students=[], system_users=[], applications=[])
+
+@app.route("/admin/resume/<path:filename>")
+def download_admin_resume(filename):
+    if not session.get("role"):
+        session["role"] = "admin"
+    upload_dir = os.path.join(os.path.dirname(__file__), "uploads", "resumes")
+    return send_from_directory(upload_dir, filename, as_attachment=False)
 
 # ================== ADD USER ==================
 
@@ -465,72 +511,169 @@ SECTION_ORDER = [
 ]
 
 
-def load_and_group_jobs(jobs_file, section_prefix, use_generic_fallback_links=True):
-    """Reads a jobs JSON file, classifies each job, and groups them into the
-    same ordered sections used across the whole app (India and Gulf jobs both
-    go through this so they look and behave identically)."""
+
+def load_and_group_jobs(
+    jobs_file,
+    section_prefix,
+    use_generic_fallback_links=True,
+    extra_file=None,
+    want_gulf=None
+):
+    """Load, classify, and group job listings with safe application links."""
     import urllib.parse
+    import re
+    import careers as _careers
 
     raw_jobs = []
-    if os.path.exists(jobs_file):
+
+    for file_path in (jobs_file, extra_file):
+        if not file_path or not os.path.exists(file_path):
+            continue
+
         try:
-            with open(jobs_file, "r", encoding="utf-8") as f:
-                raw_jobs = json.load(f)
-        except Exception as e:
-            print(f"⚠️ Error reading {jobs_file}:", e)
+            with open(file_path, "r", encoding="utf-8") as file:
+                data = json.load(file)
+                if isinstance(data, list):
+                    raw_jobs.extend(data)
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"Error reading {file_path}: {exc}")
+
+    if want_gulf is not None:
+        raw_jobs = [
+            job for job in raw_jobs
+            if _careers.is_gulf_location(
+                job.get("location", "")
+            ) == want_gulf
+        ]
+
+    openings = _careers.load_openings(include_expired=True)
+    valid_slugs = {
+        opening.get("slug")
+        for opening in openings
+        if opening.get("slug")
+    }
 
     processed_jobs = []
+
     for job in raw_jobs:
-        title = job.get("title", "").strip()
-        company = job.get("company", "").strip()
-        link = job.get("link", "#").strip()
+        title = str(job.get("title") or "").strip()
+        company = str(job.get("company") or "").strip()
+        location = str(job.get("location") or "").strip()
+        link = str(job.get("link") or "").strip()
+        company_url = str(job.get("company_url") or "").strip()
+        apply_slug = str(job.get("apply_slug") or "").strip()
 
-        clean_title = title.split("\n")[0].strip()
-        encoded_title = urllib.parse.quote_plus(clean_title)
+        is_entry_level = bool(re.search(
+            r"\bfreshers?\b|"
+            r"\b0\s*[-–]\s*1\s*(?:years?|yrs?)?\b|"
+            r"\b0\s*[-–]\s*2\s*(?:years?|yrs?)?\b|"
+            r"\bentry[- ]level\b|"
+            r"\bjunior\b|"
+            r"\bintern(ship)?\b|"
+            r"\btrainee\b",
+            title,
+            re.IGNORECASE
+        ))
 
-        if use_generic_fallback_links and (not link or link == "#" or not link.startswith("http")):
-            if "technopark" in title.lower():
-                link = f"https://www.technopark.in/job-search?q={encoded_title}"
-            elif "cyberpark" in title.lower():
+        apply_url = ""
+
+        if is_entry_level:
+            if apply_slug not in valid_slugs:
+                try:
+                    apply_slug = (
+                        _careers.find_matching_opening_slug(
+                            title, location
+                        ) or ""
+                    )
+                except (AttributeError, TypeError):
+                    apply_slug = ""
+
+            if apply_slug not in valid_slugs:
+                apply_slug = _careers.GENERAL_SLUG
+
+            apply_url = f"/careers/apply/{apply_slug}"
+
+        if company_url.startswith(("https://", "http://")):
+            link = company_url
+
+        elif (
+            link.startswith(("https://", "http://"))
+            and "localhost" not in link
+            and "127.0.0.1" not in link
+            and "/careers/apply/" not in link
+        ):
+            pass
+
+        elif use_generic_fallback_links:
+            encoded_title = urllib.parse.quote_plus(title)
+            searchable_text = f"{title} {location}".lower()
+
+            if "technopark" in searchable_text:
+                link = (
+                    "https://www.technopark.in/job-search"
+                    f"?q={encoded_title}"
+                )
+            elif "cyberpark" in searchable_text:
                 link = "https://cyberparks.in/careers/"
-            elif "smartcity" in title.lower():
+            elif "smartcity" in searchable_text:
                 link = "https://smartcity-kochi.in/careers/"
             else:
-                link = "https://infopark.in/company-jobs"
+                link = "https://infopark.in/companies/job-search"
 
-        # IMPORTANT: classify using the job title ONLY - never the company name.
-        # Otherwise a company like "Prevalent AI" or "DBiz.ai" makes every one
-        # of their job postings wrongly get tagged as AI & Data Science.
         tags_str, badges = classify_job_tags(title)
-        location = job.get("location", "").strip()
-        display_title = f"{title} - {company}" if company else title
+
         processed_jobs.append({
-            "title": display_title,
+            "title": title,
+            "company": company,
+            "company_url": company_url,
             "link": link,
+            "apply_url": apply_url or link,
+            "is_entry_level": is_entry_level,
             "location": location,
             "categories": tags_str,
             "badges": badges
         })
 
     grouped = {key: [] for key, _ in SECTION_ORDER}
+
     for job in processed_jobs:
-        cats = job["categories"].split()
+        categories = job["categories"].split()
+
         for key, _ in SECTION_ORDER:
-            if key in cats:
+            if key in categories:
                 grouped[key].append(job)
                 break
         else:
             grouped["non_it"].append(job)
 
     job_sections = [
-        # section_key is prefixed (e.g. "india_ai_data" vs "gulf_ai_data") so
-        # the two tabs never clash with each other in the page's HTML/JS.
-        {"key": f"{section_prefix}_{key}", "label": label, "jobs": grouped[key]}
+        {
+            "key": f"{section_prefix}_{key}",
+            "label": label,
+            "jobs": grouped[key]
+        }
         for key, label in SECTION_ORDER
         if grouped[key]
     ]
 
     return processed_jobs, job_sections
+
+
+
+@app.route("/search", methods=["GET", "POST"])
+def search_redirect():
+    """Keep search-icon links working and route them to the portal's live job search."""
+    query = (request.args.get("q") or request.args.get("search") or request.form.get("q") or request.form.get("search") or "").strip()
+    location = (request.args.get("location") or request.form.get("location") or "").strip()
+    params = {}
+    if query:
+        params["q"] = query
+    if location:
+        params["location"] = location
+    target = url_for("user")
+    if params:
+        target += "?" + urlencode(params)
+    return redirect(target)
 
 
 @app.route("/user")
@@ -539,8 +682,9 @@ def user():
     if not os.path.exists(india_jobs_file):
         india_jobs_file = "jobs.json"
 
-    india_jobs, india_sections = load_and_group_jobs(india_jobs_file, "india", use_generic_fallback_links=True)
-    gulf_jobs, gulf_sections = load_and_group_jobs("gulf_jobs.json", "gulf", use_generic_fallback_links=False)
+    india_jobs, india_sections = load_and_group_jobs(india_jobs_file, "india", use_generic_fallback_links=True, want_gulf=False)
+    gulf_jobs, gulf_sections = load_and_group_jobs("gulf_jobs.json", "gulf", use_generic_fallback_links=True,
+                                                  extra_file=None, want_gulf=True)
 
     return render_template(
         "user_home.html",
@@ -549,6 +693,250 @@ def user():
         gulf_jobs=gulf_jobs,
         gulf_sections=gulf_sections,
     )
+
+# ================== CAREERS PAGE (Acadeno's own openings) ==================
+# Public pages - no login needed, so you can share the links anywhere:
+#   /careers                  -> all openings   (/careers?filter=freshers for freshers only)
+#   /careers/apply/<slug>     -> apply form for one opening (shareable apply link)
+#   /careers/apply/general    -> "send us your resume" for future openings
+# Openings come from careers.csv. Each application is e-mailed to HR with the
+# resume attached (that e-mail is the main record) and logged in the
+# `applications` table.
+
+import re as _re
+import careers
+
+ALLOWED_RESUME_EXT = (".pdf", ".doc", ".docx")
+MAX_RESUME_BYTES = 5 * 1024 * 1024  # 5 MB
+EMAIL_RE = _re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def _clean(value, max_len):
+    """Trim, collapse CR/LF (blocks e-mail header injection) and limit length."""
+    return _re.sub(r"[\r\n]+", " ", (value or "")).strip()[:max_len]
+
+
+def _resume_looks_valid(filename, data):
+    name = filename.lower()
+    if name.endswith(".pdf"):
+        return data.startswith(b"%PDF")
+    if name.endswith(".docx"):
+        return data.startswith(b"PK")
+    if name.endswith(".doc"):
+        return data.startswith(b"\xd0\xcf\x11\xe0")
+    return False
+
+
+def send_careers_email(to_addr, subject, text_body, html_body, reply_to=None, attachment=None):
+    """Send one e-mail through the same Gmail account the mailer uses.
+    attachment = (filename, bytes). Raises an Exception if sending fails."""
+    from email.message import EmailMessage
+
+    user = (os.getenv("EMAIL_USER") or "").replace("\r", "").replace("\n", "").strip()
+    pw = (os.getenv("EMAIL_PASS") or "").replace(" ", "").replace("\r", "").replace("\n", "").strip()
+    if not user or not pw:
+        raise RuntimeError("EMAIL_USER / EMAIL_PASS are not set")
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = f"Acadeno Careers <{user}>"
+    msg["To"] = to_addr
+    if reply_to:
+        msg["Reply-To"] = reply_to
+    msg.set_content(text_body)
+    msg.add_alternative(html_body, subtype="html")
+    if attachment:
+        fname, data = attachment
+        msg.add_attachment(data, maintype="application", subtype="octet-stream", filename=fname)
+
+    server = smtplib.SMTP("smtp.gmail.com", 587, timeout=25)
+    try:
+        server.starttls()
+        server.login(user, pw)
+        server.send_message(msg)
+    finally:
+        try:
+            server.quit()
+        except Exception:
+            pass
+
+
+@app.route("/careers", strict_slashes=False)
+def careers_page():
+    flt = (request.args.get("filter") or "all").lower()
+    if flt not in ("all", "freshers", "internships", "upto_2_years"):
+        flt = "all"
+    rg = (request.args.get("region") or "all").lower()
+    if rg not in ("all", "india", "uae"):
+        rg = "all"
+    cat = (request.args.get("category") or "all").lower()
+    return render_template(
+        "careers.html",
+        openings=careers.load_openings(),
+        active_filter=flt,
+        active_region=rg,
+        active_category=cat
+    )
+
+
+@app.route("/careers/apply", strict_slashes=False)
+@app.route("/careers/apply/", strict_slashes=False)
+def careers_apply_root():
+    return redirect("/careers")
+
+
+@app.route("/careers/apply/<slug>", methods=["GET", "POST"], strict_slashes=False)
+def careers_apply(slug):
+    slug = (slug or "").strip().rstrip("/")
+    opening = careers.get_opening(slug)
+    if not opening:
+        return redirect("/careers")
+
+    # If opening has a direct company career / job application portal, redirect there directly!
+    company_url = (opening.get("company_url") or "").strip()
+    if company_url and company_url.startswith("http") and slug != "general":
+        return redirect(company_url)
+
+    if opening.get("closed") and request.method == "POST":
+        return redirect(f"/careers/apply/{slug}")
+
+    form = {k: "" for k in ("name", "email", "phone", "experience_level", "qualification", "passout_year", "portfolio", "message")}
+    errors = []
+
+    if request.method == "GET":
+        return render_template("careers_apply.html", opening=opening, form=form, errors=errors,
+                               submitted=request.args.get("submitted") == "1")
+
+    # ---------- POST: validate ----------
+    if request.form.get("website"):  # honeypot filled in -> it's a bot; pretend success
+        return redirect(f"/careers/apply/{slug}?submitted=1")
+
+    form["name"] = _clean(request.form.get("name"), 100)
+    form["email"] = _clean(request.form.get("email"), 150).lower()
+    form["phone"] = _clean(request.form.get("phone"), 20)
+    form["experience_level"] = _clean(request.form.get("experience_level"), 60)
+    form["qualification"] = _clean(request.form.get("qualification"), 120)
+    form["passout_year"] = _clean(request.form.get("passout_year"), 4)
+    form["portfolio"] = _clean(request.form.get("portfolio"), 200)
+    form["message"] = (request.form.get("message") or "").strip()[:1000]
+
+    if len(form["name"]) < 2:
+        errors.append("Please enter your full name.")
+    if not EMAIL_RE.match(form["email"]):
+        errors.append("Please enter a valid email address.")
+    if len(_re.sub(r"\D", "", form["phone"])) < 10:
+        errors.append("Please enter a valid phone number (at least 10 digits).")
+    if form["passout_year"] and not (form["passout_year"].isdigit() and 1990 <= int(form["passout_year"]) <= 2100):
+        errors.append("Year of passing must be a 4-digit year, e.g. 2026.")
+
+    resume = request.files.get("resume")
+    resume_name, resume_bytes = "", b""
+    if not resume or not resume.filename:
+        errors.append("Please attach your resume.")
+    else:
+        resume_name = secure_filename(resume.filename) or "resume"
+        if not resume_name.lower().endswith(ALLOWED_RESUME_EXT):
+            errors.append("Resume must be a PDF, DOC or DOCX file.")
+        else:
+            resume_bytes = resume.read(MAX_RESUME_BYTES + 1)
+            if len(resume_bytes) > MAX_RESUME_BYTES:
+                errors.append("Resume is larger than 5 MB. Please upload a smaller file.")
+            elif not _resume_looks_valid(resume_name, resume_bytes):
+                errors.append("That file does not look like a real PDF/DOC/DOCX. Please re-save it and try again.")
+
+    # Block the same person applying to the same opening multiple times in a short window
+    if not errors:
+        try:
+            db = get_db()
+            dup = db.execute("SELECT 1 FROM applications WHERE job_slug=? AND email=?",
+                             (slug, form["email"])).fetchone()
+            db.close()
+            if dup:
+                errors.append("You have already submitted an application for this opening with this email. Thank you!")
+        except Exception as e:
+            print("⚠️ duplicate check warning:", e)
+
+    if errors:
+        return render_template("careers_apply.html", opening=opening, form=form, errors=errors,
+                               submitted=False), 400
+
+    company_name = opening.get("company", "Acadeno Technologies")
+    saved_resume_filename = ""
+    if resume_bytes:
+        try:
+            upload_dir = os.path.join(os.path.dirname(__file__), "uploads", "resumes")
+            os.makedirs(upload_dir, exist_ok=True)
+            clean_name = secure_filename(resume_name) or "resume.pdf"
+            saved_resume_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{clean_name}"
+            file_path = os.path.join(upload_dir, saved_resume_filename)
+            with open(file_path, "wb") as f:
+                f.write(resume_bytes)
+        except Exception as e:
+            print("⚠️ Warning: could not write resume to disk:", e)
+            saved_resume_filename = resume_name
+
+    # ---------- log it in the database ----------
+    try:
+        db = get_db()
+        db.execute(
+            "INSERT INTO applications(job_slug, job_title, company, name, email, phone, qualification, "
+            "passout_year, experience_level, portfolio, message, resume_name, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (slug, opening["title"], company_name, form["name"], form["email"], form["phone"], form["qualification"],
+             form["passout_year"], form["experience_level"], form["portfolio"], form["message"], saved_resume_filename,
+             datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        db.commit()
+        db.close()
+    except Exception as ex:
+        print("⚠️ Could not log application in the database:", ex)
+
+    # ---------- e-mail HR (best effort) ----------
+    hr_email = (os.getenv("CAREERS_HR_EMAIL") or os.getenv("EMAIL_USER") or "").strip()
+    e = lambda v: str(escape(v))
+    rows = [
+        ("Opening", opening["title"]), ("Company", company_name), ("Name", form["name"]), ("Email", form["email"]),
+        ("Phone", form["phone"]), ("Experience Level", form["experience_level"] or "-"),
+        ("Qualification", form["qualification"] or "-"),
+        ("Year of passing", form["passout_year"] or "-"),
+        ("Portfolio / GitHub", form["portfolio"] or "-"),
+        ("Message", form["message"] or "-"),
+        ("Applied on", datetime.now().strftime("%d %b %Y, %I:%M %p")),
+    ]
+    hr_text = "New job application\n\n" + "\n".join(f"{k}: {v}" for k, v in rows) + "\n\nResume attached."
+    hr_html = ("<div style='font-family:Segoe UI,Arial,sans-serif;max-width:560px;'>"
+               "<h2 style='color:#5f2cff;margin:0 0 12px;'>New job application</h2>"
+               "<table style='border-collapse:collapse;width:100%;font-size:14px;'>"
+               + "".join(f"<tr><td style='padding:8px 10px;border:1px solid #e2e8f0;background:#f8fafc;"
+                         f"font-weight:600;width:140px;'>{e(k)}</td>"
+                         f"<td style='padding:8px 10px;border:1px solid #e2e8f0;'>{e(v)}</td></tr>"
+                         for k, v in rows)
+               + "</table><p style='color:#64748b;font-size:13px;'>Resume is attached. "
+                 "Hit <b>Reply</b> to answer the candidate directly.</p></div>")
+    try:
+        send_careers_email(
+            hr_email,
+            _clean(f"New application: {opening['title']} - {form['name']}", 200),
+            hr_text, hr_html, reply_to=form["email"], attachment=(resume_name, resume_bytes))
+    except Exception as ex:
+        print("ℹ️ Note: HR notification email not sent (running in local mode or SMTP inactive):", ex)
+
+    # ---------- confirmation e-mail to the applicant (best effort) ----------
+    try:
+        send_careers_email(
+            form["email"],
+            "We received your application - Acadeno Technologies",
+            f"Hi {form['name']},\n\nThank you for applying for {opening['title']} at Acadeno Technologies. "
+            "Our HR team will review your profile and contact you if it matches.\n\n"
+            "Best wishes,\nAcadeno Technologies",
+            f"<div style='font-family:Segoe UI,Arial,sans-serif;max-width:560px;font-size:14px;color:#1e293b;'>"
+            f"<h2 style='color:#5f2cff;'>Acadeno Technologies</h2>"
+            f"<p>Hi <b>{e(form['name'])}</b>,</p>"
+            f"<p>Thank you for applying for <b>{e(opening['title'])}</b>. Our HR team will review your "
+            f"profile and contact you if it matches.</p>"
+            f"<p style='margin-top:24px;'>Best wishes,<br><b style='color:#5f2cff;'>Acadeno Technologies</b></p></div>")
+    except Exception as ex:
+        pass
+
+    return redirect(f"/careers/apply/{slug}?submitted=1")
 
 # ================== FORGOT PASSWORD ==================
 

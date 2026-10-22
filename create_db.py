@@ -1,5 +1,13 @@
 import sqlite3
 import os
+import sys
+
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 from flask_bcrypt import Bcrypt
 
 def init_database():
@@ -35,6 +43,32 @@ def init_database():
             created_at TEXT
         )
         """)
+
+        # ---------------- CAREERS APPLICATIONS TABLE ----------------
+        # Every application is also e-mailed to HR (with the resume attached).
+        # This table is a backup log + lets us block duplicate applications.
+        c.execute("""
+        CREATE TABLE IF NOT EXISTS applications(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_slug TEXT,
+            job_title TEXT,
+            name TEXT,
+            email TEXT,
+            phone TEXT,
+            qualification TEXT,
+            passout_year TEXT,
+            message TEXT,
+            resume_name TEXT,
+            created_at TEXT
+        )
+        """)
+
+        # Migration: Ensure company, experience_level and portfolio columns exist in applications table
+        for col_def in ("company TEXT", "experience_level TEXT", "portfolio TEXT"):
+            try:
+                c.execute(f"ALTER TABLE applications ADD COLUMN {col_def}")
+            except Exception:
+                pass
 
         # ---------------- DEFAULT ADMIN ----------------
         admin_email = os.getenv(
