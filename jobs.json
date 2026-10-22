@@ -1,77 +1,5 @@
 [
   {
-    "title": "AI & Cloud Software Engineer (Fresher)",
-    "company": "Infosys",
-    "company_url": "https://career.infosys.com/joblist",
-    "link": "https://career.infosys.com/joblist",
-    "apply_slug": "ai-cloud-software-engineer-fresher-infosys-bangalore-remote-india",
-    "location": "Bangalore / Remote, India"
-  },
-  {
-    "title": "React JS Developer (Fresher)",
-    "company": "Zoho Corporation",
-    "company_url": "https://careers.zohocorp.com/clientportal",
-    "link": "https://careers.zohocorp.com/clientportal",
-    "apply_slug": "react-js-developer-fresher-zoho-corporation-kerala-remote-india",
-    "location": "Kerala / Remote, India"
-  },
-  {
-    "title": "GenC Software Engineer - React / Web Development (Fresher)",
-    "company": "Cognizant",
-    "company_url": "https://careers.cognizant.com/global-en/jobs/?location=India",
-    "link": "https://careers.cognizant.com/global-en/jobs/?location=India",
-    "apply_slug": "genc-software-engineer-react-web-development-fresher-cognizant-infopark-kochi-ba",
-    "location": "Infopark Kochi / Bangalore, India"
-  },
-  {
-    "title": "Java Software Developer (Fresher)",
-    "company": "Zoho Corporation",
-    "company_url": "https://careers.zohocorp.com/clientportal",
-    "link": "https://careers.zohocorp.com/clientportal",
-    "apply_slug": "java-software-developer-fresher-zoho-corporation-kerala-remote-india",
-    "location": "Kerala / Remote, India"
-  },
-  {
-    "title": "Core Java & Spring Boot Developer (0-2 Years)",
-    "company": "Wipro",
-    "company_url": "https://careers.wipro.com/early-careers",
-    "link": "https://careers.wipro.com/early-careers",
-    "apply_slug": "core-java-spring-boot-developer-0-2-years-wipro-kochi-bangalore-india",
-    "location": "Kochi / Bangalore, India"
-  },
-  {
-    "title": "Java Backend Development Intern",
-    "company": "Speridian Technologies",
-    "company_url": "https://www.speridian.com/careers/",
-    "link": "https://www.speridian.com/careers/",
-    "apply_slug": "java-backend-development-intern-speridian-technologies-technopark-trivandrum-ind",
-    "location": "Technopark Trivandrum, India"
-  },
-  {
-    "title": "Graduate Trainee / Programmer Analyst (Fresher)",
-    "company": "Cognizant",
-    "company_url": "https://careers.cognizant.com/india-en/",
-    "link": "https://careers.cognizant.com/india-en/",
-    "apply_slug": "graduate-trainee-programmer-analyst-fresher-cognizant-infopark-kochi-india",
-    "location": "Infopark Kochi, India"
-  },
-  {
-    "title": "Frontend UI Engineer (0-2 Years)",
-    "company": "UST Global",
-    "company_url": "https://usource.ripplehire.com/candidate/",
-    "link": "https://usource.ripplehire.com/candidate/",
-    "apply_slug": "frontend-ui-engineer-0-2-years-ust-global-infopark-kochi-india",
-    "location": "Infopark Kochi, India"
-  },
-  {
-    "title": "Associate Software Engineer / Web Intern",
-    "company": "IBS Software",
-    "company_url": "https://careers.ibsplc.com/",
-    "link": "https://careers.ibsplc.com/",
-    "apply_slug": "associate-software-engineer-web-intern-ibs-software-infopark-kochi-india",
-    "location": "Infopark Kochi, India"
-  },
-  {
     "title": "QA/Test Engineer",
     "company": "Tata Elxsi",
     "company_url": "https://www.tataelxsi.com/careers/job-openings/qatest-engineer",
@@ -88,46 +16,6 @@
     "location": "Technopark Trivandrum, India"
   },
   {
-    "title": "Full Stack Developer (Fresher)",
-    "company": "Zoho Corporation",
-    "company_url": "https://careers.zohocorp.com/clientportal",
-    "link": "https://careers.zohocorp.com/clientportal",
-    "apply_slug": "full-stack-developer-fresher-zoho-corporation-kerala-remote-india",
-    "location": "Kerala / Remote, India"
-  },
-  {
-    "title": "Full Stack Web Engineer (0-2 Years)",
-    "company": "Infosys",
-    "company_url": "https://career.infosys.com/joblist",
-    "link": "https://career.infosys.com/joblist",
-    "apply_slug": "full-stack-web-engineer-0-2-years-infosys-trivandrum-bangalore-india",
-    "location": "Trivandrum / Bangalore, India"
-  },
-  {
-    "title": "Full Stack Development Intern",
-    "company": "Speridian Technologies",
-    "company_url": "https://www.speridian.com/careers/",
-    "link": "https://www.speridian.com/careers/",
-    "apply_slug": "full-stack-development-intern-speridian-technologies-infopark-kochi-india",
-    "location": "Infopark Kochi, India"
-  },
-  {
-    "title": "Flutter App Developer (Fresher)",
-    "company": "UST Global",
-    "company_url": "https://usource.ripplehire.com/candidate/",
-    "link": "https://usource.ripplehire.com/candidate/",
-    "apply_slug": "flutter-app-developer-fresher-ust-global-technopark-trivandrum-india",
-    "location": "Technopark Trivandrum, India"
-  },
-  {
-    "title": "Mobile Application Developer - Flutter (0-2 Years)",
-    "company": "Tata Elxsi",
-    "company_url": "https://www.tataelxsi.com/careers/job-openings",
-    "link": "https://www.tataelxsi.com/careers/job-openings",
-    "apply_slug": "mobile-application-developer-flutter-0-2-years-tata-elxsi-technopark-trivandrum",
-    "location": "Technopark Trivandrum, India"
-  },
-  {
     "title": "Wi-Fi Test Engineer",
     "company": "Tata Elxsi",
     "company_url": "https://www.tataelxsi.com/careers/job-openings/wi-fi-test-engineers",
@@ -136,35 +24,131 @@
     "location": "Technopark Trivandrum, India"
   },
   {
-    "title": "Digital Marketing Executive (Fresher)",
-    "company": "TCS",
-    "company_url": "https://www.tcs.com/careers/india",
-    "link": "https://www.tcs.com/careers/india",
-    "apply_slug": "digital-marketing-executive-fresher-tcs-kochi-bangalore-india",
-    "location": "Kochi / Bangalore, India"
+    "title": "Video Editor Intern",
+    "company": "Groww",
+    "company_url": "https://job-boards.eu.greenhouse.io/groww/jobs/4956817101",
+    "link": "https://job-boards.eu.greenhouse.io/groww/jobs/4956817101",
+    "apply_slug": "video-editor-intern-groww-bengaluru-vtp-india",
+    "location": "Bengaluru-VTP, India"
   },
   {
-    "title": "Growth & Performance Marketing Specialist (0-2 Years)",
-    "company": "Speridian Technologies",
-    "company_url": "https://www.speridian.com/careers/",
-    "link": "https://www.speridian.com/careers/",
-    "apply_slug": "growth-performance-marketing-specialist-0-2-years-speridian-technologies-infopar",
-    "location": "Infopark Kochi, India"
+    "title": "ENG Project/ Program - Intern",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8166514?gh_jid=8166514",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8166514?gh_jid=8166514",
+    "apply_slug": "eng-project-program-intern-rubrik-bangalore",
+    "location": "Bangalore"
   },
   {
-    "title": "Digital Marketing & SEO Intern",
-    "company": "TCS",
-    "company_url": "https://www.tcs.com/careers/india",
-    "link": "https://www.tcs.com/careers/india",
-    "apply_slug": "digital-marketing-seo-intern-tcs-infopark-kochi-india",
-    "location": "Infopark Kochi, India"
+    "title": "Industrial Trainee",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8266405?gh_jid=8266405",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8266405?gh_jid=8266405",
+    "apply_slug": "industrial-trainee-rubrik-bangalore",
+    "location": "Bangalore"
   },
   {
-    "title": "Python Backend Engineer (0-2 Years)",
-    "company": "IBM India",
-    "company_url": "https://www.ibm.com/in-en/careers/search",
-    "link": "https://www.ibm.com/in-en/careers/search",
-    "apply_slug": "python-backend-engineer-0-2-years-ibm-india-kochi-bangalore-india",
-    "location": "Kochi / Bangalore, India"
+    "title": "Software Engineer - Cloud: Azure (Fresher)",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8258200?gh_jid=8258200",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8258200?gh_jid=8258200",
+    "apply_slug": "software-engineer-cloud-azure-rubrik-bangalore",
+    "location": "Bangalore"
+  },
+  {
+    "title": "Engineering Intern – Gen AI for FP&A Platform",
+    "company": "Drivetrain",
+    "company_url": "https://jobs.lever.co/drivetrain/bc1c17bc-86ac-4f00-a1e3-0eb85aae4fdc",
+    "link": "https://jobs.lever.co/drivetrain/bc1c17bc-86ac-4f00-a1e3-0eb85aae4fdc",
+    "apply_slug": "engineering-intern-gen-ai-for-fp-a-platform-drivetrain-india",
+    "location": "India"
+  },
+  {
+    "title": "Quality Assurance Engineering (QAE) - Intern",
+    "company": "Drivetrain",
+    "company_url": "https://jobs.lever.co/drivetrain/edb8a8f7-16ac-4177-bf2e-99c36ab47d5f",
+    "link": "https://jobs.lever.co/drivetrain/edb8a8f7-16ac-4177-bf2e-99c36ab47d5f",
+    "apply_slug": "quality-assurance-engineering-qae-intern-drivetrain-india",
+    "location": "India"
+  },
+  {
+    "title": "QA SW ENGINEER 10534- Network Protocol Testing- Python Automation (Fresher)",
+    "company": "Extreme Networks",
+    "company_url": "https://jobs.lever.co/extremenetworks/4458281f-9c51-4ea2-9f54-09ccd883b4f9",
+    "link": "https://jobs.lever.co/extremenetworks/4458281f-9c51-4ea2-9f54-09ccd883b4f9",
+    "apply_slug": "qa-sw-engineer-10534-network-protocol-testing-python-automation-extreme-networks",
+    "location": "Bangalore"
+  },
+  {
+    "title": "QA SW ENGINEER 10547- Layer2/Layer3 Protocol Testing (Fresher)",
+    "company": "Extreme Networks",
+    "company_url": "https://jobs.lever.co/extremenetworks/fbcbd7c0-a650-48b3-9fa2-f95146f73d9b",
+    "link": "https://jobs.lever.co/extremenetworks/fbcbd7c0-a650-48b3-9fa2-f95146f73d9b",
+    "apply_slug": "qa-sw-engineer-10547-layer2-layer3-protocol-testing-extreme-networks-bangalore",
+    "location": "Bangalore"
+  },
+  {
+    "title": "SW SYSTEMS ENGINEER 10139 - Layer2 & Layer 3 Forwarding Development- BCM Chipset (Fresher)",
+    "company": "Extreme Networks",
+    "company_url": "https://jobs.lever.co/extremenetworks/8bf87d77-a14f-4c33-b6f6-98448fd67866",
+    "link": "https://jobs.lever.co/extremenetworks/8bf87d77-a14f-4c33-b6f6-98448fd67866",
+    "apply_slug": "sw-systems-engineer-10139-layer2-layer-3-forwarding-development-bcm-chipset-extr",
+    "location": "Bangalore"
+  },
+  {
+    "title": "SW SYSTEMS ENGINEER 10374 - Layer2 & Layer 3 Forwarding Development- BCM Chipset (Fresher)",
+    "company": "Extreme Networks",
+    "company_url": "https://jobs.lever.co/extremenetworks/0dbc28c8-0a16-4ba3-bf4b-44fadbdfed01",
+    "link": "https://jobs.lever.co/extremenetworks/0dbc28c8-0a16-4ba3-bf4b-44fadbdfed01",
+    "apply_slug": "sw-systems-engineer-10374-layer2-layer-3-forwarding-development-bcm-chipset-extr",
+    "location": "Bangalore"
+  },
+  {
+    "title": "Trainee - Recruitment Coordinator",
+    "company": "Meesho",
+    "company_url": "https://jobs.lever.co/meesho/1de2fc88-e203-4f1a-8046-55df700de4be",
+    "link": "https://jobs.lever.co/meesho/1de2fc88-e203-4f1a-8046-55df700de4be",
+    "apply_slug": "trainee-recruitment-coordinator-meesho-bangalore-karnataka",
+    "location": "Bangalore, Karnataka"
+  },
+  {
+    "title": "Business Development Associate Intern",
+    "company": "Weekday",
+    "company_url": "https://jobs.lever.co/weekdayworks/e7bc46e7-f2af-4b93-bf46-9fedf00cbbfd",
+    "link": "https://jobs.lever.co/weekdayworks/e7bc46e7-f2af-4b93-bf46-9fedf00cbbfd",
+    "apply_slug": "business-development-associate-intern-weekday-india",
+    "location": "India"
+  },
+  {
+    "title": "Data Entry Intern",
+    "company": "Weekday",
+    "company_url": "https://jobs.lever.co/weekdayworks/1fc8b30b-8e31-41f0-a449-5c7f25577a3a",
+    "link": "https://jobs.lever.co/weekdayworks/1fc8b30b-8e31-41f0-a449-5c7f25577a3a",
+    "apply_slug": "data-entry-intern-weekday-bengaluru",
+    "location": "Bengaluru"
+  },
+  {
+    "title": "Founder’s Office Intern",
+    "company": "Weekday",
+    "company_url": "https://jobs.lever.co/weekdayworks/c7ef3e83-d2db-4170-a533-503751b4a0d5",
+    "link": "https://jobs.lever.co/weekdayworks/c7ef3e83-d2db-4170-a533-503751b4a0d5",
+    "apply_slug": "founder-s-office-intern-weekday-india",
+    "location": "India"
+  },
+  {
+    "title": "Software Engineer Intern",
+    "company": "Weekday",
+    "company_url": "https://jobs.lever.co/weekdayworks/a86efff4-1c2e-43fc-8ecb-dc8f873db2f1",
+    "link": "https://jobs.lever.co/weekdayworks/a86efff4-1c2e-43fc-8ecb-dc8f873db2f1",
+    "apply_slug": "software-engineer-intern-weekday-bengaluru",
+    "location": "Bengaluru"
+  },
+  {
+    "title": "Talent Operations Associate Consultant (Fresher)",
+    "company": "Weekday",
+    "company_url": "https://jobs.lever.co/weekdayworks/286e06b6-f72c-4968-95c2-437798a5e7d2",
+    "link": "https://jobs.lever.co/weekdayworks/286e06b6-f72c-4968-95c2-437798a5e7d2",
+    "apply_slug": "talent-operations-associate-consultant-weekday-india",
+    "location": "India"
   }
 ]

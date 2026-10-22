@@ -1,4 +1,3 @@
-
 """
 Acadeno careers - shared helpers.
 
@@ -14,10 +13,12 @@ import csv
 import os
 import re
 from datetime import date, datetime
+from urllib.parse import urlparse, parse_qs
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CAREERS_CSV = os.path.join(BASE_DIR, "careers.csv")
+CAREERS_CSV = os.path.join(BASE_DIR, "careers.csv")          # hand-picked openings
+AUTO_CSV = os.path.join(BASE_DIR, "careers_auto.csv")        # written by fetch_jobs.py
 
 COMPANY_NAME = "Acadeno Technologies"
 GENERAL_SLUG = "general"
@@ -48,6 +49,42 @@ SENIOR_EXPERIENCE_KEYWORDS = [
     "senior", "lead", "architect", "manager",
     "principal", "staff engineer",
 ]
+
+
+
+# ---------------------------------------------------------------------------
+# Direct-job-link rule: only a link to ONE vacancy is accepted, never a
+# careers home page or a search/list page.
+# ---------------------------------------------------------------------------
+LISTING_WORDS = {
+    "careers", "career", "jobs", "job", "joblist", "job-list", "job-openings",
+    "openings", "open-positions", "positions", "vacancies", "search",
+    "job-search", "early-careers", "campus", "campus-hiring", "students",
+    "clientportal", "candidate", "global-en", "india-en", "in-en", "en",
+    "india", "join-us", "work-with-us", "opportunities",
+}
+ID_HOSTS = ("ashbyhq.com", "greenhouse.io", "lever.co", "smartrecruiters.com",
+            "myworkdayjobs.com", "ripplehire.com", "workable.com", "recruitee.com")
+
+
+def is_specific_job_url(url):
+    """True only if the URL opens one specific job posting."""
+    url = (url or "").strip()
+    if not url.lower().startswith(("http://", "https://")):
+        return False
+    p = urlparse(url)
+    host = p.netloc.lower()
+    segs = [x for x in p.path.split("/") if x]
+
+    if "linkedin.com" in host and "/company/" in p.path:
+        return False
+    if not segs:
+        return False
+    if segs[-1].lower() in LISTING_WORDS:
+        return False
+    if any(h in host for h in ID_HOSTS):
+        return any(re.search(r"\d{4,}|[0-9a-f]{8}-[0-9a-f]{4}", x.lower()) for x in segs)
+    return True
 
 
 def is_gulf_location(location):
@@ -252,15 +289,20 @@ def load_openings(include_expired=False, include_ineligible=False):
     Set include_ineligible=True only when you intentionally need to
     inspect all listings, such as for administrative tooling.
     """
-    if not os.path.exists(CAREERS_CSV):
-        return []
-
     today = date.today()
     openings = []
     used_slugs = set()
 
-    with open(CAREERS_CSV, "r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
+    def _all_rows():
+        for path in (CAREERS_CSV, AUTO_CSV):
+            if not os.path.exists(path):
+                continue
+            with open(path, "r", encoding="utf-8-sig", newline="") as fh:
+                for r in csv.DictReader(fh):
+                    yield r
+
+    if True:
+        reader = _all_rows()
 
         for line_no, row in enumerate(reader, start=2):
             row = {
@@ -278,6 +320,10 @@ def load_openings(include_expired=False, include_ineligible=False):
 
             company = row.get("company", "") or COMPANY_NAME
             company_url = row.get("company_url", "") or row.get("link", "")
+
+            # Only direct links to one specific job are allowed.
+            if not include_ineligible and not is_specific_job_url(company_url):
+                continue
 
             last_date = parse_date(row.get("last_date", ""))
             if last_date == "invalid":

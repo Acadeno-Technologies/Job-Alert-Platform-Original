@@ -83,8 +83,8 @@ def external_jobs(portal_url):
                 expired += 1
                 continue
 
-                        # No link given -> we can't guess which opening it is, so skip it.
-            if not link or not link.lower().startswith("http"):
+            # No link given -> we can't guess which opening it is, so skip it.
+            if not careers.is_specific_job_url(link):
                 skipped += 1
                 continue
 
@@ -104,7 +104,7 @@ def main():
     final_india = []
     seen_india = set()
     for job in india_jobs + other_india:
-        key = (job["title"], job["company"])
+        key = job["link"]
         if key in seen_india:
             continue
         seen_india.add(key)
@@ -117,7 +117,7 @@ def main():
     final_gulf = []
     seen_gulf = set()
     for job in gulf_jobs:
-        key = (job["title"], job["company"])
+        key = job["link"]
         if key in seen_gulf:
             continue
         seen_gulf.add(key)

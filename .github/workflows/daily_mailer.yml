@@ -30,21 +30,25 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Build India jobs from careers.csv + my_jobs.csv
+      - name: Fetch live fresher openings (India + UAE)
+        run: |
+          python -u fetch_jobs.py
+
+      - name: Remove broken / careers-page links
+        run: |
+          python -u check_job_links.py --remove-dead
+
+      - name: Build jobs.json and gulf_jobs.json
         env:
           PORTAL_URL: ${{ secrets.PORTAL_URL }}
         run: |
           python -u build_jobs.py
 
-      - name: Refresh UAE / Gulf jobs
-        run: |
-          python -u gulf_job_fetcher.py
-
       - name: Save refreshed job files back to the repo
         run: |
           git config user.name "job-alert-bot"
           git config user.email "job-alert-bot@users.noreply.github.com"
-          git add jobs.json gulf_jobs.json
+          git add jobs.json gulf_jobs.json careers_auto.csv careers.csv
           if git diff --cached --quiet; then
             echo "No job changes to save."
           else

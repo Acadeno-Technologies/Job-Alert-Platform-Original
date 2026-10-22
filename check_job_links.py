@@ -1,12 +1,13 @@
-"""Audit job links and optionally remove confirmed dead links from CSV files.
+"""Audit job links and remove the broken ones.
 
-Run from the project folder:
-    python check_job_links.py
-    python check_job_links.py --remove-dead
+    python check_job_links.py                # report only
+    python check_job_links.py --remove-dead  # also delete bad rows (backup first)
 
-Only HTTP 404/410 links are removed with --remove-dead. Network errors,
-403/429, timeouts, and other uncertain results are reported but preserved.
-Backups are created before modifying any CSV.
+A row is REMOVED when:
+  * the link is a careers/search page instead of one specific job, or
+  * the page returns 404 / 410, or
+  * the page loads but says the job is closed / no longer available.
+Timeouts, 403 and 429 are only reported (many sites block bots) - those rows are kept.
 """
 import argparse
 import csv
@@ -17,113 +18,85 @@ import urllib.error
 import urllib.request
 from datetime import datetime
 
-CSV_FILES = ("careers.csv", "my_jobs.csv")
+from careers import is_specific_job_url
+
+CSV_FILES = ("careers.csv", "careers_auto.csv", "my_jobs.csv")
 URL_COLUMNS = ("company_url", "link", "url", "apply_url", "job_url")
-TIMEOUT = 12
-USER_AGENT = "Mozilla/5.0 (compatible; AcadenoJobLinkChecker/1.0)"
+TIMEOUT = 15
+UA = {"User-Agent": "Mozilla/5.0 (compatible; AcadenoJobLinkChecker/2.0)"}
+SOFT_404 = (
+    "no longer available", "no longer accepting", "position has been filled",
+    "job not found", "page not found", "this job is closed", "job has expired",
+    "posting has expired", "no longer open", "has been closed",
+)
 
 
 def get_link(row):
     for key in URL_COLUMNS:
-        value = (row.get(key) or "").strip()
-        if value.lower().startswith(("https://", "http://")):
-            return value
+        v = (row.get(key) or "").strip()
+        if v.lower().startswith(("http://", "https://")):
+            return v
     return ""
 
 
 def check_url(url):
-    """Return (status, final_url, reason). Be conservative about uncertain results."""
+    """Return (status, reason). status 'DEAD' means safe to delete."""
     if not url:
-        return "MISSING", "", "No HTTP(S) job URL"
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT}, method="GET")
+        return "DEAD", "no link"
+    if not is_specific_job_url(url):
+        return "DEAD", "careers/search page, not one specific job"
     try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as response:
-            final_url = response.geturl()
-            status = response.getcode()
-            # Read a small amount so servers that reject empty GET requests are tested.
-            response.read(512)
-            if status >= 400:
-                return str(status), final_url, "HTTP error"
-            if final_url.rstrip("/").lower() != url.rstrip("/").lower():
-                return "REDIRECT", final_url, "URL redirects; check whether it still opens the specific vacancy"
-            return "OK", final_url, "Responded successfully"
-    except urllib.error.HTTPError as exc:
-        final_url = exc.geturl() or url
-        if exc.code in (404, 410):
-            return str(exc.code), final_url, "Confirmed missing/gone"
-        if exc.code in (403, 429):
-            return str(exc.code), final_url, "Blocked/rate-limited; not safe to classify as dead"
-        return str(exc.code), final_url, "HTTP response; not automatically removed"
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        return "UNKNOWN", url, f"Network/timeout error: {exc}"
-
-
-def read_csv(path):
-    with open(path, "r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
-        fieldnames = reader.fieldnames or []
-        rows = list(reader)
-    return fieldnames, rows
-
-
-def write_csv(path, fieldnames, rows):
-    with open(path, "w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
+        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=TIMEOUT) as r:
+            body = r.read(60000).decode("utf-8", "ignore").lower()
+            if any(p in body for p in SOFT_404):
+                return "DEAD", "page says job is closed / not found"
+            return "OK", f"HTTP {r.getcode()}"
+    except urllib.error.HTTPError as e:
+        if e.code in (404, 410):
+            return "DEAD", f"HTTP {e.code}"
+        return "UNSURE", f"HTTP {e.code} (blocked/other) - kept"
+    except Exception as e:
+        return "UNSURE", f"network/timeout ({e}) - kept"
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--remove-dead", action="store_true",
-                        help="remove only confirmed HTTP 404/410 rows from CSVs")
-    args = parser.parse_args()
-    report_path = "job_link_check_report.csv"
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--remove-dead", action="store_true")
+    args = ap.parse_args()
     report = []
 
     for path in CSV_FILES:
         if not os.path.exists(path):
-            print(f"SKIP: {path} not found")
             continue
-        fieldnames, rows = read_csv(path)
-        if not fieldnames:
-            print(f"SKIP: {path} has no CSV header")
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            rd = csv.DictReader(f)
+            fields, rows = rd.fieldnames or [], list(rd)
+        if not fields:
             continue
-
-        dead_indices = set()
-        print(f"\nChecking {path} ({len(rows)} rows)...")
-        for idx, row in enumerate(rows):
-            title = (row.get("title") or "").strip()
-            company = (row.get("company") or "").strip()
+        print(f"\nChecking {path} ({len(rows)} rows)")
+        keep = []
+        for row in rows:
             url = get_link(row)
-            status, final_url, reason = check_url(url)
-            print(f"[{status}] {title or '(no title)'} — {company}: {url or '(no link)'}")
-            report.append({
-                "file": path, "row_number": idx + 2, "title": title,
-                "company": company, "url": url, "status": status,
-                "final_url": final_url, "reason": reason,
-            })
-            if args.remove_dead and status in ("404", "410"):
-                dead_indices.add(idx)
-            time.sleep(0.25)
+            status, reason = check_url(url)
+            print(f"[{status:6}] {row.get('title','')[:45]:45} | {row.get('company','')[:18]:18} | {reason}")
+            report.append({"file": path, "title": row.get("title", ""), "company": row.get("company", ""),
+                           "url": url, "status": status, "reason": reason})
+            if not (args.remove_dead and status == "DEAD"):
+                keep.append(row)
+            time.sleep(0.2)
+        if args.remove_dead and len(keep) != len(rows):
+            shutil.copy2(path, f"{path}.backup-{datetime.now():%Y%m%d-%H%M%S}")
+            with open(path, "w", encoding="utf-8-sig", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
+                w.writeheader()
+                w.writerows(keep)
+            print(f"REMOVED {len(rows) - len(keep)} bad row(s) from {path}")
 
-        if dead_indices:
-            backup = f"{path}.backup-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
-            shutil.copy2(path, backup)
-            remaining = [row for i, row in enumerate(rows) if i not in dead_indices]
-            write_csv(path, fieldnames, remaining)
-            print(f"REMOVED {len(dead_indices)} confirmed dead row(s) from {path}; backup: {backup}")
-        elif args.remove_dead:
-            print(f"No confirmed 404/410 rows to remove from {path}.")
-
-    if report:
-        columns = ["file", "row_number", "title", "company", "url", "status", "final_url", "reason"]
-        with open(report_path, "w", encoding="utf-8-sig", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=columns)
-            writer.writeheader()
-            writer.writerows(report)
-        print(f"\nReport saved to {report_path}")
-        print("Note: redirects and 403/429/network failures are reported, not automatically deleted.")
+    with open("job_link_check_report.csv", "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["file", "title", "company", "url", "status", "reason"])
+        w.writeheader()
+        w.writerows(report)
+    print("\nReport saved to job_link_check_report.csv")
 
 
 if __name__ == "__main__":

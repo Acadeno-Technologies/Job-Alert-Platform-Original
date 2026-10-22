@@ -1,7 +1,5 @@
-name: Update jobs when my_jobs.csv changes
+name: Refresh jobs (fetch -> verify -> build)
 
-# Runs whenever you push a change to my_jobs.csv, so jobs.json (and the portal)
-# update within a minute - without sending any emails.
 on:
   push:
     paths:
@@ -9,6 +7,9 @@ on:
       - 'careers.csv'
       - 'careers.py'
       - 'build_jobs.py'
+      - 'fetch_jobs.py'
+  schedule:
+    - cron: '0 3 * * *'     # every day 08:30 IST, before the 10 AM mailer
   workflow_dispatch:
 
 permissions:
@@ -18,29 +19,32 @@ jobs:
   build-jobs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Build jobs.json from careers.csv + my_jobs.csv
+      - name: Fetch live fresher openings from many companies
+        run: python -u fetch_jobs.py
+
+      - name: Remove broken / careers-page links from the CSVs
+        run: python -u check_job_links.py --remove-dead
+
+      - name: Build jobs.json
         env:
           PORTAL_URL: ${{ secrets.PORTAL_URL }}
-        run: |
-          python -u build_jobs.py
+        run: python -u build_jobs.py
 
-      - name: Save jobs.json back to the repo
+      - name: Save results back to the repo
         run: |
           git config user.name "job-alert-bot"
           git config user.email "job-alert-bot@users.noreply.github.com"
-          git add jobs.json
+          git add jobs.json gulf_jobs.json careers_auto.csv careers.csv
           if git diff --cached --quiet; then
-            echo "No changes to jobs.json."
+            echo "No changes."
           else
-            git commit -m "Auto-update jobs.json from careers.csv / my_jobs.csv"
+            git commit -m "Auto-refresh jobs"
             git pull --rebase
             git push
           fi

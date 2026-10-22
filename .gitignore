@@ -13,6 +13,7 @@ users.db
 uploads/
 email_preview.html
 *.bak
+*.backup-*
 jobs_backup.json
 jobs_direct_links.json
 jobs_filtered_candidates.json

@@ -1,14 +1,74 @@
 [
   {
-    "title": "Backend Engineer, Payments Platform",
+    "title": "Customer Excellence Specialist (Fresher)",
     "company": "Ziina",
-    "link": "https://jobs.ashbyhq.com/Ziina/b52d240f-2ccb-4aea-800b-623e9ca8ae09",
+    "company_url": "https://jobs.ashbyhq.com/Ziina/f7550c0e-b0bd-4786-8c52-e3956bef3717",
+    "link": "https://jobs.ashbyhq.com/Ziina/f7550c0e-b0bd-4786-8c52-e3956bef3717",
+    "apply_slug": "customer-excellence-specialist-ziina-dubai-uae",
+    "location": "Dubai, UAE"
+  },
+  {
+    "title": "Full-Stack Engineer (Internal Tools)",
+    "company": "Ziina",
+    "company_url": "https://jobs.ashbyhq.com/Ziina/fba4d650-5f20-4792-9ae7-472ef447b768",
+    "link": "https://jobs.ashbyhq.com/Ziina/fba4d650-5f20-4792-9ae7-472ef447b768",
+    "apply_slug": "full-stack-engineer-internal-tools-ziina-dubai",
     "location": "Dubai"
   },
   {
-    "title": "Product Designer",
-    "company": "Ziina",
-    "link": "https://jobs.ashbyhq.com/Ziina/9ba9497d-988b-4190-81ac-678de89f1c3b",
-    "location": "Dubai"
+    "title": "AML Transaction Monitoring Ops - Builders Program - (Emirati National) (Fresher)",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/4849504101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/4849504101",
+    "apply_slug": "aml-transaction-monitoring-ops-builders-program-emirati-national-tamara-dubai-un",
+    "location": "Dubai, United Arab Emirates"
+  },
+  {
+    "title": "Associate Accountant - Builders Program - (Emirati National) (Fresher)",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/4849511101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/4849511101",
+    "apply_slug": "associate-accountant-builders-program-emirati-national-tamara-dubai-united-arab",
+    "location": "Dubai, United Arab Emirates"
+  },
+  {
+    "title": "Associate Data Scientist - Builders Program - (Emirati National) (Fresher)",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/4849506101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/4849506101",
+    "apply_slug": "associate-data-scientist-builders-program-emirati-national-tamara-dubai-united-a",
+    "location": "Dubai, United Arab Emirates"
+  },
+  {
+    "title": "Collections Advisor",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/5005774101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/5005774101",
+    "apply_slug": "collections-advisor-tamara-riyadh-saudi-arabia",
+    "location": "Riyadh, Saudi Arabia"
+  },
+  {
+    "title": "Commercial Operations Intern",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/5004015101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/5004015101",
+    "apply_slug": "commercial-operations-intern-tamara-dubai-united-arab-emirates",
+    "location": "Dubai, United Arab Emirates"
+  },
+  {
+    "title": "Tamara Builders Program (Fresher)",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/4997585101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/4997585101",
+    "apply_slug": "tamara-builders-program-tamara-riyadh-saudi-arabia-dubai-united-arab-emirates",
+    "location": "Riyadh Saudi Arabia,   Dubai United Arab Emirates"
+  },
+  {
+    "title": "Tamara Internship Program",
+    "company": "Tamara",
+    "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/4996993101",
+    "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/4996993101",
+    "apply_slug": "tamara-internship-program-tamara-riyadh-saudi-arabia-dubai-united-arab-emirates",
+    "location": "Riyadh Saudi Arabia, Dubai United Arab Emirates"
   }
 ]
