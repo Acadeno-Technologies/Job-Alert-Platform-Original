@@ -531,8 +531,7 @@ def send_all_emails():
 
         msg = MIMEMultipart("alternative")
 
-        dispatch_time = datetime.now().strftime("%I:%M %p")
-        subject = f"Today's Verified IT Openings - {today} ({dispatch_time})".replace("\r", "").replace("\n", "").strip()
+        subject = f"Today's Verified IT Openings - {today}".replace("\r", "").replace("\n", "").strip()
         from_addr = f"Acadeno Careers <{EMAIL_USER}>".replace("\r", "").replace("\n", "").strip()
         reply_to = str(EMAIL_USER).replace("\r", "").replace("\n", "").strip()
 
