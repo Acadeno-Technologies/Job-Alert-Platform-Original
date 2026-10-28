@@ -1,42 +1,42 @@
 """
-fetch_jobs.py - pulls LIVE, fresher-level openings from many companies and
-writes them to careers_auto.csv (each row = ONE specific job page).
+fetch_jobs.py  (v3) - pulls LIVE fresher-level openings (0-2 yrs, below 2 yrs
+experience) from many companies' public job-board APIs and writes
+careers_auto.csv. Each row = ONE specific job page (no careers-page links).
 
-Uses the companies' public job-board APIs (Greenhouse, Lever, Ashby,
-SmartRecruiters). Because the API only lists vacancies that are open right now,
-every link it produces is a direct "apply to this job" page - never the
-generic careers page. Each link is then re-checked, and dead ones are dropped.
+Why jobs are always active: Greenhouse / Lever / Ashby / SmartRecruiters APIs
+only list vacancies that are OPEN right now. Every link is then re-checked and
+dead ones are dropped. Jobs older than MAX_AGE_DAYS are skipped, newest first,
+so each daily run brings new roles to the top.
 
-Run:   python fetch_jobs.py
-Needs: nothing extra (Python standard library only).
-
-To add a company: add one line to COMPANIES. If a board name is wrong, the
-script just prints "skip" for it and carries on.
+Run:   python fetch_jobs.py          (standard library only)
+Add a company: add one line to COMPANIES. A wrong board name just prints
+"skip" and the script carries on.
 """
 import csv
 import html
 import json
 import re
 import sys
-import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta, timezone
 
 from careers import is_specific_job_url, is_gulf_location
 
 OUTPUT_FILE = "careers_auto.csv"
 TIMEOUT = 20
-UA = {"User-Agent": "Mozilla/5.0 (compatible; AcadenoJobFetcher/2.0)"}
-MAX_PER_COMPANY = 8          # keeps one company from filling the whole list
+UA = {"User-Agent": "Mozilla/5.0 (compatible; AcadenoJobFetcher/3.0)"}
+MAX_PER_COMPANY = 10      # stops one company filling the whole list
+MAX_AGE_DAYS = 60         # skip postings older than this (when a date is known)
 
 # (Company name, ATS, board slug as it appears in the company's jobs URL)
-#   greenhouse -> boards.greenhouse.io/<slug>  or  job-boards.greenhouse.io/<slug>
-#   lever      -> jobs.lever.co/<slug>
-#   ashby      -> jobs.ashbyhq.com/<slug>
+#   greenhouse      -> boards.greenhouse.io/<slug> or job-boards.greenhouse.io/<slug>
+#   lever           -> jobs.lever.co/<slug>
+#   ashby           -> jobs.ashbyhq.com/<slug>
 #   smartrecruiters -> jobs.smartrecruiters.com/<slug>
 COMPANIES = [
-    # ---- India / product companies ----
+    # ---- India / product companies (Greenhouse) ----
     ("Postman",          "greenhouse", "postman"),
     ("Razorpay",         "greenhouse", "razorpay"),
     ("Groww",            "greenhouse", "groww"),
@@ -46,37 +46,85 @@ COMPANIES = [
     ("Stripe",           "greenhouse", "stripe"),
     ("Cloudflare",       "greenhouse", "cloudflare"),
     ("Rubrik",           "greenhouse", "rubrik"),
+    ("Datadog",          "greenhouse", "datadog"),
+    ("Elastic",          "greenhouse", "elastic"),
+    ("GitLab",           "greenhouse", "gitlab"),
+    ("Twilio",           "greenhouse", "twilio"),
+    ("Okta",             "greenhouse", "okta"),
+    ("Pinterest",        "greenhouse", "pinterest"),
+    ("Coinbase",         "greenhouse", "coinbase"),
+    ("Airbnb",           "greenhouse", "airbnb"),
+    ("Dropbox",          "greenhouse", "dropbox"),
+    ("Asana",            "greenhouse", "asana"),
+    ("Samsara",          "greenhouse", "samsara"),
+    ("Zscaler",          "greenhouse", "zscaler"),
+    ("Nutanix",          "greenhouse", "nutanix"),
+    ("PhonePe",          "greenhouse", "phonepe"),
+    ("Browserstack",     "greenhouse", "browserstack"),
+    ("Sprinklr",         "greenhouse", "sprinklr"),
+    ("Freshworks",       "greenhouse", "freshworks"),
+    ("Zeta",             "greenhouse", "zeta"),
+    ("Innovaccer",       "greenhouse", "innovaccer"),
+    ("Chargebee",        "greenhouse", "chargebee"),
+    ("Hasura",           "greenhouse", "hasura"),
+    # ---- India / product companies (Lever) ----
     ("Drivetrain",       "lever",      "drivetrain"),
     ("Extreme Networks", "lever",      "extremenetworks"),
     ("CRED",             "lever",      "cred"),
     ("Meesho",           "lever",      "meesho"),
     ("Weekday",          "lever",      "weekdayworks"),
+    ("Jupiter",          "lever",      "jupiter"),
+    ("Slice",            "lever",      "sliceit"),
+    ("Dream Sports",     "lever",      "dreamsports"),
+    ("Paytm",            "lever",      "paytm"),
+    ("KreditBee",        "lever",      "kreditbee"),
+    ("Spotify",          "lever",      "spotify"),
+    ("Palantir",         "lever",      "palantir"),
+    # ---- India (Ashby) ----
+    ("Sarvam AI",        "ashby",      "sarvam"),
+    ("Atlan",            "ashby",      "atlan"),
+    ("Notion",           "ashby",      "notion"),
+    ("Ramp",             "ashby",      "ramp"),
+    # ---- India (SmartRecruiters) ----
     ("Bosch India",      "smartrecruiters", "BoschGroup"),
+    ("Visa",             "smartrecruiters", "Visa"),
+    ("ServiceNow",       "smartrecruiters", "ServiceNow"),
+    ("Experian",         "smartrecruiters", "Experian"),
     # ---- UAE / Gulf ----
     ("Ziina",            "ashby",      "Ziina"),
     ("Tabby",            "greenhouse", "tabby"),
     ("Tamara",           "greenhouse", "tamara"),
     ("Careem",           "greenhouse", "careem"),
+    ("Property Finder",  "greenhouse", "propertyfinder"),
+    ("Lean Technologies","lever",      "leantech"),
+    ("Kitopi",           "lever",      "kitopi"),
+    ("Sarwa",            "lever",      "sarwa"),
 ]
 
 INDIA_WORDS = [
     "india", "kerala", "kochi", "cochin", "ernakulam", "infopark", "trivandrum",
     "thiruvananthapuram", "technopark", "kozhikode", "calicut", "thrissur",
     "bangalore", "bengaluru", "chennai", "hyderabad", "pune", "mumbai",
-    "delhi", "gurgaon", "gurugram", "noida", "coimbatore", "remote - india",
+    "delhi", "gurgaon", "gurugram", "noida", "coimbatore", "ahmedabad",
+    "kolkata", "jaipur", "remote - india", "remote, india",
 ]
 
-FRESHER_WORDS = [
+# Title words that clearly mean fresher / junior level
+FRESHER_TITLE_WORDS = [
     "fresher", "freshers", "new grad", "new graduate", "recent graduate",
     "graduate trainee", "graduate engineer", "entry level", "entry-level",
     "trainee", "intern", "internship", "apprentice", "campus", "junior",
-    "associate software", "software engineer i", "sde i", "sde 1", "sde-1",
-    "engineer 1", "engineer i", "builders program", "early career",
+    "associate software", "software engineer i", "software engineer 1",
+    "sde i", "sde 1", "sde-1", "engineer 1", "engineer i", "builders program",
+    "early career", "graduate program", "graduate", "analyst i", "associate i",
 ]
+INTERN_WORDS = ["intern", "internship", "trainee", "apprentice"]
+
 SENIOR_WORDS = [
     "senior", "sr.", "sr ", "lead", "staff", "principal", "architect",
     "manager", "head", "director", "vp ", "vice president", "distinguished",
-    "iii", "iv", " ii ", "level 2", "l3", "l4", "l5",
+    " iii", " iv", " ii ", " ii)", "level 2", "l3", "l4", "l5", "l6", "sde 2",
+    "sde ii", "sde-2", "engineer 2", "engineer ii", "founding", "specialist iii",
 ]
 
 
@@ -98,30 +146,71 @@ def has_word(text, words):
     return any(w in t for w in words)
 
 
-def min_years_required(text):
-    """Smallest 'N years' figure mentioned near 'experience'; None if unknown."""
-    found = []
-    for m in re.finditer(r"(\d{1,2})\s*\+?\s*(?:-|to|–)?\s*(\d{1,2})?\s*(?:\+\s*)?(?:years?|yrs?)", text.lower()):
-        ctx = text.lower()[max(0, m.start() - 60): m.end() + 60]
-        if "experience" in ctx or "exp" in ctx:
-            found.append(int(m.group(1)))
-    return min(found) if found else None
+def parse_when(value):
+    """ISO string or epoch(ms) -> aware datetime, else None."""
+    if not value:
+        return None
+    try:
+        if isinstance(value, (int, float)):
+            return datetime.fromtimestamp(value / 1000, tz=timezone.utc)
+        v = str(value).replace("Z", "+00:00")
+        d = datetime.fromisoformat(v)
+        return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+_EXP = re.compile(
+    r"(\d{1,2})\s*(?:\+|plus)?\s*(?:(?:-|–|to)\s*(\d{1,2}))?\s*\+?\s*(?:years?|yrs?)",
+    re.I,
+)
+
+
+def experience_requirements(text):
+    """List of (min_years, max_years) mentioned near the word 'experience'."""
+    low = text.lower()
+    out = []
+    for m in _EXP.finditer(low):
+        ctx = low[max(0, m.start() - 70): m.end() + 70]
+        if "experience" not in ctx and " exp" not in ctx:
+            continue
+        lo = int(m.group(1))
+        hi = int(m.group(2)) if m.group(2) else None
+        before = low[max(0, m.start() - 15): m.start()]
+        if re.search(r"(up to|under|below|less than|upto|max(?:imum)?(?: of)?)\s*$", before):
+            out.append((0, lo))      # "up to 2 years" = 0-2
+            continue
+        if hi is None and "+" in m.group(0):
+            hi = 99                  # "3+ years" = open ended
+        out.append((lo, hi if hi is not None else lo))
+    return out
 
 
 def classify_level(title, description):
-    """Return an experience label for fresher-level roles, else None."""
+    """Experience label for jobs needing below 2 years, else None."""
     if has_word(title, SENIOR_WORDS):
         return None
-    t_fresh = has_word(title, FRESHER_WORDS)
-    if has_word(title, ["intern", "internship", "trainee", "apprentice"]):
+    if has_word(title, INTERN_WORDS):
         return "Internship"
-    yrs = min_years_required(description)
-    if t_fresh:
+    reqs = experience_requirements(description)
+    # Any stated requirement of 2+ years (min >= 2) disqualifies the job.
+    if any(lo >= 2 for lo, _hi in reqs):
+        return None
+    title_fresh = has_word(title, FRESHER_TITLE_WORDS)
+    desc = description.lower()
+    desc_fresh = bool(re.search(
+        r"\bfreshers?\b|new grad|recent graduate|entry[- ]level|no prior experience|"
+        r"0\s*(?:-|–|to)\s*[12]\s*years?|up to 2 years|less than 2 years|"
+        r"1\s*(?:-|–|to)\s*2\s*years?|graduating in 202\d", desc))
+    low_req = bool(reqs) and all(lo <= 1 and hi <= 2 for lo, hi in reqs)
+    if title_fresh and not any(lo >= 2 for lo, _ in reqs):
         return "Fresher (0-1 year)"
-    if yrs is not None and yrs <= 1 and re.search(r"fresher|new grad|recent graduate|0\s*[-–to]+\s*[12]", description.lower()):
+    if low_req and (desc_fresh or any(lo == 0 for lo, _ in reqs)):
         return "Fresher (0-1 year)"
-    if yrs is not None and yrs <= 2 and re.search(r"0\s*[-–to]+\s*2|1\s*[-–to]+\s*2|up to 2|0-2", description.lower()):
+    if low_req:
         return "0-2 years"
+    if desc_fresh and not reqs:
+        return "Fresher (0-1 year)"
     return None
 
 
@@ -139,6 +228,7 @@ def read_greenhouse(slug):
             "url": j.get("absolute_url", ""),
             "location": (j.get("location") or {}).get("name", ""),
             "text": strip_html(j.get("content", "")),
+            "posted": parse_when(j.get("first_published") or j.get("updated_at")),
         }
 
 
@@ -151,6 +241,7 @@ def read_lever(slug):
             "url": j.get("hostedUrl", ""),
             "location": cats.get("location", "") or ", ".join(cats.get("allLocations", []) or []),
             "text": j.get("descriptionPlain", "") or strip_html(j.get("description", "")),
+            "posted": parse_when(j.get("createdAt")),
         }
 
 
@@ -164,6 +255,7 @@ def read_ashby(slug):
             "url": j.get("jobUrl", ""),
             "location": j.get("location", "") or "",
             "text": j.get("descriptionPlain", "") or strip_html(j.get("descriptionHtml", "")),
+            "posted": parse_when(j.get("publishedAt")),
         }
 
 
@@ -176,6 +268,7 @@ def read_smartrecruiters(slug):
             "url": f"https://jobs.smartrecruiters.com/{slug}/{j.get('id', '')}",
             "location": ", ".join(x for x in (loc.get("city"), loc.get("country", "").upper()) if x),
             "text": ((j.get("experienceLevel") or {}).get("label", "")) + " " + (j.get("name", "")),
+            "posted": parse_when(j.get("releasedDate")),
         }
 
 
@@ -195,6 +288,7 @@ SOFT_404 = (
     "no longer available", "no longer accepting", "position has been filled",
     "job not found", "page not found", "this job is closed", "job has expired",
     "posting has expired", "no longer open", "has been closed",
+    "this job is no longer", "no longer exists", "not accepting applications",
 )
 
 
@@ -219,8 +313,13 @@ def collect(entry):
     except Exception as exc:
         print(f"  skip  {name:<18} ({ats}/{slug}): {exc}")
         return []
+    cutoff = datetime.now(timezone.utc) - timedelta(days=MAX_AGE_DAYS)
+    # newest first, so each daily run surfaces the latest roles
+    raw.sort(key=lambda j: j["posted"] or datetime(1970, 1, 1, tzinfo=timezone.utc), reverse=True)
     rows = []
     for j in raw:
+        if j["posted"] and j["posted"] < cutoff:
+            continue
         if not location_ok(j["location"]) or not is_specific_job_url(j["url"]):
             continue
         level = classify_level(j["title"], j["text"])
@@ -256,7 +355,6 @@ def main():
         if not ok:
             print(f"  DEAD, removed: {r['title']} | {r['company']}")
 
-    # De-duplicate by link
     seen, final = set(), []
     for r in kept:
         if r["company_url"] not in seen:
