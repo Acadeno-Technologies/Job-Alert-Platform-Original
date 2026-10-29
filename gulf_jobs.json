@@ -1,13 +1,5 @@
 [
   {
-    "title": "Customer Excellence Specialist (Fresher)",
-    "company": "Ziina",
-    "company_url": "https://jobs.ashbyhq.com/Ziina/f7550c0e-b0bd-4786-8c52-e3956bef3717",
-    "link": "https://jobs.ashbyhq.com/Ziina/f7550c0e-b0bd-4786-8c52-e3956bef3717",
-    "apply_slug": "customer-excellence-specialist-ziina-dubai-uae",
-    "location": "Dubai, UAE"
-  },
-  {
     "title": "Merchant Acquisition Intern",
     "company": "Tamara",
     "company_url": "https://job-boards.eu.greenhouse.io/tamara/jobs/5017363101",
@@ -54,5 +46,13 @@
     "link": "https://job-boards.eu.greenhouse.io/tamara/jobs/4996993101",
     "apply_slug": "tamara-internship-program-tamara-riyadh-saudi-arabia-dubai-united-arab-emirates",
     "location": "Riyadh Saudi Arabia, Dubai United Arab Emirates"
+  },
+  {
+    "title": "Customer Excellence Specialist (Fresher)",
+    "company": "Ziina",
+    "company_url": "https://jobs.ashbyhq.com/Ziina/f7550c0e-b0bd-4786-8c52-e3956bef3717",
+    "link": "https://jobs.ashbyhq.com/Ziina/f7550c0e-b0bd-4786-8c52-e3956bef3717",
+    "apply_slug": "customer-excellence-specialist-ziina-dubai-uae",
+    "location": "Dubai, UAE"
   }
 ]
