@@ -294,7 +294,7 @@ def load_openings(include_expired=False, include_ineligible=False):
     used_slugs = set()
 
     def _all_rows():
-        for path in (CAREERS_CSV, AUTO_CSV):
+        for path in (AUTO_CSV, CAREERS_CSV):
             if not os.path.exists(path):
                 continue
             with open(path, "r", encoding="utf-8-sig", newline="") as fh:
