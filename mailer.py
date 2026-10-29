@@ -237,6 +237,20 @@ def filter_working_jobs(job_list):
 
 jobs = filter_working_jobs(jobs)
 
+# ---- send ONLY new jobs (never repeat jobs already emailed) ----
+SENT_FILE = "sent_jobs.json"
+try:
+    with open(SENT_FILE, "r", encoding="utf-8") as _f:
+        _sent = json.load(_f)
+except Exception:
+    _sent = {}
+jobs = [j for j in jobs if j.get("link") and j.get("link") not in _sent]
+NEW_LINKS = [j["link"] for j in jobs]
+if not jobs:
+    print("No new jobs since the last email. Skipping email.")
+    sys.exit(0)
+print(f"{len(jobs)} NEW jobs to email.")
+
 today = datetime.now().strftime("%d %B %Y")
 
 def classify_job(job):
@@ -552,6 +566,17 @@ def send_all_emails():
             traceback.print_exc()
 
     server.quit()
+
+    # remember these jobs so they are never emailed again
+    try:
+        _all = dict(_sent)
+        _day = datetime.now().strftime("%Y-%m-%d")
+        for _l in NEW_LINKS:
+            _all[_l] = _day
+        with open(SENT_FILE, "w", encoding="utf-8") as _f:
+            json.dump(_all, _f, indent=1)
+    except Exception as _e:
+        print("Could not save sent_jobs.json:", _e)
 
     print("\n========================================")
     print("All Student Emails Sent Successfully")
