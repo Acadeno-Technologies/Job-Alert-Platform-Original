@@ -1,19 +1,19 @@
 [
   {
-    "title": "Video Editor Intern",
-    "company": "Groww",
-    "company_url": "https://job-boards.eu.greenhouse.io/groww/jobs/4956817101",
-    "link": "https://job-boards.eu.greenhouse.io/groww/jobs/4956817101",
-    "apply_slug": "video-editor-intern-groww-bengaluru-vtp-india",
-    "location": "Bengaluru-VTP, India"
-  },
-  {
     "title": "Payroll Industrial Trainee",
     "company": "Rubrik",
     "company_url": "https://www.rubrik.com/company/careers/departments/job.8305308?gh_jid=8305308",
     "link": "https://www.rubrik.com/company/careers/departments/job.8305308?gh_jid=8305308",
     "apply_slug": "payroll-industrial-trainee-rubrik-bangalore",
     "location": "Bangalore"
+  },
+  {
+    "title": "Software Engineer Product Infra: Core Services",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8282005?gh_jid=8282005",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8282005?gh_jid=8282005",
+    "apply_slug": "software-engineer-product-infra-core-services-rubrik-bengaluru",
+    "location": "Bengaluru"
   },
   {
     "title": "Industrial Trainee",
@@ -29,6 +29,14 @@
     "company_url": "https://www.rubrik.com/company/careers/departments/job.8258200?gh_jid=8258200",
     "link": "https://www.rubrik.com/company/careers/departments/job.8258200?gh_jid=8258200",
     "apply_slug": "software-engineer-cloud-azure-rubrik-bangalore",
+    "location": "Bangalore"
+  },
+  {
+    "title": "Software Engineer- SaaS O365 (Fresher)",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8256407?gh_jid=8256407",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8256407?gh_jid=8256407",
+    "apply_slug": "software-engineer-saas-o365-rubrik-bangalore",
     "location": "Bangalore"
   },
   {
