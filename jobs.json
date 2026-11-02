@@ -16,6 +16,14 @@
     "location": "Bangalore"
   },
   {
+    "title": "Software Engineer - Cloud: Azure (Fresher)",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8258200?gh_jid=8258200",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8258200?gh_jid=8258200",
+    "apply_slug": "software-engineer-cloud-azure-rubrik-bangalore",
+    "location": "Bangalore"
+  },
+  {
     "title": "Software Engineer- SaaS O365 (Fresher)",
     "company": "Rubrik",
     "company_url": "https://www.rubrik.com/company/careers/departments/job.8256407?gh_jid=8256407",
@@ -96,14 +104,6 @@
     "location": "Gurugram, Haryana"
   },
   {
-    "title": "Internship - Talent Acquisition",
-    "company": "Paytm",
-    "company_url": "https://jobs.lever.co/paytm/a2f53649-1fe8-4a0d-97ee-24dab719a9e8",
-    "link": "https://jobs.lever.co/paytm/a2f53649-1fe8-4a0d-97ee-24dab719a9e8",
-    "apply_slug": "internship-talent-acquisition-paytm-noida-uttar-pradesh",
-    "location": "Noida, Uttar Pradesh"
-  },
-  {
     "title": "Talent Acquisition Intern - Bangalore",
     "company": "Paytm",
     "company_url": "https://jobs.lever.co/paytm/88e8b698-8f03-4e09-9581-168f831fb3af",
@@ -136,18 +136,10 @@
     "location": "bangalore, IN"
   },
   {
-    "title": "Product Designer (Fresher)",
-    "company": "ServiceNow",
-    "company_url": "https://jobs.smartrecruiters.com/ServiceNow/744000158193067",
-    "link": "https://jobs.smartrecruiters.com/ServiceNow/744000158193067",
-    "apply_slug": "product-designer-servicenow-hyderabad-in",
-    "location": "Hyderabad, IN"
-  },
-  {
     "title": "Consumer Support Associate – Internal Ombudsman Secretariat",
     "company": "Experian",
-    "company_url": "https://jobs.smartrecruiters.com/Experian/744000152633156",
-    "link": "https://jobs.smartrecruiters.com/Experian/744000152633156",
+    "company_url": "https://jobs.smartrecruiters.com/Experian/744000159062939",
+    "link": "https://jobs.smartrecruiters.com/Experian/744000159062939",
     "apply_slug": "consumer-support-associate-internal-ombudsman-secretariat-experian-mumbai-in",
     "location": "Mumbai, IN"
   },
