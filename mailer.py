@@ -237,19 +237,22 @@ def filter_working_jobs(job_list):
 
 jobs = filter_working_jobs(jobs)
 
-# ---- send ONLY new jobs (never repeat jobs already emailed) ----
+# ---- ALWAYS email daily: new jobs first, then top-up with other open jobs ----
 SENT_FILE = "sent_jobs.json"
+MIN_JOBS_PER_EMAIL = 8          # email always has at least this many jobs (if available)
 try:
     with open(SENT_FILE, "r", encoding="utf-8") as _f:
         _sent = json.load(_f)
 except Exception:
     _sent = {}
-jobs = [j for j in jobs if j.get("link") and j.get("link") not in _sent]
+_new_jobs = [j for j in jobs if j.get("link") and j.get("link") not in _sent]
+_old_jobs = [j for j in jobs if j.get("link") and j.get("link") in _sent]
+# top-up: jobs that were emailed LONGEST ago come first, so the list rotates daily
+_old_jobs.sort(key=lambda j: _sent.get(j["link"], ""))
+_need = max(0, MIN_JOBS_PER_EMAIL - len(_new_jobs))
+jobs = _new_jobs + _old_jobs[:_need]
 NEW_LINKS = [j["link"] for j in jobs]
-if not jobs:
-    print("No new jobs since the last email. Skipping email.")
-    sys.exit(0)
-print(f"{len(jobs)} NEW jobs to email.")
+print(f"{len(_new_jobs)} NEW jobs + {len(jobs) - len(_new_jobs)} top-up jobs = {len(jobs)} jobs to email.")
 
 today = datetime.now().strftime("%d %B %Y")
 
@@ -427,6 +430,43 @@ else:
     cards = ("<p style='color:#666;'>No active job postings found today. Please check back soon!</p>"
              f"<p style='color:#666;'>You can still <a href='{portal_url}/careers' style='color:#5f2cff;font-weight:700;'>send your resume to Acadeno Careers</a>.</p>")
 
+# ---- Daily live-search links on trusted job portals (always fresh, never expired) ----
+PORTAL_LINKS = [
+    ("LinkedIn", [
+        ("Fresher Software / IT jobs - India (last 24 hrs)",
+         "https://www.linkedin.com/jobs/search/?keywords=fresher%20software%20developer&location=India&f_E=1%2C2&f_TPR=r86400"),
+        ("Entry-level jobs - Kerala (last 24 hrs)",
+         "https://www.linkedin.com/jobs/search/?keywords=fresher&location=Kerala%2C%20India&f_E=1%2C2&f_TPR=r86400"),
+        ("Entry-level IT jobs - UAE (last 24 hrs)",
+         "https://www.linkedin.com/jobs/search/?keywords=fresher%20software&location=United%20Arab%20Emirates&f_E=1%2C2&f_TPR=r86400"),
+    ]),
+    ("Naukri", [
+        ("Fresher jobs - India", "https://www.naukri.com/fresher-jobs"),
+        ("Software developer fresher jobs", "https://www.naukri.com/software-developer-fresher-jobs"),
+        ("Fresher jobs in Kochi", "https://www.naukri.com/fresher-jobs-in-kochi"),
+    ]),
+    ("Naukrigulf", [
+        ("Jobs in UAE", "https://www.naukrigulf.com/jobs-in-uae"),
+        ("IT / Software jobs in UAE", "https://www.naukrigulf.com/it-software-jobs-in-uae"),
+    ]),
+]
+
+def build_portal_block():
+    html = ('<div style="margin-top:30px;padding:12px 16px;background:#e0f2fe;color:#075985;'
+            'border-radius:10px;font-size:17px;font-weight:800;">🔎 Today\'s fresh jobs on top portals</div>'
+            '<p style="font-size:13px;color:#64748b;margin:8px 0 4px;">Live search pages - they always show '
+            'the latest openings. Experience filter: fresher / entry level.</p>')
+    for site, links in PORTAL_LINKS:
+        html += (f'<h3 style="color:#0f172a;margin:16px 0 8px;font-size:15px;border-left:4px solid #38bdf8;'
+                 f'padding-left:10px;">{site}</h3>')
+        for label, url in links:
+            html += (f'<div style="margin:6px 0;"><a href="{url}" style="display:inline-block;background:#f1f5f9;'
+                     f'color:#1d4ed8;text-decoration:none;font-weight:600;font-size:14px;padding:10px 14px;'
+                     f'border-radius:8px;border:1px solid #e2e8f0;">{label} &rarr;</a></div>')
+    return html
+
+portal_block = build_portal_block()
+
 html_template = f"""
 <!DOCTYPE html>
 <html>
@@ -468,6 +508,7 @@ Date : <b>{today}</b>
 
 {cards}
 
+{portal_block}
 
 <p style="margin-top:28px;font-size:14px;color:#334155;">
 Best Wishes,<br>
@@ -567,7 +608,7 @@ def send_all_emails():
 
     server.quit()
 
-    # remember these jobs so they are never emailed again
+    # remember when each job was emailed (new jobs first, oldest-sent jobs rotate back in)
     try:
         _all = dict(_sent)
         _day = datetime.now().strftime("%Y-%m-%d")
