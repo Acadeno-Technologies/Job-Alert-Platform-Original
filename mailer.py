@@ -237,22 +237,6 @@ def filter_working_jobs(job_list):
 
 jobs = filter_working_jobs(jobs)
 
-# ---- ALWAYS email daily: new jobs first, then top-up with other open jobs ----
-SENT_FILE = "sent_jobs.json"
-MIN_JOBS_PER_EMAIL = 8          # email always has at least this many jobs (if available)
-try:
-    with open(SENT_FILE, "r", encoding="utf-8") as _f:
-        _sent = json.load(_f)
-except Exception:
-    _sent = {}
-_new_jobs = [j for j in jobs if j.get("link") and j.get("link") not in _sent]
-_old_jobs = [j for j in jobs if j.get("link") and j.get("link") in _sent]
-# top-up: jobs that were emailed LONGEST ago come first, so the list rotates daily
-_old_jobs.sort(key=lambda j: _sent.get(j["link"], ""))
-_need = max(0, MIN_JOBS_PER_EMAIL - len(_new_jobs))
-jobs = _new_jobs + _old_jobs[:_need]
-NEW_LINKS = [j["link"] for j in jobs]
-print(f"{len(_new_jobs)} NEW jobs + {len(jobs) - len(_new_jobs)} top-up jobs = {len(jobs)} jobs to email.")
 
 today = datetime.now().strftime("%d %B %Y")
 
@@ -309,6 +293,26 @@ def classify_job(job):
     else:
         return 4
 
+
+# ---- ALWAYS email daily: new jobs first, then top-up with other open jobs ----
+HIDE_IT_AND_AI_JOBS = False     # True = leave out AI/Data and Software/IT jobs
+SENT_FILE = "sent_jobs.json"
+MIN_JOBS_PER_EMAIL = 8          # email always has at least this many jobs (if available)
+try:
+    with open(SENT_FILE, "r", encoding="utf-8") as _f:
+        _sent = json.load(_f)
+except Exception:
+    _sent = {}
+if HIDE_IT_AND_AI_JOBS:
+    jobs = [j for j in jobs if classify_job(j) not in (1, 2, 5)]
+_new_jobs = [j for j in jobs if j.get("link") and j.get("link") not in _sent]
+_old_jobs = [j for j in jobs if j.get("link") and j.get("link") in _sent]
+# top-up: jobs that were emailed LONGEST ago come first, so the list rotates daily
+_old_jobs.sort(key=lambda j: _sent.get(j["link"], ""))
+_need = max(0, MIN_JOBS_PER_EMAIL - len(_new_jobs))
+jobs = _new_jobs + _old_jobs[:_need]
+NEW_LINKS = [j["link"] for j in jobs]
+print(f"{len(_new_jobs)} NEW jobs + {len(jobs) - len(_new_jobs)} top-up jobs = {len(jobs)} jobs to email.")
 
 import urllib.parse
 
@@ -380,7 +384,7 @@ if jobs:
             box-sizing:border-box;
         ">
             {badge_html}
-            <h3 style="color:#5f2cff;margin-top:4px;margin-bottom:8px;font-size:16px;line-height:1.4;">{display_title}</h3>
+            <h3 style="margin-top:4px;margin-bottom:8px;font-size:16px;line-height:1.4;"><a href="{link}" target="_blank" style="color:#5f2cff;text-decoration:none;">{display_title}</a></h3>
             {location_html}
             <a href="{link}" target="_blank" style="background:#5f2cff;color:white;padding:9px 18px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:700;font-size:13px;">Apply Now</a>
         </div>
@@ -430,42 +434,73 @@ else:
     cards = ("<p style='color:#666;'>No active job postings found today. Please check back soon!</p>"
              f"<p style='color:#666;'>You can still <a href='{portal_url}/careers' style='color:#5f2cff;font-weight:700;'>send your resume to Acadeno Careers</a>.</p>")
 
-# ---- Daily live-search links on trusted job portals (always fresh, never expired) ----
-PORTAL_LINKS = [
-    ("LinkedIn", [
-        ("Fresher Software / IT jobs - India (last 24 hrs)",
-         "https://www.linkedin.com/jobs/search/?keywords=fresher%20software%20developer&location=India&f_E=1%2C2&f_TPR=r86400"),
-        ("Entry-level jobs - Kerala (last 24 hrs)",
-         "https://www.linkedin.com/jobs/search/?keywords=fresher&location=Kerala%2C%20India&f_E=1%2C2&f_TPR=r86400"),
-        ("Entry-level IT jobs - UAE (last 24 hrs)",
-         "https://www.linkedin.com/jobs/search/?keywords=fresher%20software&location=United%20Arab%20Emirates&f_E=1%2C2&f_TPR=r86400"),
-    ]),
-    ("Naukri", [
-        ("Fresher jobs - India", "https://www.naukri.com/fresher-jobs"),
-        ("Software developer fresher jobs", "https://www.naukri.com/software-developer-fresher-jobs"),
-        ("Fresher jobs in Kochi", "https://www.naukri.com/fresher-jobs-in-kochi"),
-    ]),
-    ("Naukrigulf", [
-        ("Jobs in UAE", "https://www.naukrigulf.com/jobs-in-uae"),
-        ("IT / Software jobs in UAE", "https://www.naukrigulf.com/it-software-jobs-in-uae"),
-    ]),
+# ---- Daily role list: each job name links to LinkedIn / Naukri / Naukrigulf ----
+from urllib.parse import quote
+
+SHOW_COMPANY_JOBS = True    # True = specific job openings (each name opens that exact job)
+SHOW_ROLE_LIST = False      # True = also add the general role-search list at the bottom
+INDIA_ROLES_PER_DAY = 10
+GULF_ROLES_PER_DAY = 8
+
+INDIA_ROLES = [
+    "HR Executive", "Digital Marketing Executive", "Content Writer", "Graphic Designer",
+    "Customer Support Executive", "Business Development Executive", "Sales Executive",
+    "Accountant", "Operations Executive", "Back Office Executive", "Data Entry Operator",
+    "Administrative Assistant", "Civil Engineer", "Mechanical Engineer", "Electrical Engineer",
+    "Banking Associate", "Finance Executive", "Logistics Coordinator", "Teacher", "Telecaller",
+    "Medical Coder", "Social Media Executive", "Recruiter", "Customer Relationship Executive",
+]
+GULF_ROLES = [
+    "Accountant", "Sales Executive", "Customer Service Representative", "Receptionist",
+    "HR Executive", "Marketing Executive", "Administrative Assistant", "Storekeeper",
+    "Civil Engineer", "Mechanical Engineer", "Electrical Engineer", "Graphic Designer",
+    "Business Development Executive", "Cashier", "Logistics Coordinator", "Procurement Executive",
 ]
 
-def build_portal_block():
-    html = ('<div style="margin-top:30px;padding:12px 16px;background:#e0f2fe;color:#075985;'
-            'border-radius:10px;font-size:17px;font-weight:800;">🔎 Today\'s fresh jobs on top portals</div>'
-            '<p style="font-size:13px;color:#64748b;margin:8px 0 4px;">Live search pages - they always show '
-            'the latest openings. Experience filter: fresher / entry level.</p>')
-    for site, links in PORTAL_LINKS:
-        html += (f'<h3 style="color:#0f172a;margin:16px 0 8px;font-size:15px;border-left:4px solid #38bdf8;'
-                 f'padding-left:10px;">{site}</h3>')
-        for label, url in links:
-            html += (f'<div style="margin:6px 0;"><a href="{url}" style="display:inline-block;background:#f1f5f9;'
-                     f'color:#1d4ed8;text-decoration:none;font-weight:600;font-size:14px;padding:10px 14px;'
-                     f'border-radius:8px;border:1px solid #e2e8f0;">{label} &rarr;</a></div>')
+def _daily_pick(items, count):
+    """Different roles every day (rotates through the whole list)."""
+    day = datetime.now().timetuple().tm_yday
+    start = (day * count) % len(items)
+    return [items[(start + i) % len(items)] for i in range(min(count, len(items)))]
+
+def _slug(role):
+    return "-".join(role.lower().replace("/", " ").split())
+
+def linkedin_url(role, location):
+    return ("https://www.linkedin.com/jobs/search/?keywords=" + quote(role)
+            + "&location=" + quote(location) + "&f_E=1%2C2&f_TPR=r86400")
+
+def naukri_url(role):
+    return f"https://www.naukri.com/{_slug(role)}-jobs?experience=0"
+
+def naukrigulf_url(role):
+    return f"https://www.naukrigulf.com/{_slug(role)}-jobs-in-uae"
+
+def _role_row(role, main_url, links):
+    small = " &nbsp;|&nbsp; ".join(
+        f'<a href="{u}" style="color:#5f2cff;text-decoration:none;font-weight:600;">{n}</a>' for n, u in links)
+    return (f'<div style="border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin:8px 0;">'
+            f'<a href="{main_url}" style="color:#1e1b4b;font-size:15px;font-weight:700;text-decoration:none;">{role}</a>'
+            f'<div style="font-size:13px;margin-top:5px;">Apply on: {small}</div></div>')
+
+def build_role_list():
+    html = ('<div style="margin-top:22px;padding:12px 16px;background:#ede9fe;color:#5f2cff;'
+            'border-radius:10px;font-size:17px;font-weight:800;">🇮🇳 India - Fresher / Entry Level Jobs</div>'
+            '<p style="font-size:12px;color:#64748b;margin:6px 0;">Click a job name to see today\'s latest openings.</p>')
+    for role in _daily_pick(INDIA_ROLES, INDIA_ROLES_PER_DAY):
+        html += _role_row(role, linkedin_url(role, "India"),
+                          [("LinkedIn", linkedin_url(role, "India")), ("Naukri", naukri_url(role))])
+    html += ('<div style="margin-top:28px;padding:12px 16px;background:#dcfce7;color:#15803d;'
+             'border-radius:10px;font-size:17px;font-weight:800;">🌍 UAE / Gulf - Entry Level Jobs</div>'
+             '<p style="font-size:12px;color:#64748b;margin:6px 0;">Click a job name to see today\'s latest openings.</p>')
+    for role in _daily_pick(GULF_ROLES, GULF_ROLES_PER_DAY):
+        html += _role_row(role, linkedin_url(role, "United Arab Emirates"),
+                          [("LinkedIn", linkedin_url(role, "United Arab Emirates")),
+                           ("Naukrigulf", naukrigulf_url(role))])
     return html
 
-portal_block = build_portal_block()
+role_list_block = build_role_list()
+cards = (cards if SHOW_COMPANY_JOBS else "") + (role_list_block if SHOW_ROLE_LIST else "")
 
 html_template = f"""
 <!DOCTYPE html>
@@ -476,7 +511,7 @@ html_template = f"""
 <body style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f4f6fb;margin:0;padding:12px;">
 
 <div style="display:none;font-size:1px;color:#f4f6fb;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
-Explore today's verified IT job openings & search roles on Acadeno Technologies.
+Today's fresher and entry-level job openings from Acadeno Technologies.
 </div>
 
 <div style="max-width:640px;
@@ -498,7 +533,7 @@ Dear <b>{{USER_NAME}}</b>,
 <p style="font-style:italic;color:#475569;font-size:13px;line-height:1.4;">"{quote}"</p>
 
 <h3 style="color:#1e1b4b;font-size:16px;margin-bottom:6px;">
-Today's Verified IT Opportunities
+Today's Fresher Job Openings
 </h3>
 
 <p style="color:#64748b;font-size:13px;margin-top:0;">
@@ -507,8 +542,6 @@ Date : <b>{today}</b>
 
 
 {cards}
-
-{portal_block}
 
 <p style="margin-top:28px;font-size:14px;color:#334155;">
 Best Wishes,<br>
@@ -586,7 +619,7 @@ def send_all_emails():
 
         msg = MIMEMultipart("alternative")
 
-        subject = f"Today's Verified IT Openings - {today}".replace("\r", "").replace("\n", "").strip()
+        subject = f"Today's Fresher Job Openings - {today}".replace("\r", "").replace("\n", "").strip()
         from_addr = f"Acadeno Careers <{EMAIL_USER}>".replace("\r", "").replace("\n", "").strip()
         reply_to = str(EMAIL_USER).replace("\r", "").replace("\n", "").strip()
 
