@@ -184,30 +184,45 @@ if gulf_file:
     except Exception as e:
         print(f"Note: Error loading {gulf_file}:", e)
 
-def is_link_working(url, timeout=6):
+SOFT_404_PHRASES = (
+    "no longer available", "no longer accepting", "position has been filled",
+    "job not found", "page not found", "this job is closed", "job has expired",
+    "posting has expired", "no longer open", "has been closed", "this job is no longer",
+    "no longer exists", "not accepting applications", "job is expired", "vacancy has expired",
+    "this position is no longer", "this job has been removed", "sorry, this job",
+)
+
+
+def is_link_working(url, timeout=10):
+    """True only if the page opens AND still shows a live job.
+    Dropped when: 404/410/5xx, page text says closed/expired/not found,
+    or the link redirects to a general careers/search page."""
     if not url:
         return False
-    # Acadeno career links are verified internal routes
     if "/careers/apply/" in url or url.startswith("/careers"):
         return True
     if not url.startswith("http"):
         return False
     try:
-        resp = requests.head(url, timeout=timeout, allow_redirects=True, headers={"User-Agent": "Mozilla/5.0"})
-        if resp.status_code in (405, 403):
-            resp = requests.get(url, timeout=timeout, allow_redirects=True, headers={"User-Agent": "Mozilla/5.0"})
-        # Many real company career sites (LinkedIn, Naukri, corporate ATS pages, etc.)
-        # block automated/bot requests and return 401/403/429/999 even though the
-        # link works fine for a real person in a browser. Treat those as "can't verify"
-        # rather than "broken", so real jobs don't get dropped from the email.
-        if resp.status_code in (401, 403, 429, 999):
-            return True
-        return resp.status_code < 400
+        resp = requests.get(url, timeout=timeout, allow_redirects=True,
+                            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
     except Exception:
-        # A timeout/connection error during the CI check doesn't prove the link is
-        # dead (it may just be a slow site or a network hiccup) - assume it's fine
-        # rather than silently dropping a real job.
+        # timeout / network hiccup does not prove the job is gone
         return True
+    # sites that block bots (LinkedIn, Naukri...) answer 401/403/429/999: cannot verify, keep
+    if resp.status_code in (401, 403, 429, 999):
+        return True
+    if resp.status_code >= 400:
+        return False
+    body = (resp.text or "")[:80000].lower()
+    if any(p in body for p in SOFT_404_PHRASES):
+        return False
+    try:
+        if resp.history and not careers.is_specific_job_url(resp.url):
+            return False          # redirected away to a general page = job removed
+    except Exception:
+        pass
+    return True
 
 
 def filter_working_jobs(job_list):
@@ -297,7 +312,7 @@ def classify_job(job):
 # ---- ALWAYS email daily: new jobs first, then top-up with other open jobs ----
 HIDE_IT_AND_AI_JOBS = False     # True = leave out AI/Data and Software/IT jobs
 SENT_FILE = "sent_jobs.json"
-MIN_JOBS_PER_EMAIL = 8          # email always has at least this many jobs (if available)
+MIN_JOBS_PER_EMAIL = 0          # 0 = ONLY new jobs (old jobs are never repeated)
 try:
     with open(SENT_FILE, "r", encoding="utf-8") as _f:
         _sent = json.load(_f)
@@ -431,14 +446,15 @@ if jobs:
         cards += build_sections(gulf_list)
 
 else:
-    cards = ("<p style='color:#666;'>No active job postings found today. Please check back soon!</p>"
+    cards = ("<p style='color:#666;'>No new job postings today.</p>"
              f"<p style='color:#666;'>You can still <a href='{portal_url}/careers' style='color:#5f2cff;font-weight:700;'>send your resume to Acadeno Careers</a>.</p>")
 
 # ---- Daily role list: each job name links to LinkedIn / Naukri / Naukrigulf ----
 from urllib.parse import quote
 
 SHOW_COMPANY_JOBS = True    # True = specific job openings (each name opens that exact job)
-SHOW_ROLE_LIST = False      # True = also add the general role-search list at the bottom
+SHOW_ROLE_LIST = False      # True = always add the role-search list at the bottom
+ROLE_LIST_IF_FEWER_THAN = 5  # if fewer new jobs than this, add the role-search list (LinkedIn/Naukri/Naukrigulf)
 INDIA_ROLES_PER_DAY = 10
 GULF_ROLES_PER_DAY = 8
 
@@ -500,7 +516,8 @@ def build_role_list():
     return html
 
 role_list_block = build_role_list()
-cards = (cards if SHOW_COMPANY_JOBS else "") + (role_list_block if SHOW_ROLE_LIST else "")
+_show_roles = SHOW_ROLE_LIST or len(jobs) < ROLE_LIST_IF_FEWER_THAN
+cards = (cards if SHOW_COMPANY_JOBS else "") + (role_list_block if _show_roles else "")
 
 html_template = f"""
 <!DOCTYPE html>

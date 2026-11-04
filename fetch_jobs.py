@@ -17,7 +17,9 @@ import html
 import json
 import re
 import sys
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -35,6 +37,7 @@ MAX_AGE_DAYS = 60         # skip postings older than this (when a date is known)
 #   lever           -> jobs.lever.co/<slug>
 #   ashby           -> jobs.ashbyhq.com/<slug>
 #   smartrecruiters -> jobs.smartrecruiters.com/<slug>
+#   workday         -> <tenant>.wd<N>.myworkdayjobs.com/<site>  (slug = tenant|N|site)
 COMPANIES = [
     # ---- India / product companies (Greenhouse) ----
     ("Postman",          "greenhouse", "postman"),
@@ -100,6 +103,43 @@ COMPANIES = [
     ("Kitopi",           "lever",      "kitopi"),
     ("Sarwa",            "lever",      "sarwa"),
 ]
+
+# ---- Large employers on Workday: slug = tenant|wdNumber|siteName ----
+# (a wrong value just prints "skip"; copy the 3 parts from the company's
+#  https://<tenant>.wd<N>.myworkdayjobs.com/<site> careers address)
+COMPANIES += [
+    ("NVIDIA",              "workday", "nvidia|5|NVIDIAExternalCareerSite"),
+    ("Adobe",               "workday", "adobe|5|external_experienced"),
+    ("Salesforce",          "workday", "salesforce|12|External_Career_Site"),
+    ("Dell",                "workday", "dell|1|External"),
+    ("Intel",               "workday", "intel|1|External"),
+    ("Mastercard",          "workday", "mastercard|1|CorporateCareers"),
+    ("Walmart Global Tech", "workday", "walmart|5|WalmartExternal"),
+    ("PayPal",              "workday", "paypal|1|jobs"),
+    ("Wells Fargo",         "workday", "wf|1|WellsFargoJobs"),
+    ("Thomson Reuters",     "workday", "thomsonreuters|5|External_Career_Site"),
+    ("Capital One",         "workday", "capitalone|12|Capital_One"),
+    ("Honeywell",           "workday", "honeywell|5|Honeywell"),
+]
+
+# ---- Add your own companies WITHOUT editing code: put them in my_boards.csv ----
+# columns:  company,ats,slug      (ats = greenhouse / lever / ashby / smartrecruiters / workday)
+def load_my_boards(path="my_boards.csv"):
+    extra = []
+    try:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            for row in csv.DictReader(f):
+                name = (row.get("company") or "").strip()
+                ats = (row.get("ats") or "").strip().lower()
+                slug = (row.get("slug") or "").strip()
+                if name and slug and ats in ("greenhouse", "lever", "ashby", "smartrecruiters", "workday"):
+                    extra.append((name, ats, slug))
+    except FileNotFoundError:
+        pass
+    return extra
+
+
+COMPANIES += load_my_boards()
 
 INDIA_WORDS = [
     "india", "kerala", "kochi", "cochin", "ernakulam", "infopark", "trivandrum",
@@ -272,15 +312,145 @@ def read_smartrecruiters(slug):
         }
 
 
+def http_post_json(url, payload):
+    body = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(url, data=body, headers={
+        **UA, "Content-Type": "application/json", "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+        return json.loads(r.read().decode("utf-8", "replace"))
+
+
+def parse_workday_posted(text):
+    t = (text or "").lower()
+    now = datetime.now(timezone.utc)
+    if "today" in t:
+        return now
+    if "yesterday" in t:
+        return now - timedelta(days=1)
+    m = re.search(r"(\d+)\+?\s*days?", t)
+    return now - timedelta(days=int(m.group(1))) if m else None
+
+
+def read_workday(slug):
+    """slug = 'tenant|wdNumber|siteName'. Reads the company's public Workday job feed
+    for fresher-type searches. Only titles that clearly say fresher/intern/graduate/
+    entry-level/junior are kept (the list does not show years of experience)."""
+    tenant, wd, site = slug.split("|")
+    base = f"https://{tenant}.wd{wd}.myworkdayjobs.com"
+    seen = set()
+    for term in ("fresher", "graduate", "intern", "entry level", "trainee"):
+        try:
+            data = http_post_json(f"{base}/wday/cxs/{tenant}/{site}/jobs",
+                                  {"limit": 20, "offset": 0, "searchText": term, "appliedFacets": {}})
+        except Exception:
+            if not seen:
+                raise
+            continue
+        for j in data.get("jobPostings", []):
+            path = j.get("externalPath", "")
+            if not path or path in seen:
+                continue
+            seen.add(path)
+            yield {
+                "title": j.get("title", ""),
+                "url": f"{base}/{site}{path}",
+                "location": j.get("locationsText", "") or "",
+                "text": "",
+                "posted": parse_workday_posted(j.get("postedOn", "")),
+            }
+
+
 READERS = {
     "greenhouse": read_greenhouse, "lever": read_lever,
-    "ashby": read_ashby, "smartrecruiters": read_smartrecruiters,
+    "ashby": read_ashby, "smartrecruiters": read_smartrecruiters, "workday": read_workday,
 }
 
 
 def location_ok(loc):
     l = (loc or "").lower()
     return any(w in l for w in INDIA_WORDS) or is_gulf_location(l)
+
+
+# ------------------------------------------------- LinkedIn (public job search)
+# Best effort: reads LinkedIn's public guest job-search results (last 24 hours,
+# entry level + internships) and keeps the direct /jobs/view/ link of each job.
+# NOTE: LinkedIn's terms do not allow automated collection and it often blocks
+# GitHub's servers (HTTP 429/999). If it is blocked, the script just skips it.
+# Set USE_LINKEDIN = False to switch it off.
+USE_LINKEDIN = True
+LINKEDIN_MAX_PER_QUERY = 10
+LINKEDIN_QUERIES = [
+    # (keywords, location)
+    ("fresher", "India"), ("graduate trainee", "India"), ("entry level", "India"),
+    ("hr executive", "India"), ("digital marketing", "India"),
+    ("customer support", "India"), ("accountant", "India"),
+    ("content writer", "India"), ("graphic designer", "India"),
+    ("business development", "India"),
+    ("fresher", "United Arab Emirates"), ("entry level", "United Arab Emirates"),
+    ("accountant", "United Arab Emirates"), ("sales executive", "United Arab Emirates"),
+    ("customer service", "United Arab Emirates"),
+]
+LINKEDIN_API = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?"
+
+
+def parse_linkedin_cards(page):
+    """Turn LinkedIn's guest search HTML into a list of job dicts."""
+    jobs = []
+    for card in page.split("<li")[1:]:
+        link = re.search(r'href="(https://[a-z.]*linkedin\.com/jobs/view/[^"?]+)', card)
+        title = re.search(r'base-search-card__title[^>]*>(.*?)</h3>', card, re.S)
+        comp = re.search(r'base-search-card__subtitle[^>]*>(.*?)</h4>', card, re.S)
+        loc = re.search(r'job-search-card__location[^>]*>(.*?)</span>', card, re.S)
+        if not (link and title and comp):
+            continue
+        jobs.append({
+            "title": strip_html(title.group(1)),
+            "company": strip_html(comp.group(1)),
+            "url": link.group(1),
+            "location": strip_html(loc.group(1)) if loc else "",
+        })
+    return jobs
+
+
+def fetch_linkedin():
+    rows, seen = [], set()
+    for keywords, location in LINKEDIN_QUERIES:
+        params = urllib.parse.urlencode({
+            "keywords": keywords, "location": location,
+            "f_E": "1,2", "f_TPR": "r86400", "sortBy": "DD", "start": 0,
+        })
+        req = urllib.request.Request(LINKEDIN_API + params, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                page = r.read().decode("utf-8", "replace")
+        except urllib.error.HTTPError as exc:
+            print(f"  LinkedIn blocked/limited (HTTP {exc.code}); stopping LinkedIn for this run.")
+            break
+        except Exception as exc:
+            print(f"  LinkedIn skip '{keywords}' / {location}: {exc}")
+            continue
+        added = 0
+        for j in parse_linkedin_cards(page):
+            if added >= LINKEDIN_MAX_PER_QUERY or j["url"] in seen:
+                continue
+            if has_word(j["title"], SENIOR_WORDS) or not location_ok(j["location"]):
+                continue
+            seen.add(j["url"])
+            added += 1
+            rows.append({
+                "title": j["title"], "company": j["company"], "company_url": j["url"],
+                "location": j["location"] or location, "type": "Full-time",
+                "experience": "Fresher (0-1 year)",
+                "description": "Posted in the last 24 hours on LinkedIn (entry level).",
+                "last_date": "",
+            })
+        print(f"  ok    LinkedIn {keywords:<22} {location:<22} -> {added}")
+        time.sleep(2)           # be polite, avoid rate limits
+    return rows
 
 
 # -------------------------------------------------------------- link checker
@@ -346,6 +516,9 @@ def main():
     with ThreadPoolExecutor(max_workers=6) as pool:
         batches = list(pool.map(collect, COMPANIES))
     rows = [r for b in batches for r in b]
+    if USE_LINKEDIN:
+        print("\nFetching latest entry-level jobs from LinkedIn...")
+        rows += fetch_linkedin()
 
     print(f"\nChecking {len(rows)} job links are still live...")
     with ThreadPoolExecutor(max_workers=8) as pool:

@@ -53,6 +53,7 @@ jobs:
             echo "No job changes to save."
           else
             git commit -m "Auto-refresh jobs.json and gulf_jobs.json"
+            git pull --rebase --autostash
             git push
           fi
 
@@ -75,6 +76,6 @@ jobs:
             echo "Nothing to save."
           else
             git commit -m "Update sent jobs list"
-            git pull --rebase
+            git pull --rebase --autostash
             git push
           fi
