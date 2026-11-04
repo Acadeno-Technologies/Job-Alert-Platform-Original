@@ -1,5 +1,13 @@
 [
   {
+    "title": "Product Management Intern",
+    "company": "Rubrik",
+    "company_url": "https://www.rubrik.com/company/careers/departments/job.8345283?gh_jid=8345283",
+    "link": "https://www.rubrik.com/company/careers/departments/job.8345283?gh_jid=8345283",
+    "apply_slug": "product-management-intern-rubrik-bangalore",
+    "location": "Bangalore"
+  },
+  {
     "title": "Payroll Industrial Trainee",
     "company": "Rubrik",
     "company_url": "https://www.rubrik.com/company/careers/departments/job.8305308?gh_jid=8305308",
@@ -24,14 +32,6 @@
     "location": "Bangalore"
   },
   {
-    "title": "Software Engineer- SaaS O365 (Fresher)",
-    "company": "Rubrik",
-    "company_url": "https://www.rubrik.com/company/careers/departments/job.8256407?gh_jid=8256407",
-    "link": "https://www.rubrik.com/company/careers/departments/job.8256407?gh_jid=8256407",
-    "apply_slug": "software-engineer-saas-o365-rubrik-bangalore",
-    "location": "Bangalore"
-  },
-  {
     "title": "Software Engineer (CPD) - Winter Intern",
     "company": "Rubrik",
     "company_url": "https://www.rubrik.com/company/careers/departments/job.8166537?gh_jid=8166537",
@@ -48,19 +48,19 @@
     "location": "Bangalore"
   },
   {
+    "title": "Talent Engagement Associate — Outbound Recruiting (Fresher)",
+    "company": "Weekday",
+    "company_url": "https://jobs.lever.co/weekdayworks/fe3ab683-9a8a-415f-8fbd-b29f493a7ab4",
+    "link": "https://jobs.lever.co/weekdayworks/fe3ab683-9a8a-415f-8fbd-b29f493a7ab4",
+    "apply_slug": "talent-engagement-associate-outbound-recruiting-weekday-india",
+    "location": "India"
+  },
+  {
     "title": "Talent Operations Associate (Fresher)",
     "company": "Weekday",
     "company_url": "https://jobs.lever.co/weekdayworks/69bc9e94-a6c5-4166-a50b-95dba61d763a",
     "link": "https://jobs.lever.co/weekdayworks/69bc9e94-a6c5-4166-a50b-95dba61d763a",
     "apply_slug": "talent-operations-associate-weekday-india",
-    "location": "India"
-  },
-  {
-    "title": "Candidate Outreach Associate (Fresher)",
-    "company": "Weekday",
-    "company_url": "https://jobs.lever.co/weekdayworks/c7a7ef47-e9b2-436d-8d84-a808995bc806",
-    "link": "https://jobs.lever.co/weekdayworks/c7a7ef47-e9b2-436d-8d84-a808995bc806",
-    "apply_slug": "candidate-outreach-associate-weekday-india",
     "location": "India"
   },
   {
@@ -128,12 +128,12 @@
     "location": "Bengaluru"
   },
   {
-    "title": "Electrical and Electronics Systems Integration Specialist (Fresher)",
-    "company": "Bosch India",
-    "company_url": "https://jobs.smartrecruiters.com/BoschGroup/744000156768769",
-    "link": "https://jobs.smartrecruiters.com/BoschGroup/744000156768769",
-    "apply_slug": "electrical-and-electronics-systems-integration-specialist-bosch-india-bangalore",
-    "location": "bangalore, IN"
+    "title": "Product Designer (Fresher)",
+    "company": "ServiceNow",
+    "company_url": "https://jobs.smartrecruiters.com/ServiceNow/744000159551529",
+    "link": "https://jobs.smartrecruiters.com/ServiceNow/744000159551529",
+    "apply_slug": "product-designer-servicenow-hyderabad-in",
+    "location": "Hyderabad, IN"
   },
   {
     "title": "Consumer Support Associate – Internal Ombudsman Secretariat",
