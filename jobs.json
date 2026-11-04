@@ -120,14 +120,6 @@
     "location": "Bengaluru"
   },
   {
-    "title": "Growth Marketing Intern",
-    "company": "Sarvam AI",
-    "company_url": "https://jobs.ashbyhq.com/sarvam/1eb3008a-2014-4a6c-8a35-cfa7caf8a60f",
-    "link": "https://jobs.ashbyhq.com/sarvam/1eb3008a-2014-4a6c-8a35-cfa7caf8a60f",
-    "apply_slug": "growth-marketing-intern-sarvam-ai-bengaluru",
-    "location": "Bengaluru"
-  },
-  {
     "title": "Product Designer (Fresher)",
     "company": "ServiceNow",
     "company_url": "https://jobs.smartrecruiters.com/ServiceNow/744000159551529",
@@ -144,14 +136,6 @@
     "location": "Mumbai, IN"
   },
   {
-    "title": "2027 Intern - Research Intern",
-    "company": "Adobe",
-    "company_url": "https://adobe.wd5.myworkdayjobs.com/external_experienced/job/Bangalore/XMLNAME-2027-Intern---Research-Intern_R172424",
-    "link": "https://adobe.wd5.myworkdayjobs.com/external_experienced/job/Bangalore/XMLNAME-2027-Intern---Research-Intern_R172424",
-    "apply_slug": "2027-intern-research-intern-adobe-bangalore",
-    "location": "Bangalore"
-  },
-  {
     "title": "2027 Intern - Research PhD Intern",
     "company": "Adobe",
     "company_url": "https://adobe.wd5.myworkdayjobs.com/external_experienced/job/Bangalore/XMLNAME-2027-Intern---Research-PhD-Intern_R173016",
@@ -160,28 +144,12 @@
     "location": "Bangalore"
   },
   {
-    "title": "Customer Service New Associate (Fresher)",
-    "company": "Accenture in India",
-    "company_url": "https://in.linkedin.com/jobs/view/customer-service-new-associate-at-accenture-in-india-4487003389",
-    "link": "https://in.linkedin.com/jobs/view/customer-service-new-associate-at-accenture-in-india-4487003389",
-    "apply_slug": "customer-service-new-associate-accenture-in-india-bengaluru-karnataka-india",
-    "location": "Bengaluru, Karnataka, India"
-  },
-  {
     "title": "US HR Operations Executive – Fresher",
     "company": "Clicksoft Solutions",
     "company_url": "https://in.linkedin.com/jobs/view/us-hr-operations-executive-%E2%80%93-fresher-at-clicksoft-solutions-4486093419",
     "link": "https://in.linkedin.com/jobs/view/us-hr-operations-executive-%E2%80%93-fresher-at-clicksoft-solutions-4486093419",
     "apply_slug": "us-hr-operations-executive-fresher-clicksoft-solutions-hyderabad-telangana-india",
     "location": "Hyderabad, Telangana, India"
-  },
-  {
-    "title": "Health Admin Services New Associate (Fresher)",
-    "company": "Accenture in India",
-    "company_url": "https://in.linkedin.com/jobs/view/health-admin-services-new-associate-at-accenture-in-india-4486897615",
-    "link": "https://in.linkedin.com/jobs/view/health-admin-services-new-associate-at-accenture-in-india-4486897615",
-    "apply_slug": "health-admin-services-new-associate-accenture-in-india-navi-mumbai-maharashtra-i",
-    "location": "Navi Mumbai, Maharashtra, India"
   },
   {
     "title": "Associate (Fresher)",
@@ -200,20 +168,20 @@
     "location": "Bengaluru, Karnataka, India"
   },
   {
+    "title": "Trust & Safety New Associate (Fresher)",
+    "company": "Accenture in India",
+    "company_url": "https://in.linkedin.com/jobs/view/trust-safety-new-associate-at-accenture-in-india-4487070294",
+    "link": "https://in.linkedin.com/jobs/view/trust-safety-new-associate-at-accenture-in-india-4487070294",
+    "apply_slug": "trust-safety-new-associate-accenture-in-india-navi-mumbai-maharashtra-india",
+    "location": "Navi Mumbai, Maharashtra, India"
+  },
+  {
     "title": "Fresher",
     "company": "Icube Engineering Solutions",
     "company_url": "https://in.linkedin.com/jobs/view/fresher-at-icube-engineering-solutions-4485060590",
     "link": "https://in.linkedin.com/jobs/view/fresher-at-icube-engineering-solutions-4485060590",
     "apply_slug": "fresher-icube-engineering-solutions-rajkot-gujarat-india",
     "location": "Rajkot, Gujarat, India"
-  },
-  {
-    "title": "Support Executive (Fresher)",
-    "company": "Falcon Konnect",
-    "company_url": "https://in.linkedin.com/jobs/view/support-executive-at-falcon-konnect-4486354678",
-    "link": "https://in.linkedin.com/jobs/view/support-executive-at-falcon-konnect-4486354678",
-    "apply_slug": "support-executive-falcon-konnect-mangaluru-karnataka-india",
-    "location": "Mangaluru, Karnataka, India"
   },
   {
     "title": "Influencer Marketing Executive (Fresher)",
@@ -224,6 +192,22 @@
     "location": "Bhubaneswar, Odisha, India"
   },
   {
+    "title": "SEZ executive (Fresher)",
+    "company": "CORIOLIS CORP",
+    "company_url": "https://in.linkedin.com/jobs/view/sez-executive-at-coriolis-corp-4485082871",
+    "link": "https://in.linkedin.com/jobs/view/sez-executive-at-coriolis-corp-4485082871",
+    "apply_slug": "sez-executive-coriolis-corp-bengaluru-karnataka-india",
+    "location": "Bengaluru, Karnataka, India"
+  },
+  {
+    "title": "Apprentice Application (Fresher)",
+    "company": "TRUMPF India",
+    "company_url": "https://in.linkedin.com/jobs/view/apprentice-application-at-trumpf-india-4478157200",
+    "link": "https://in.linkedin.com/jobs/view/apprentice-application-at-trumpf-india-4478157200",
+    "apply_slug": "apprentice-application-trumpf-india-pune-division-maharashtra-india",
+    "location": "Pune Division, Maharashtra, India"
+  },
+  {
     "title": "Graduate Management Trainee Programme - Sales and Marketing",
     "company": "Chain Reaction Co.",
     "company_url": "https://in.linkedin.com/jobs/view/graduate-management-trainee-programme-sales-and-marketing-at-chain-reaction-co-4486337716",
@@ -232,28 +216,12 @@
     "location": "Bengaluru, Karnataka, India"
   },
   {
-    "title": "India - 2027 Voyage Program - Human Resources (Fresher)",
-    "company": "Marriott International",
-    "company_url": "https://in.linkedin.com/jobs/view/india-2027-voyage-program-human-resources-at-marriott-international-4478726219",
-    "link": "https://in.linkedin.com/jobs/view/india-2027-voyage-program-human-resources-at-marriott-international-4478726219",
-    "apply_slug": "india-2027-voyage-program-human-resources-marriott-international-mumbai-maharash",
-    "location": "Mumbai, Maharashtra, India"
-  },
-  {
     "title": "Graduate Management Trainee",
     "company": "Reign Sales Group",
     "company_url": "https://in.linkedin.com/jobs/view/graduate-management-trainee-at-reign-sales-group-4486316967",
     "link": "https://in.linkedin.com/jobs/view/graduate-management-trainee-at-reign-sales-group-4486316967",
     "apply_slug": "graduate-management-trainee-reign-sales-group-bengaluru-karnataka-india",
     "location": "Bengaluru, Karnataka, India"
-  },
-  {
-    "title": "India - 2027 Voyage Program - F&B Operations (Fresher)",
-    "company": "Marriott International",
-    "company_url": "https://in.linkedin.com/jobs/view/india-2027-voyage-program-f-b-operations-at-marriott-international-4478713646",
-    "link": "https://in.linkedin.com/jobs/view/india-2027-voyage-program-f-b-operations-at-marriott-international-4478713646",
-    "apply_slug": "india-2027-voyage-program-f-b-operations-marriott-international-mumbai-maharasht",
-    "location": "Mumbai, Maharashtra, India"
   },
   {
     "title": "Graduate Trainee",
@@ -272,12 +240,20 @@
     "location": "Bawal, Haryana, India"
   },
   {
-    "title": "Graduate Engineer Trainee",
-    "company": "Xylem",
-    "company_url": "https://in.linkedin.com/jobs/view/graduate-engineer-trainee-at-xylem-4486867390",
-    "link": "https://in.linkedin.com/jobs/view/graduate-engineer-trainee-at-xylem-4486867390",
-    "apply_slug": "graduate-engineer-trainee-xylem-greater-chennai-area",
-    "location": "Greater Chennai Area"
+    "title": "Graduate Management Trainee",
+    "company": "Meridian",
+    "company_url": "https://in.linkedin.com/jobs/view/graduate-management-trainee-at-meridian-4464567231",
+    "link": "https://in.linkedin.com/jobs/view/graduate-management-trainee-at-meridian-4464567231",
+    "apply_slug": "graduate-management-trainee-meridian-new-delhi-delhi-india",
+    "location": "New Delhi, Delhi, India"
+  },
+  {
+    "title": "Management Trainee",
+    "company": "AstraZeneca",
+    "company_url": "https://in.linkedin.com/jobs/view/management-trainee-at-astrazeneca-4486502296",
+    "link": "https://in.linkedin.com/jobs/view/management-trainee-at-astrazeneca-4486502296",
+    "apply_slug": "management-trainee-astrazeneca-mumbai-maharashtra-india",
+    "location": "Mumbai, Maharashtra, India"
   },
   {
     "title": "Building Performance Graduate TBH66 (Fresher)",
@@ -296,20 +272,20 @@
     "location": "New Delhi, Delhi, India"
   },
   {
-    "title": "Video Editor, Animator & Content Creator (Fresher)",
-    "company": "Sofy Healthcare Pvt. Ltd.",
-    "company_url": "https://in.linkedin.com/jobs/view/video-editor-animator-content-creator-at-sofy-healthcare-pvt-ltd-4486329925",
-    "link": "https://in.linkedin.com/jobs/view/video-editor-animator-content-creator-at-sofy-healthcare-pvt-ltd-4486329925",
-    "apply_slug": "video-editor-animator-content-creator-sofy-healthcare-pvt-ltd-gurugram-haryana-i",
-    "location": "Gurugram, Haryana, India"
+    "title": "Graduate Engineer Trainee (GET) – Physical AI Functional Consultant",
+    "company": "AI4M Technology",
+    "company_url": "https://in.linkedin.com/jobs/view/graduate-engineer-trainee-get-%E2%80%93-physical-ai-functional-consultant-4477383063",
+    "link": "https://in.linkedin.com/jobs/view/graduate-engineer-trainee-get-%E2%80%93-physical-ai-functional-consultant-4477383063",
+    "apply_slug": "graduate-engineer-trainee-get-physical-ai-functional-consultant-ai4m-technology",
+    "location": "Pune, Maharashtra, India"
   },
   {
-    "title": "Video Editor - Full Time (Fresher)",
-    "company": "Zibaa",
-    "company_url": "https://in.linkedin.com/jobs/view/video-editor-full-time-at-zibaa-4486370506",
-    "link": "https://in.linkedin.com/jobs/view/video-editor-full-time-at-zibaa-4486370506",
-    "apply_slug": "video-editor-full-time-zibaa-gurugram-haryana-india",
-    "location": "Gurugram, Haryana, India"
+    "title": "Management Trainee- Talent Aquisition",
+    "company": "Jabil",
+    "company_url": "https://in.linkedin.com/jobs/view/management-trainee-talent-aquisition-at-jabil-4486394828",
+    "link": "https://in.linkedin.com/jobs/view/management-trainee-talent-aquisition-at-jabil-4486394828",
+    "apply_slug": "management-trainee-talent-aquisition-jabil-pune-district-maharashtra-india",
+    "location": "Pune District, Maharashtra, India"
   },
   {
     "title": "Video Editor (Fresher)",
@@ -320,34 +296,42 @@
     "location": "Nagpur, Maharashtra, India"
   },
   {
-    "title": "Process Associate (Fresher)",
-    "company": "Harris Computer",
-    "company_url": "https://in.linkedin.com/jobs/view/process-associate-at-harris-computer-4486866499",
-    "link": "https://in.linkedin.com/jobs/view/process-associate-at-harris-computer-4486866499",
-    "apply_slug": "process-associate-harris-computer-greater-coimbatore-area",
-    "location": "Greater Coimbatore Area"
+    "title": "Assembler And Winder (Fresher)",
+    "company": "Century Transformers Pvt Ltd",
+    "company_url": "https://in.linkedin.com/jobs/view/assembler-and-winder-4484690897",
+    "link": "https://in.linkedin.com/jobs/view/assembler-and-winder-4484690897",
+    "apply_slug": "assembler-and-winder-century-transformers-pvt-ltd-haora-west-bengal-india",
+    "location": "Haora, West Bengal, India"
   },
   {
-    "title": "Chat Customer Support Executive (Fresher)",
-    "company": "CAREERBLOC ~",
-    "company_url": "https://in.linkedin.com/jobs/view/chat-customer-support-executive-fresher-at-careerbloc-%7E-4486086205",
-    "link": "https://in.linkedin.com/jobs/view/chat-customer-support-executive-fresher-at-careerbloc-%7E-4486086205",
-    "apply_slug": "chat-customer-support-executive-fresher-careerbloc-ahmedabad-gujarat-india",
+    "title": "Benefits Administration Services Associate I (Fresher)",
+    "company": "Conduent",
+    "company_url": "https://in.linkedin.com/jobs/view/benefits-administration-services-associate-i-at-conduent-4483140071",
+    "link": "https://in.linkedin.com/jobs/view/benefits-administration-services-associate-i-at-conduent-4483140071",
+    "apply_slug": "benefits-administration-services-associate-i-conduent-visakhapatnam-rural-mandal",
+    "location": "Visakhapatnam Rural mandal, India"
+  },
+  {
+    "title": "Process Associate (Fresher)",
+    "company": "Knack RCM",
+    "company_url": "https://in.linkedin.com/jobs/view/process-associate-at-knack-rcm-4485082952",
+    "link": "https://in.linkedin.com/jobs/view/process-associate-at-knack-rcm-4485082952",
+    "apply_slug": "process-associate-knack-rcm-mohali-district-india",
+    "location": "Mohali district, India"
+  },
+  {
+    "title": "Junior Graphic designer & Video Editor (Fresher)",
+    "company": "Popular Wheelers India Pvt Ltd",
+    "company_url": "https://in.linkedin.com/jobs/view/junior-graphic-designer-video-editor-at-popular-wheelers-india-pvt-ltd-4485089768",
+    "link": "https://in.linkedin.com/jobs/view/junior-graphic-designer-video-editor-at-popular-wheelers-india-pvt-ltd-4485089768",
+    "apply_slug": "junior-graphic-designer-video-editor-popular-wheelers-india-pvt-ltd-ahmedabad-gu",
     "location": "Ahmedabad, Gujarat, India"
   },
   {
     "title": "Human Resources Executive (Fresher)",
-    "company": "Medifit Consultants Pvt ltd,",
-    "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-4484678249",
-    "link": "https://in.linkedin.com/jobs/view/human-resources-executive-4484678249",
-    "apply_slug": "human-resources-executive-medifit-consultants-pvt-ltd-bengaluru-karnataka-india",
-    "location": "Bengaluru, Karnataka, India"
-  },
-  {
-    "title": "Human Resources Executive (Fresher)",
     "company": "Numoo Hiring Solutions",
-    "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-at-numoo-hiring-solutions-4486334415",
-    "link": "https://in.linkedin.com/jobs/view/human-resources-executive-at-numoo-hiring-solutions-4486334415",
+    "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-at-numoo-hiring-solutions-4486504453",
+    "link": "https://in.linkedin.com/jobs/view/human-resources-executive-at-numoo-hiring-solutions-4486504453",
     "apply_slug": "human-resources-executive-numoo-hiring-solutions-mumbai-maharashtra-india",
     "location": "Mumbai, Maharashtra, India"
   },
@@ -358,14 +342,6 @@
     "link": "https://in.linkedin.com/jobs/view/hr-executive-at-princetech-engineering-services-pvt-ltd-4485064966",
     "apply_slug": "hr-executive-princetech-engineering-services-pvt-ltd-jaipur-rajasthan-india",
     "location": "Jaipur, Rajasthan, India"
-  },
-  {
-    "title": "Human Resources Executive (Fresher)",
-    "company": "Prika Lever private limited",
-    "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-at-prika-lever-private-limited-4487257233",
-    "link": "https://in.linkedin.com/jobs/view/human-resources-executive-at-prika-lever-private-limited-4487257233",
-    "apply_slug": "human-resources-executive-prika-lever-private-limited-ahmedabad-gujarat-india",
-    "location": "Ahmedabad, Gujarat, India"
   },
   {
     "title": "Human Resources Executive (Fresher)",
@@ -384,12 +360,20 @@
     "location": "New Delhi, Delhi, India"
   },
   {
-    "title": "Human Resources Executive (Fresher)",
-    "company": "Tathastu Techno Solution",
-    "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-at-tathastu-techno-solution-4486035821",
-    "link": "https://in.linkedin.com/jobs/view/human-resources-executive-at-tathastu-techno-solution-4486035821",
-    "apply_slug": "human-resources-executive-tathastu-techno-solution-mumbai-maharashtra-india",
+    "title": "HR Executive (Fresher)",
+    "company": "JAC Recruitment",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-executive-at-jac-recruitment-4487236694",
+    "link": "https://in.linkedin.com/jobs/view/hr-executive-at-jac-recruitment-4487236694",
+    "apply_slug": "hr-executive-jac-recruitment-mumbai-maharashtra-india",
     "location": "Mumbai, Maharashtra, India"
+  },
+  {
+    "title": "Junior Executive Human Resources (Fresher)",
+    "company": "Maskoid Technologies",
+    "company_url": "https://in.linkedin.com/jobs/view/junior-executive-human-resources-at-maskoid-technologies-4485085666",
+    "link": "https://in.linkedin.com/jobs/view/junior-executive-human-resources-at-maskoid-technologies-4485085666",
+    "apply_slug": "junior-executive-human-resources-maskoid-technologies-vadodara-gujarat-india",
+    "location": "Vadodara, Gujarat, India"
   },
   {
     "title": "Human Resources Generalist (Fresher)",
@@ -400,6 +384,14 @@
     "location": "Gurugram, Haryana, India"
   },
   {
+    "title": "HR Exrcutive (Fresher)",
+    "company": "Petromart Energy Solutions",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-exrcutive-at-petromart-energy-solutions-4486504560",
+    "link": "https://in.linkedin.com/jobs/view/hr-exrcutive-at-petromart-energy-solutions-4486504560",
+    "apply_slug": "hr-exrcutive-petromart-energy-solutions-jaipur-rajasthan-india",
+    "location": "Jaipur, Rajasthan, India"
+  },
+  {
     "title": "Human Resources Executive (Fresher)",
     "company": "Ajmera Realty & Infra India Ltd.",
     "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-at-ajmera-realty-infra-india-ltd-4485066290",
@@ -408,68 +400,52 @@
     "location": "Bengaluru, Karnataka, India"
   },
   {
-    "title": "HR Executive (Operation + recruitment/ from marketing agency) (Fresher)",
-    "company": "MG",
-    "company_url": "https://in.linkedin.com/jobs/view/hr-executive-operation-%2B-recruitment-from-marketing-agency-at-mg-4486366581",
-    "link": "https://in.linkedin.com/jobs/view/hr-executive-operation-%2B-recruitment-from-marketing-agency-at-mg-4486366581",
-    "apply_slug": "hr-executive-operation-recruitment-from-marketing-agency-mg-new-delhi-delhi-indi",
-    "location": "New Delhi, Delhi, India"
+    "title": "HR Generalist (Fresher)",
+    "company": "Olive Trees Consulting",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-generalist-4485047963",
+    "link": "https://in.linkedin.com/jobs/view/hr-generalist-4485047963",
+    "apply_slug": "hr-generalist-olive-trees-consulting-western-suburbs-maharashtra-india",
+    "location": "Western Suburbs, Maharashtra, India"
   },
   {
-    "title": "Digital Marketing Specialist (Fresher)",
-    "company": "DX & Rise",
-    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-specialist-at-dx-rise-4484690339",
-    "link": "https://in.linkedin.com/jobs/view/digital-marketing-specialist-at-dx-rise-4484690339",
-    "apply_slug": "digital-marketing-specialist-dx-rise-kochi-kerala-india",
-    "location": "Kochi, Kerala, India"
-  },
-  {
-    "title": "Digital Marketing Associate (Fresher)",
-    "company": "HB+",
-    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-associate-at-hb%2B-4484668772",
-    "link": "https://in.linkedin.com/jobs/view/digital-marketing-associate-at-hb%2B-4484668772",
-    "apply_slug": "digital-marketing-associate-hb-bhubaneswar-odisha-india",
-    "location": "Bhubaneswar, Odisha, India"
+    "title": "Digital Marketing Executive (SMM, SEO, Paid Ads) (Fresher)",
+    "company": "Techior Solutions Pvt Ltd",
+    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-executive-smm-seo-paid-ads-at-techior-solutions-pvt-ltd-4485070651",
+    "link": "https://in.linkedin.com/jobs/view/digital-marketing-executive-smm-seo-paid-ads-at-techior-solutions-pvt-ltd-4485070651",
+    "apply_slug": "digital-marketing-executive-smm-seo-paid-ads-techior-solutions-pvt-ltd-nagpur-ma",
+    "location": "Nagpur, Maharashtra, India"
   },
   {
     "title": "Digital Marketing Executive (Fresher)",
-    "company": "Selten Technologies",
-    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-selten-technologies-4486030853",
-    "link": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-selten-technologies-4486030853",
-    "apply_slug": "digital-marketing-executive-selten-technologies-karaikkudi-tamil-nadu-india",
-    "location": "Karaikkudi, Tamil Nadu, India"
+    "company": "Vidyalankar Group of Educational Institutes",
+    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-vidyalankar-group-of-educational-institutes-4485041953",
+    "link": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-vidyalankar-group-of-educational-institutes-4485041953",
+    "apply_slug": "digital-marketing-executive-vidyalankar-group-of-educational-institutes-wadala-m",
+    "location": "Wadala, Maharashtra, India"
   },
   {
-    "title": "Ecommerce & Digital Marketing (Fresher)",
-    "company": "Clove Dental",
-    "company_url": "https://in.linkedin.com/jobs/view/ecommerce-digital-marketing-at-clove-dental-4486360595",
-    "link": "https://in.linkedin.com/jobs/view/ecommerce-digital-marketing-at-clove-dental-4486360595",
-    "apply_slug": "ecommerce-digital-marketing-clove-dental-new-delhi-delhi-india",
-    "location": "New Delhi, Delhi, India"
+    "title": "Digital Marketing & Performance Marketing Expert (Fresher)",
+    "company": "Kaden Boriss - Legal & Business Strategists",
+    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-performance-marketing-expert-at-kaden-boriss-legal-business-strategists-4485065718",
+    "link": "https://in.linkedin.com/jobs/view/digital-marketing-performance-marketing-expert-at-kaden-boriss-legal-business-strategists-4485065718",
+    "apply_slug": "digital-marketing-performance-marketing-expert-kaden-boriss-legal-business-strat",
+    "location": "Bengaluru, Karnataka, India"
   },
   {
-    "title": "Digital Marketing Executive (Fresher)",
-    "company": "ParaFit India",
-    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-parafit-india-4486373623",
-    "link": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-parafit-india-4486373623",
-    "apply_slug": "digital-marketing-executive-parafit-india-south-delhi-delhi-india",
-    "location": "South Delhi, Delhi, India"
+    "title": "Performance Marketing Specialist (Fresher)",
+    "company": "Illuminate Communication",
+    "company_url": "https://in.linkedin.com/jobs/view/performance-marketing-specialist-at-illuminate-communication-4486353114",
+    "link": "https://in.linkedin.com/jobs/view/performance-marketing-specialist-at-illuminate-communication-4486353114",
+    "apply_slug": "performance-marketing-specialist-illuminate-communication-chennai-tamil-nadu-ind",
+    "location": "Chennai, Tamil Nadu, India"
   },
   {
     "title": "Chat Customer Support Executive (Fresher)",
     "company": "GLOBELANCE",
-    "company_url": "https://in.linkedin.com/jobs/view/chat-customer-support-executive-at-globelance-4486345562",
-    "link": "https://in.linkedin.com/jobs/view/chat-customer-support-executive-at-globelance-4486345562",
+    "company_url": "https://in.linkedin.com/jobs/view/chat-customer-support-executive-at-globelance-4486506464",
+    "link": "https://in.linkedin.com/jobs/view/chat-customer-support-executive-at-globelance-4486506464",
     "apply_slug": "chat-customer-support-executive-globelance-ahmedabad-gujarat-india",
     "location": "Ahmedabad, Gujarat, India"
-  },
-  {
-    "title": "Customer Care Representative (Fresher)",
-    "company": "FedEx",
-    "company_url": "https://in.linkedin.com/jobs/view/customer-care-representative-at-fedex-4486861647",
-    "link": "https://in.linkedin.com/jobs/view/customer-care-representative-at-fedex-4486861647",
-    "apply_slug": "customer-care-representative-fedex-pune-pimpri-chinchwad-area",
-    "location": "Pune/Pimpri-Chinchwad Area"
   },
   {
     "title": "Chat and Voice Customer Support - Travel Domain (Fresher)",
@@ -520,6 +496,14 @@
     "location": "Ahmedabad, Gujarat, India"
   },
   {
+    "title": "Customer Support Executive (Fresher)",
+    "company": "Impetus Career Consultants",
+    "company_url": "https://in.linkedin.com/jobs/view/customer-support-executive-at-impetus-career-consultants-4485093202",
+    "link": "https://in.linkedin.com/jobs/view/customer-support-executive-at-impetus-career-consultants-4485093202",
+    "apply_slug": "customer-support-executive-impetus-career-consultants-ahmedabad-gujarat-india",
+    "location": "Ahmedabad, Gujarat, India"
+  },
+  {
     "title": "Associate Accountant (ATR, R2R, GL Reporting of Cost (Fresher)",
     "company": "Global Payments Inc.",
     "company_url": "https://in.linkedin.com/jobs/view/associate-accountant-atr-r2r-gl-reporting-of-cost-at-global-payments-inc-4487230901",
@@ -528,20 +512,12 @@
     "location": "Pune/Pimpri-Chinchwad Area"
   },
   {
-    "title": "Accountant (Fresher)",
-    "company": "RS Corporation",
-    "company_url": "https://in.linkedin.com/jobs/view/accountant-4486044773",
-    "link": "https://in.linkedin.com/jobs/view/accountant-4486044773",
-    "apply_slug": "accountant-rs-corporation-greater-delhi-area",
-    "location": "Greater Delhi Area"
-  },
-  {
-    "title": "Accountant (RTR) (Fresher)",
-    "company": "Caterpillar Inc.",
-    "company_url": "https://in.linkedin.com/jobs/view/accountant-rtr-at-caterpillar-inc-4475865467",
-    "link": "https://in.linkedin.com/jobs/view/accountant-rtr-at-caterpillar-inc-4475865467",
-    "apply_slug": "accountant-rtr-caterpillar-inc-bengaluru-east-karnataka-india",
-    "location": "Bengaluru East, Karnataka, India"
+    "title": "Accountant/Accounts Executive (Fresher)",
+    "company": "APPWRK IT Solutions",
+    "company_url": "https://in.linkedin.com/jobs/view/accountant-accounts-executive-at-appwrk-it-solutions-4486381235",
+    "link": "https://in.linkedin.com/jobs/view/accountant-accounts-executive-at-appwrk-it-solutions-4486381235",
+    "apply_slug": "accountant-accounts-executive-appwrk-it-solutions-sahibzada-ajit-singh-nagar-pun",
+    "location": "Sahibzada Ajit Singh Nagar, Punjab, India"
   },
   {
     "title": "Accountant (Fresher)",
@@ -552,20 +528,12 @@
     "location": "Pune Division, Maharashtra, India"
   },
   {
-    "title": "Accountant – Fragrance & Flavour Units (Fresher)",
-    "company": "Leo Fragrances & Flavours",
-    "company_url": "https://in.linkedin.com/jobs/view/accountant-%E2%80%93-fragrance-flavour-units-at-leo-fragrances-flavours-4484687107",
-    "link": "https://in.linkedin.com/jobs/view/accountant-%E2%80%93-fragrance-flavour-units-at-leo-fragrances-flavours-4484687107",
-    "apply_slug": "accountant-fragrance-flavour-units-leo-fragrances-flavours-mumbai-maharashtra-in",
-    "location": "Mumbai, Maharashtra, India"
-  },
-  {
-    "title": "Content Writer (Fresher)",
-    "company": "Collectcent",
-    "company_url": "https://in.linkedin.com/jobs/view/content-writer-at-collectcent-4486329770",
-    "link": "https://in.linkedin.com/jobs/view/content-writer-at-collectcent-4486329770",
-    "apply_slug": "content-writer-collectcent-gurugram-haryana-india",
-    "location": "Gurugram, Haryana, India"
+    "title": "Accountant (Fresher)",
+    "company": "SRGC Groups",
+    "company_url": "https://in.linkedin.com/jobs/view/accountant-at-srgc-groups-4479941336",
+    "link": "https://in.linkedin.com/jobs/view/accountant-at-srgc-groups-4479941336",
+    "apply_slug": "accountant-srgc-groups-noida-uttar-pradesh-india",
+    "location": "Noida, Uttar Pradesh, India"
   },
   {
     "title": "Content Writer (Fresher)",
@@ -573,6 +541,14 @@
     "company_url": "https://in.linkedin.com/jobs/view/content-writer-at-fabric-4486026641",
     "link": "https://in.linkedin.com/jobs/view/content-writer-at-fabric-4486026641",
     "apply_slug": "content-writer-fabric-bengaluru-karnataka-india",
+    "location": "Bengaluru, Karnataka, India"
+  },
+  {
+    "title": "Junior Content Writer (Fresher)",
+    "company": "Brandshark",
+    "company_url": "https://in.linkedin.com/jobs/view/junior-content-writer-at-brandshark-4486350805",
+    "link": "https://in.linkedin.com/jobs/view/junior-content-writer-at-brandshark-4486350805",
+    "apply_slug": "junior-content-writer-brandshark-bengaluru-karnataka-india",
     "location": "Bengaluru, Karnataka, India"
   },
   {
@@ -592,12 +568,12 @@
     "location": "Sahibzada Ajit Singh Nagar, Punjab, India"
   },
   {
-    "title": "Content Writer (Fresher)",
-    "company": "AppVentory",
-    "company_url": "https://in.linkedin.com/jobs/view/content-writer-at-appventory-4485081487",
-    "link": "https://in.linkedin.com/jobs/view/content-writer-at-appventory-4485081487",
-    "apply_slug": "content-writer-appventory-ahmedabad-gujarat-india",
-    "location": "Ahmedabad, Gujarat, India"
+    "title": "Technical Content Writer (Fresher)",
+    "company": "Matrix Marketers",
+    "company_url": "https://in.linkedin.com/jobs/view/technical-content-writer-at-matrix-marketers-4486380424",
+    "link": "https://in.linkedin.com/jobs/view/technical-content-writer-at-matrix-marketers-4486380424",
+    "apply_slug": "technical-content-writer-matrix-marketers-sahibzada-ajit-singh-nagar-punjab-indi",
+    "location": "Sahibzada Ajit Singh Nagar, Punjab, India"
   },
   {
     "title": "Content Writer Specialist (Fresher)",
@@ -624,28 +600,12 @@
     "location": "Bengaluru, Karnataka, India"
   },
   {
-    "title": "Content Writer (Fresher)",
-    "company": "WPWeb Infotech",
-    "company_url": "https://in.linkedin.com/jobs/view/content-writer-at-wpweb-infotech-4486899957",
-    "link": "https://in.linkedin.com/jobs/view/content-writer-at-wpweb-infotech-4486899957",
-    "apply_slug": "content-writer-wpweb-infotech-ahmedabad-gujarat-india",
+    "title": "Gujarati/Hindi Content & Script Writer (Fresher)",
+    "company": "We Run Every",
+    "company_url": "https://in.linkedin.com/jobs/view/gujarati-hindi-content-script-writer-at-we-run-every-4486355124",
+    "link": "https://in.linkedin.com/jobs/view/gujarati-hindi-content-script-writer-at-we-run-every-4486355124",
+    "apply_slug": "gujarati-hindi-content-script-writer-we-run-every-ahmedabad-gujarat-india",
     "location": "Ahmedabad, Gujarat, India"
-  },
-  {
-    "title": "Technical content writer (Fresher)",
-    "company": "Alphabin",
-    "company_url": "https://in.linkedin.com/jobs/view/technical-content-writer-at-alphabin-4485047666",
-    "link": "https://in.linkedin.com/jobs/view/technical-content-writer-at-alphabin-4485047666",
-    "apply_slug": "technical-content-writer-alphabin-surat-gujarat-india",
-    "location": "Surat, Gujarat, India"
-  },
-  {
-    "title": "Graphic Designer (Fresher)",
-    "company": "LWYD Interactive",
-    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-lwyd-interactive-4486033820",
-    "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-lwyd-interactive-4486033820",
-    "apply_slug": "graphic-designer-lwyd-interactive-bengaluru-karnataka-india",
-    "location": "Bengaluru, Karnataka, India"
   },
   {
     "title": "Creative Graphics Designer - Creative Design (Fresher)",
@@ -654,6 +614,22 @@
     "link": "https://in.linkedin.com/jobs/view/creative-graphics-designer-creative-design-at-three-across-4478768308",
     "apply_slug": "creative-graphics-designer-creative-design-three-across-mumbai-metropolitan-regi",
     "location": "Mumbai Metropolitan Region"
+  },
+  {
+    "title": "Graphic Designer (Fresher)",
+    "company": "Whacked Out ® Media",
+    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-whacked-out-%C2%AE-media-4486830637",
+    "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-whacked-out-%C2%AE-media-4486830637",
+    "apply_slug": "graphic-designer-whacked-out-media-hyderabad-telangana-india",
+    "location": "Hyderabad, Telangana, India"
+  },
+  {
+    "title": "Graphic Designer (Fresher)",
+    "company": "JS Media House",
+    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-js-media-house-4486369923",
+    "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-js-media-house-4486369923",
+    "apply_slug": "graphic-designer-js-media-house-vishakhapatnam-andhra-pradesh-india",
+    "location": "Vishakhapatnam, Andhra Pradesh, India"
   },
   {
     "title": "Junior Graphic Designer in Vasai-Virar, Bandra, Thane, Dombivli, Kalyan, Mumbai, Virar, Vasai, Mira Bhayandar, Nala Sopara, Mumbai, Dahisar, Sion Koliwada (Fresher)",
@@ -673,27 +649,19 @@
   },
   {
     "title": "Graphic Designer (Fresher)",
-    "company": "South Ads",
-    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-4486337904",
-    "link": "https://in.linkedin.com/jobs/view/graphic-designer-4486337904",
-    "apply_slug": "graphic-designer-south-ads-chennai-tamil-nadu-india",
-    "location": "Chennai, Tamil Nadu, India"
-  },
-  {
-    "title": "Junior Graphic Designer (Fresher)",
-    "company": "Root HR",
-    "company_url": "https://in.linkedin.com/jobs/view/junior-graphic-designer-at-root-hr-4486892464",
-    "link": "https://in.linkedin.com/jobs/view/junior-graphic-designer-at-root-hr-4486892464",
-    "apply_slug": "junior-graphic-designer-root-hr-kozhikode-kerala-india",
-    "location": "Kozhikode, Kerala, India"
-  },
-  {
-    "title": "Graphic Designer (Fresher)",
     "company": "So Fetch Shop",
     "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-so-fetch-shop-4486369883",
     "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-so-fetch-shop-4486369883",
     "apply_slug": "graphic-designer-so-fetch-shop-new-delhi-delhi-india",
     "location": "New Delhi, Delhi, India"
+  },
+  {
+    "title": "Graphics Designer (Fresher)",
+    "company": "Eunoia Designtech",
+    "company_url": "https://in.linkedin.com/jobs/view/graphics-designer-at-eunoia-designtech-4485501551",
+    "link": "https://in.linkedin.com/jobs/view/graphics-designer-at-eunoia-designtech-4485501551",
+    "apply_slug": "graphics-designer-eunoia-designtech-ahmedabad-gujarat-india",
+    "location": "Ahmedabad, Gujarat, India"
   },
   {
     "title": "Graphic Designer & Motion Graphics Designer (Fresher)",
@@ -704,28 +672,12 @@
     "location": "Kozhikode, Kerala, India"
   },
   {
-    "title": "Graphic Designer (Fresher)",
-    "company": "Ledgercraft",
-    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-ledgercraft-4485071487",
-    "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-ledgercraft-4485071487",
-    "apply_slug": "graphic-designer-ledgercraft-ahmedabad-gujarat-india",
-    "location": "Ahmedabad, Gujarat, India"
-  },
-  {
-    "title": "Graphic Designer (Fresher)",
-    "company": "OSLO HQ | B2B Marketing & Technology",
-    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-oslo-hq-b2b-marketing-technology-4486325759",
-    "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-oslo-hq-b2b-marketing-technology-4486325759",
-    "apply_slug": "graphic-designer-oslo-hq-b2b-marketing-technology-noida-uttar-pradesh-india",
-    "location": "Noida, Uttar Pradesh, India"
-  },
-  {
-    "title": "Business Development Executive (Fresher)",
-    "company": "Ansi ByteCode LLP",
-    "company_url": "https://in.linkedin.com/jobs/view/business-development-executive-at-ansi-bytecode-llp-4483413900",
-    "link": "https://in.linkedin.com/jobs/view/business-development-executive-at-ansi-bytecode-llp-4483413900",
-    "apply_slug": "business-development-executive-ansi-bytecode-llp-ahmedabad-gujarat-india",
-    "location": "Ahmedabad, Gujarat, India"
+    "title": "Business Development Specialist (Fresher)",
+    "company": "Be Rolling Media",
+    "company_url": "https://in.linkedin.com/jobs/view/business-development-specialist-at-be-rolling-media-4486387182",
+    "link": "https://in.linkedin.com/jobs/view/business-development-specialist-at-be-rolling-media-4486387182",
+    "apply_slug": "business-development-specialist-be-rolling-media-new-delhi-delhi-india",
+    "location": "New Delhi, Delhi, India"
   },
   {
     "title": "Business Development Executive (Fresher)",
@@ -758,22 +710,6 @@
     "link": "https://in.linkedin.com/jobs/view/business-development-specialist-at-wellversed-4486334669",
     "apply_slug": "business-development-specialist-wellversed-gurugram-haryana-india",
     "location": "Gurugram, Haryana, India"
-  },
-  {
-    "title": "Business Development (Fresher)",
-    "company": "Wellversed",
-    "company_url": "https://in.linkedin.com/jobs/view/business-development-at-wellversed-4486339556",
-    "link": "https://in.linkedin.com/jobs/view/business-development-at-wellversed-4486339556",
-    "apply_slug": "business-development-wellversed-gurugram-haryana-india",
-    "location": "Gurugram, Haryana, India"
-  },
-  {
-    "title": "Business Development Executive – DOCTOR & HEALTHCARE PARTNERSHIPS (Fresher)",
-    "company": "Balancenutrition.in",
-    "company_url": "https://in.linkedin.com/jobs/view/business-development-executive-%E2%80%93-doctor-healthcare-partnerships-at-balancenutrition-in-4484675460",
-    "link": "https://in.linkedin.com/jobs/view/business-development-executive-%E2%80%93-doctor-healthcare-partnerships-at-balancenutrition-in-4484675460",
-    "apply_slug": "business-development-executive-doctor-healthcare-partnerships-balancenutrition-i",
-    "location": "Mumbai, Maharashtra, India"
   },
   {
     "title": "QA/Test Engineer",
