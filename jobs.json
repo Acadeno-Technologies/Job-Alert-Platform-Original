@@ -104,12 +104,20 @@
     "location": "Bangalore"
   },
   {
-    "title": "Transctn Procng Offcr (Fresher)",
-    "company": "Mphasis",
-    "company_url": "https://in.linkedin.com/jobs/view/transctn-procng-offcr-at-mphasis-4463324652",
-    "link": "https://in.linkedin.com/jobs/view/transctn-procng-offcr-at-mphasis-4463324652",
-    "apply_slug": "transctn-procng-offcr-mphasis-bengaluru-karnataka-india",
-    "location": "Bengaluru, Karnataka, India"
+    "title": "Gold Loan Officer (Fresher)",
+    "company": "Ujjivan Small Finance Bank",
+    "company_url": "https://in.linkedin.com/jobs/view/gold-loan-officer-at-ujjivan-small-finance-bank-4488761992",
+    "link": "https://in.linkedin.com/jobs/view/gold-loan-officer-at-ujjivan-small-finance-bank-4488761992",
+    "apply_slug": "gold-loan-officer-ujjivan-small-finance-bank-kapurthala-punjab-india",
+    "location": "Kapurthala, Punjab, India"
+  },
+  {
+    "title": "Gold Loan Officer (Fresher)",
+    "company": "Ujjivan Small Finance Bank",
+    "company_url": "https://in.linkedin.com/jobs/view/gold-loan-officer-at-ujjivan-small-finance-bank-4488779160",
+    "link": "https://in.linkedin.com/jobs/view/gold-loan-officer-at-ujjivan-small-finance-bank-4488779160",
+    "apply_slug": "gold-loan-officer-ujjivan-small-finance-bank-muktsar-punjab-india",
+    "location": "Muktsar, Punjab, India"
   },
   {
     "title": "Representative, Operations (Fresher)",
@@ -118,22 +126,6 @@
     "link": "https://in.linkedin.com/jobs/view/representative-operations-at-concentrix-4434637392",
     "apply_slug": "representative-operations-concentrix-kolkata-west-bengal-india",
     "location": "Kolkata, West Bengal, India"
-  },
-  {
-    "title": "Gold Loan Officer- KA-TN-KL (Fresher)",
-    "company": "Ujjivan Small Finance Bank",
-    "company_url": "https://in.linkedin.com/jobs/view/gold-loan-officer-ka-tn-kl-at-ujjivan-small-finance-bank-4488758302",
-    "link": "https://in.linkedin.com/jobs/view/gold-loan-officer-ka-tn-kl-at-ujjivan-small-finance-bank-4488758302",
-    "apply_slug": "gold-loan-officer-ka-tn-kl-ujjivan-small-finance-bank-kottayam-kerala-india",
-    "location": "Kottayam, Kerala, India"
-  },
-  {
-    "title": "Gold Loan Officer- KA-TN-KL (Fresher)",
-    "company": "Ujjivan Small Finance Bank",
-    "company_url": "https://in.linkedin.com/jobs/view/gold-loan-officer-ka-tn-kl-at-ujjivan-small-finance-bank-4488762260",
-    "link": "https://in.linkedin.com/jobs/view/gold-loan-officer-ka-tn-kl-at-ujjivan-small-finance-bank-4488762260",
-    "apply_slug": "gold-loan-officer-ka-tn-kl-ujjivan-small-finance-bank-cherthala-kerala-india",
-    "location": "Cherthala, Kerala, India"
   },
   {
     "title": "international pre-sales executive",
@@ -176,6 +168,22 @@
     "location": "Kochi, Kerala, India"
   },
   {
+    "title": "Sales Executive - Life Insurance and Banking (Fresher)",
+    "company": "Job Junction",
+    "company_url": "https://in.linkedin.com/jobs/view/sales-executive-life-insurance-and-banking-at-job-junction-4487651060",
+    "link": "https://in.linkedin.com/jobs/view/sales-executive-life-insurance-and-banking-at-job-junction-4487651060",
+    "apply_slug": "sales-executive-life-insurance-and-banking-job-junction-surat-gujarat-india",
+    "location": "Surat, Gujarat, India"
+  },
+  {
+    "title": "Graduate Management Trainee",
+    "company": "Reign Sales Group",
+    "company_url": "https://in.linkedin.com/jobs/view/graduate-management-trainee-at-reign-sales-group-4486316967",
+    "link": "https://in.linkedin.com/jobs/view/graduate-management-trainee-at-reign-sales-group-4486316967",
+    "apply_slug": "graduate-management-trainee-reign-sales-group-bengaluru-karnataka-india",
+    "location": "Bengaluru, Karnataka, India"
+  },
+  {
     "title": "Graduate Engineering Trainee",
     "company": "Infinity Quality Services",
     "company_url": "https://in.linkedin.com/jobs/view/graduate-engineering-trainee-at-infinity-quality-services-4486681732",
@@ -200,14 +208,6 @@
     "location": "Chennai, Tamil Nadu, India"
   },
   {
-    "title": "Apprentice. IT. Development Program (Fresher)",
-    "company": "Eaton",
-    "company_url": "https://in.linkedin.com/jobs/view/apprentice-it-development-program-at-eaton-4477740111",
-    "link": "https://in.linkedin.com/jobs/view/apprentice-it-development-program-at-eaton-4477740111",
-    "apply_slug": "apprentice-it-development-program-eaton-pune-division-maharashtra-india",
-    "location": "Pune Division, Maharashtra, India"
-  },
-  {
     "title": "TM - SLT - HDFC BB- Ranchi (Fresher)",
     "company": "Aditya Birla Sun Life Insurance",
     "company_url": "https://in.linkedin.com/jobs/view/tm-slt-hdfc-bb-ranchi-at-aditya-birla-sun-life-insurance-4463353712",
@@ -224,14 +224,6 @@
     "location": "Bengaluru, Karnataka, India"
   },
   {
-    "title": "EIC Apprentice (Fresher)",
-    "company": "Cushman & Wakefield",
-    "company_url": "https://in.linkedin.com/jobs/view/eic-apprentice-at-cushman-wakefield-4463358015",
-    "link": "https://in.linkedin.com/jobs/view/eic-apprentice-at-cushman-wakefield-4463358015",
-    "apply_slug": "eic-apprentice-cushman-wakefield-greater-hyderabad-area",
-    "location": "Greater Hyderabad Area"
-  },
-  {
     "title": "SLT-HDFC BB-Ahmedabad (Fresher)",
     "company": "Aditya Birla Sun Life Insurance",
     "company_url": "https://in.linkedin.com/jobs/view/slt-hdfc-bb-ahmedabad-at-aditya-birla-sun-life-insurance-4463364503",
@@ -240,12 +232,172 @@
     "location": "Gujarat, India"
   },
   {
+    "title": "Apprentice. IT. Development Program (Fresher)",
+    "company": "Eaton",
+    "company_url": "https://in.linkedin.com/jobs/view/apprentice-it-development-program-at-eaton-4477780427",
+    "link": "https://in.linkedin.com/jobs/view/apprentice-it-development-program-at-eaton-4477780427",
+    "apply_slug": "apprentice-it-development-program-eaton-pune-division-maharashtra-india",
+    "location": "Pune Division, Maharashtra, India"
+  },
+  {
     "title": "Article Trainee",
     "company": "Trendset Finserv Pvt Ltd",
     "company_url": "https://in.linkedin.com/jobs/view/article-trainee-at-trendset-finserv-pvt-ltd-4484160687",
     "link": "https://in.linkedin.com/jobs/view/article-trainee-at-trendset-finserv-pvt-ltd-4484160687",
     "apply_slug": "article-trainee-trendset-finserv-pvt-ltd-hyderabad-telangana-india",
     "location": "Hyderabad, Telangana, India"
+  },
+  {
+    "title": "Accounting Services Associate I (Fresher)",
+    "company": "Conduent",
+    "company_url": "https://in.linkedin.com/jobs/view/accounting-services-associate-i-at-conduent-4472062584",
+    "link": "https://in.linkedin.com/jobs/view/accounting-services-associate-i-at-conduent-4472062584",
+    "apply_slug": "accounting-services-associate-i-conduent-kochi-kerala-india",
+    "location": "Kochi, Kerala, India"
+  },
+  {
+    "title": "GL - Customer Relationship Officer - EAST - Micro Banking (Fresher)",
+    "company": "Ujjivan Small Finance Bank",
+    "company_url": "https://in.linkedin.com/jobs/view/gl-customer-relationship-officer-east-micro-banking-at-ujjivan-small-finance-bank-4488774353",
+    "link": "https://in.linkedin.com/jobs/view/gl-customer-relationship-officer-east-micro-banking-at-ujjivan-small-finance-bank-4488774353",
+    "apply_slug": "gl-customer-relationship-officer-east-micro-banking-ujjivan-small-finance-bank-k",
+    "location": "Kolkata, West Bengal, India"
+  },
+  {
+    "title": "Graphic Designer (Fresher)",
+    "company": "Chronicle Ventures",
+    "company_url": "https://in.linkedin.com/jobs/view/graphic-designer-at-chronicle-ventures-4486638574",
+    "link": "https://in.linkedin.com/jobs/view/graphic-designer-at-chronicle-ventures-4486638574",
+    "apply_slug": "graphic-designer-chronicle-ventures-mumbai-maharashtra-india",
+    "location": "Mumbai, Maharashtra, India"
+  },
+  {
+    "title": "Business Development Executive (Fresher)",
+    "company": "SortMyScene",
+    "company_url": "https://in.linkedin.com/jobs/view/business-development-executive-at-sortmyscene-4486647329",
+    "link": "https://in.linkedin.com/jobs/view/business-development-executive-at-sortmyscene-4486647329",
+    "apply_slug": "business-development-executive-sortmyscene-goregaon-maharashtra-india",
+    "location": "Goregaon, Maharashtra, India"
+  },
+  {
+    "title": "Jr tekla modeler (Fresher)",
+    "company": "AMIYA STEEL PRIVATE LIMITED",
+    "company_url": "https://in.linkedin.com/jobs/view/jr-tekla-modeler-at-amiya-steel-private-limited-4486688087",
+    "link": "https://in.linkedin.com/jobs/view/jr-tekla-modeler-at-amiya-steel-private-limited-4486688087",
+    "apply_slug": "jr-tekla-modeler-amiya-steel-private-limited-jamshedpur-jharkhand-india",
+    "location": "Jamshedpur, Jharkhand, India"
+  },
+  {
+    "title": "HR Executive (Fresher)",
+    "company": "Violet Info",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-executive-at-violet-info-4487634555",
+    "link": "https://in.linkedin.com/jobs/view/hr-executive-at-violet-info-4487634555",
+    "apply_slug": "hr-executive-violet-info-mumbai-maharashtra-india",
+    "location": "Mumbai, Maharashtra, India"
+  },
+  {
+    "title": "Human Resources Executive (Fresher)",
+    "company": "Prince Hospital Sikar",
+    "company_url": "https://in.linkedin.com/jobs/view/human-resources-executive-at-prince-hospital-sikar-4487642312",
+    "link": "https://in.linkedin.com/jobs/view/human-resources-executive-at-prince-hospital-sikar-4487642312",
+    "apply_slug": "human-resources-executive-prince-hospital-sikar-sikar-rajasthan-india",
+    "location": "Sikar, Rajasthan, India"
+  },
+  {
+    "title": "Executive - HR (Fresher)",
+    "company": "Larsen & Toubro",
+    "company_url": "https://in.linkedin.com/jobs/view/executive-hr-at-larsen-toubro-4478387364",
+    "link": "https://in.linkedin.com/jobs/view/executive-hr-at-larsen-toubro-4478387364",
+    "apply_slug": "executive-hr-larsen-toubro-pathankot-punjab-india",
+    "location": "Pathankot, Punjab, India"
+  },
+  {
+    "title": "HR & Admin Executive (Fresher)",
+    "company": "Badri Narain Rubbers Pvt Ltd",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-admin-executive-4485042800",
+    "link": "https://in.linkedin.com/jobs/view/hr-admin-executive-4485042800",
+    "apply_slug": "hr-admin-executive-badri-narain-rubbers-pvt-ltd-vadodara-gujarat-india",
+    "location": "Vadodara, Gujarat, India"
+  },
+  {
+    "title": "HR Operations Specialist (Fresher)",
+    "company": "Hitachi Digital",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-operations-specialist-at-hitachi-digital-4480831911",
+    "link": "https://in.linkedin.com/jobs/view/hr-operations-specialist-at-hitachi-digital-4480831911",
+    "apply_slug": "hr-operations-specialist-hitachi-digital-pune-division-maharashtra-india",
+    "location": "Pune Division, Maharashtra, India"
+  },
+  {
+    "title": "Human Resources Administrator (Fresher)",
+    "company": "JucyGifts - Gifts, Corporate Merchandise and Promotional Products",
+    "company_url": "https://in.linkedin.com/jobs/view/human-resources-administrator-at-jucygifts-gifts-corporate-merchandise-and-promotional-products-4486669891",
+    "link": "https://in.linkedin.com/jobs/view/human-resources-administrator-at-jucygifts-gifts-corporate-merchandise-and-promotional-products-4486669891",
+    "apply_slug": "human-resources-administrator-jucygifts-gifts-corporate-merchandise-and-promotio",
+    "location": "Mumbai Metropolitan Region"
+  },
+  {
+    "title": "HR Executive (Fresher)",
+    "company": "Shreeyaan Solusmart Pvt. Ltd.",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-executive-at-shreeyaan-solusmart-pvt-ltd-4488751499",
+    "link": "https://in.linkedin.com/jobs/view/hr-executive-at-shreeyaan-solusmart-pvt-ltd-4488751499",
+    "apply_slug": "hr-executive-shreeyaan-solusmart-pvt-ltd-bilari-uttar-pradesh-india",
+    "location": "Bilari, Uttar Pradesh, India"
+  },
+  {
+    "title": "People Operations Admin (Fresher)",
+    "company": "Acquarius Capstorm Limited",
+    "company_url": "https://in.linkedin.com/jobs/view/people-operations-admin-at-acquarius-capstorm-limited-4487627537",
+    "link": "https://in.linkedin.com/jobs/view/people-operations-admin-at-acquarius-capstorm-limited-4487627537",
+    "apply_slug": "people-operations-admin-acquarius-capstorm-limited-kochi-kerala-india",
+    "location": "Kochi, Kerala, India"
+  },
+  {
+    "title": "HR & Administration Executive (Fresher)",
+    "company": "세스코",
+    "company_url": "https://in.linkedin.com/jobs/view/hr-administration-executive-at-%EC%84%B8%EC%8A%A4%EC%BD%94-4485057434",
+    "link": "https://in.linkedin.com/jobs/view/hr-administration-executive-at-%EC%84%B8%EC%8A%A4%EC%BD%94-4485057434",
+    "apply_slug": "hr-administration-executive-chennai-tamil-nadu-india",
+    "location": "Chennai, Tamil Nadu, India"
+  },
+  {
+    "title": "Marketing Associate (Fresher)",
+    "company": "RISA",
+    "company_url": "https://in.linkedin.com/jobs/view/marketing-associate-at-risa-4487622434",
+    "link": "https://in.linkedin.com/jobs/view/marketing-associate-at-risa-4487622434",
+    "apply_slug": "marketing-associate-risa-bengaluru-karnataka-india",
+    "location": "Bengaluru, Karnataka, India"
+  },
+  {
+    "title": "Digital Marketing Specialist (Fresher)",
+    "company": "Luxury Vibes Stay",
+    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-specialist-at-luxury-vibes-stay-4486360107",
+    "link": "https://in.linkedin.com/jobs/view/digital-marketing-specialist-at-luxury-vibes-stay-4486360107",
+    "apply_slug": "digital-marketing-specialist-luxury-vibes-stay-new-delhi-delhi-india",
+    "location": "New Delhi, Delhi, India"
+  },
+  {
+    "title": "Digital Marketing Executive (Fresher)",
+    "company": "Techdome",
+    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-techdome-4487609339",
+    "link": "https://in.linkedin.com/jobs/view/digital-marketing-executive-at-techdome-4487609339",
+    "apply_slug": "digital-marketing-executive-techdome-hyderabad-telangana-india",
+    "location": "Hyderabad, Telangana, India"
+  },
+  {
+    "title": "Growth & GTM Engineer | Techdome (Fresher)",
+    "company": "Techdome",
+    "company_url": "https://in.linkedin.com/jobs/view/growth-gtm-engineer-techdome-at-techdome-4487617250",
+    "link": "https://in.linkedin.com/jobs/view/growth-gtm-engineer-techdome-at-techdome-4487617250",
+    "apply_slug": "growth-gtm-engineer-techdome-techdome-hyderabad-telangana-india",
+    "location": "Hyderabad, Telangana, India"
+  },
+  {
+    "title": "Digital Marketing Specialist (Fresher)",
+    "company": "Whizz HR",
+    "company_url": "https://in.linkedin.com/jobs/view/digital-marketing-specialist-at-whizz-hr-4488725313",
+    "link": "https://in.linkedin.com/jobs/view/digital-marketing-specialist-at-whizz-hr-4488725313",
+    "apply_slug": "digital-marketing-specialist-whizz-hr-mumbai-maharashtra-india",
+    "location": "Mumbai, Maharashtra, India"
   },
   {
     "title": "QA/Test Engineer",
