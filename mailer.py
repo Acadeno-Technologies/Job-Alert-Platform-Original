@@ -453,24 +453,34 @@ else:
 from urllib.parse import quote
 
 SHOW_COMPANY_JOBS = True    # True = specific job openings (each name opens that exact job)
-SHOW_ROLE_LIST = False      # True = always add the role-search list at the bottom
-ROLE_LIST_IF_FEWER_THAN = 5  # if fewer new jobs than this, add the role-search list (LinkedIn/Naukri/Naukrigulf)
-INDIA_ROLES_PER_DAY = 10
-GULF_ROLES_PER_DAY = 8
+SHOW_ROLE_LIST = True        # True = ALWAYS add the clickable role list (LinkedIn / Naukri / Naukrigulf)
+ROLE_LIST_IF_FEWER_THAN = 5  # (only used when SHOW_ROLE_LIST = False)
 
-INDIA_ROLES = [
+# How many EXTRA roles rotate in each day (the core roles below are shown EVERY day)
+INDIA_MORE_TECH_PER_DAY = 4
+INDIA_OTHER_PER_DAY = 4
+GULF_MORE_TECH_PER_DAY = 2
+GULF_OTHER_PER_DAY = 3
+
+# --- core IT roles: shown in EVERY email (edit this list to change them) ---
+CORE_TECH_ROLES = [
+    "AI Engineer", "Python Developer", "Java Developer",
+    "Full Stack Developer", "Flutter Developer", "Software Tester",
+]
+# --- more IT roles: a few of these rotate in each day ---
+MORE_TECH_ROLES = [
+    "Machine Learning Engineer", "Generative AI Engineer", "Automation Testing Engineer",
+    "Data Analyst", "Data Scientist", "React Developer", "Node.js Developer",
+    "Android Developer", "Web Developer", "DevOps Engineer", "UI/UX Designer",
+    "Cyber Security Analyst", "Cloud Engineer", "SQL Developer", "Mobile App Developer",
+    ".NET Developer", "Angular Developer", "PHP Developer",
+]
+# --- other fields ---
+OTHER_ROLES = [
     "HR Executive", "Digital Marketing Executive", "Content Writer", "Graphic Designer",
     "Customer Support Executive", "Business Development Executive", "Sales Executive",
-    "Accountant", "Operations Executive", "Back Office Executive", "Data Entry Operator",
-    "Administrative Assistant", "Civil Engineer", "Mechanical Engineer", "Electrical Engineer",
-    "Banking Associate", "Finance Executive", "Logistics Coordinator", "Teacher", "Telecaller",
-    "Medical Coder", "Social Media Executive", "Recruiter", "Customer Relationship Executive",
-]
-GULF_ROLES = [
-    "Accountant", "Sales Executive", "Customer Service Representative", "Receptionist",
-    "HR Executive", "Marketing Executive", "Administrative Assistant", "Storekeeper",
-    "Civil Engineer", "Mechanical Engineer", "Electrical Engineer", "Graphic Designer",
-    "Business Development Executive", "Cashier", "Logistics Coordinator", "Procurement Executive",
+    "Accountant", "Operations Executive", "Back Office Executive", "Recruiter",
+    "Social Media Executive",
 ]
 
 def _daily_pick(items, count):
@@ -480,7 +490,8 @@ def _daily_pick(items, count):
     return [items[(start + i) % len(items)] for i in range(min(count, len(items)))]
 
 def _slug(role):
-    return "-".join(role.lower().replace("/", " ").split())
+    role = role.lower().replace(".", "").replace("/", " ").replace("+", " plus ")
+    return "-".join(role.split())
 
 def linkedin_url(role, location):
     return ("https://www.linkedin.com/jobs/search/?keywords=" + quote(role)
@@ -499,20 +510,35 @@ def _role_row(role, main_url, links):
             f'<a href="{main_url}" style="color:#1e1b4b;font-size:15px;font-weight:700;text-decoration:none;">{role}</a>'
             f'<div style="font-size:13px;margin-top:5px;">Apply on: {small}</div></div>')
 
+def _sub_heading(text):
+    return (f'<h3 style="color:#0f172a;margin:16px 0 6px;font-size:15px;border-left:4px solid #5f2cff;'
+            f'padding-left:10px;">{text}</h3>')
+
 def build_role_list():
     html = ('<div style="margin-top:22px;padding:12px 16px;background:#ede9fe;color:#5f2cff;'
             'border-radius:10px;font-size:17px;font-weight:800;">🇮🇳 India - Fresher / Entry Level Jobs</div>'
             '<p style="font-size:12px;color:#64748b;margin:6px 0;">Click a job name to see today\'s latest openings.</p>')
-    for role in _daily_pick(INDIA_ROLES, INDIA_ROLES_PER_DAY):
+    html += _sub_heading("💻 IT, AI &amp; Software")
+    for role in CORE_TECH_ROLES + _daily_pick(MORE_TECH_ROLES, INDIA_MORE_TECH_PER_DAY):
         html += _role_row(role, linkedin_url(role, "India"),
                           [("LinkedIn", linkedin_url(role, "India")), ("Naukri", naukri_url(role))])
+    html += _sub_heading("💼 Other Fields")
+    for role in _daily_pick(OTHER_ROLES, INDIA_OTHER_PER_DAY):
+        html += _role_row(role, linkedin_url(role, "India"),
+                          [("LinkedIn", linkedin_url(role, "India")), ("Naukri", naukri_url(role))])
+
+    gulf_loc = "United Arab Emirates"
     html += ('<div style="margin-top:28px;padding:12px 16px;background:#dcfce7;color:#15803d;'
              'border-radius:10px;font-size:17px;font-weight:800;">🌍 UAE / Gulf - Entry Level Jobs</div>'
              '<p style="font-size:12px;color:#64748b;margin:6px 0;">Click a job name to see today\'s latest openings.</p>')
-    for role in _daily_pick(GULF_ROLES, GULF_ROLES_PER_DAY):
-        html += _role_row(role, linkedin_url(role, "United Arab Emirates"),
-                          [("LinkedIn", linkedin_url(role, "United Arab Emirates")),
-                           ("Naukrigulf", naukrigulf_url(role))])
+    html += _sub_heading("💻 IT, AI &amp; Software")
+    for role in CORE_TECH_ROLES + _daily_pick(MORE_TECH_ROLES, GULF_MORE_TECH_PER_DAY):
+        html += _role_row(role, linkedin_url(role, gulf_loc),
+                          [("LinkedIn", linkedin_url(role, gulf_loc)), ("Naukrigulf", naukrigulf_url(role))])
+    html += _sub_heading("💼 Other Fields")
+    for role in _daily_pick(OTHER_ROLES, GULF_OTHER_PER_DAY):
+        html += _role_row(role, linkedin_url(role, gulf_loc),
+                          [("LinkedIn", linkedin_url(role, gulf_loc)), ("Naukrigulf", naukrigulf_url(role))])
     return html
 
 role_list_block = build_role_list()
