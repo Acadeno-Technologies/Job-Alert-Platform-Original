@@ -111,6 +111,15 @@ def sync_student_secrets():
         rows = c.fetchall()
         db.close()
 
+        # Keep students.json synchronized with database
+        try:
+            students_list = [{"name": r[0].strip().title(), "email": r[1].strip().lower()} for r in rows if r[0] and r[1]]
+            json_path = os.path.join(os.path.dirname(__file__), "students.json")
+            with open(json_path, "w", encoding="utf-8") as f:
+                json.dump(students_list, f, indent=2, ensure_ascii=False)
+        except Exception as err:
+            print("⚠️ Error updating students.json:", err)
+
         names = ",".join(row[0].strip().title() for row in rows if row[0])
         emails = ",".join(row[1] for row in rows if row[1])
 
